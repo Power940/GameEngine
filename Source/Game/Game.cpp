@@ -2,6 +2,8 @@
 #include "../Engine/Engine.h"
 #include "SDL3/SDL.h"
 
+#include <set>
+
 int main()
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -29,27 +31,38 @@ int main()
 
     float step = 0;
     bool colorOther = false;
+    std::set<Uint32> heldKeys;
 
     while (!quit) {
         while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_EVENT_QUIT) {
+            if (e.type == SDL_EVENT_QUIT)
+            {
                 quit = true;
+                break;
+            }
+            else if (e.type == SDL_EVENT_KEY_DOWN)
+            {
+                heldKeys.insert(e.key.key);
+            }
+            else if (e.type == SDL_EVENT_KEY_UP)
+            {
+                heldKeys.erase(e.key.key);
             }
         }
-        step += 0.005f;
-        greenSquare.x = sin(step) * 200 + 300;
-        greenSquare.y = cos(step) * 200 + 300;
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Set render draw color to black
-        SDL_RenderClear(renderer); // Clear the renderer
+        int dX = heldKeys.contains(SDLK_D) - heldKeys.contains(SDLK_A);
+        int dY = heldKeys.contains(SDLK_S) - heldKeys.contains(SDLK_W);
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Set render draw color to green
-        SDL_RenderFillRect(renderer, &greenSquare); // Render the rectangle
+        greenSquare.x += dX * 0.1 * (heldKeys.contains(SDLK_LSHIFT) ? 2 : 1);
+        greenSquare.y += dY * 0.1 * (heldKeys.contains(SDLK_LSHIFT) ? 2 : 1);
 
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderDebugText(renderer, 30,30,"test");
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
 
-        SDL_RenderPresent(renderer); // Render the screen
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        SDL_RenderFillRect(renderer, &greenSquare);
+
+        SDL_RenderPresent(renderer);
     }
 
     SDL_DestroyRenderer(renderer);
