@@ -1,93 +1,70 @@
 #include <iostream>
-#include "../Engine/Engine.h"
-#include "SDL3/SDL.h"
-
+#include <SDL3/SDL.h>
 #include <set>
+#include <algorithm>
+
+#include "Engine.h"
+#include "Rect2D.h"
+
+int const WINDOW_WIDTH = 1280;
+int const WINDOW_HEIGHT = 1024;
 
 int main()
 {
-    SDL_Init(SDL_INIT_VIDEO);
+    nu::Renderer r;
+    r.Initialize("testing", WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    SDL_Window* window = SDL_CreateWindow("SDL3 Project", 1280, 1024, 0);
-    if (window == nullptr) {
-        std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        return 1;
-    }
-
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL);
-    if (renderer == nullptr) {
-        std::cerr << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
 
     SDL_Event e;
     bool quit = false;
-    uint64_t now = SDL_GetPerformanceCounter();
 
 
-    // Define a rectangle
-    SDL_FRect player{ 500, 200, 50, 50 };
-    SDL_FRect block{ 400, 400, 50, 200 };
+    Rect2D player = Rect2D(0, 0, 50, 50);
+    Rect2D block = Rect2D(400, 400, 450, 600);
 
-    float step = 0;
-    bool colorOther = false;
     std::set<Uint32> heldKeys;
 
     while (!quit) {
         while (SDL_PollEvent(&e)) {
             if (e.type == SDL_EVENT_QUIT)
-            {
                 quit = true;
-                break;
-            }
             else if (e.type == SDL_EVENT_KEY_DOWN)
-            {
                 heldKeys.insert(e.key.key);
-            }
             else if (e.type == SDL_EVENT_KEY_UP)
-            {
                 heldKeys.erase(e.key.key);
-            }
         }
 
         int dX = heldKeys.contains(SDLK_D) - heldKeys.contains(SDLK_A);
         int dY = heldKeys.contains(SDLK_S) - heldKeys.contains(SDLK_W);
+        float newX = std::clamp(player.X1() + dX * 0.1f * (heldKeys.contains(SDLK_LSHIFT) ? 2 : 1), 0.0f, static_cast<float>(WINDOW_WIDTH) - player.W());
+        float newY = std::clamp(player.Y1() + dY * 0.1f * (heldKeys.contains(SDLK_LSHIFT) ? 2 : 1), 0.0f, static_cast<float>(WINDOW_HEIGHT) - player.H());
 
-        float nexX = player.x + dX * 0.1 * (heldKeys.contains(SDLK_LSHIFT) ? 2 : 1);
-        float nexY = player.y + dY * 0.1 * (heldKeys.contains(SDLK_LSHIFT) ? 2 : 1);
-
-        if (!CheckCollision_NonRotated_RectToRect(nexX, nexY, nexX + player.w, nexY + player.h, block.x, block.y, block.x + block.w, block.y + block.h))
+        if (!CheckCollision_NonRotated_RectToRect( Rect2D (newX, newY, newX + player.W(), newY + player.H()), block))
         {
-            player.x = nexX;
-            player.y = nexY;
+            player.Update(newX, newY, newX + player.W(), newY + player.H());
         }
-        else if (!CheckCollision_NonRotated_RectToRect(player.x, nexY, player.x + player.w, nexY + player.h, block.x, block.y, block.x + block.w, block.y + block.h))
+        else if (!CheckCollision_NonRotated_RectToRect( Rect2D (player.X1(), newY, player.X2(), newY + player.H()), block))
         {
-            player.y = nexY;
+            player.Y(newY);
         }
-        else if (!CheckCollision_NonRotated_RectToRect(nexX, player.y, nexX + player.w, player.y + player.h, block.x, block.y, block.x + block.w, block.y + block.h))
+        else if (!CheckCollision_NonRotated_RectToRect( Rect2D (newX, player.Y1(), newX + player.W(), player.Y2()), block))
         {
-            player.x = nexX;
+            player.X(newX);
         }
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_RenderClear(renderer);
+        r.SetColor(0, 0, 0, 255);
+        r.Clear();
 
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        SDL_RenderFillRect(renderer, &player);
+        r.SetColor(0, 0, 255, 255);
+        r.FillRect(player);
 
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderFillRect(renderer, &block);
+        r.SetColor(255, 0, 0, 255);
+        r.FillRect(block);
 
-        SDL_RenderPresent(renderer);
+        r.Present();
     }
 
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    r.ShutDown();
 
     return 0;
 }
