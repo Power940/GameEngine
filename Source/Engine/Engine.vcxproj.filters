@@ -23,6 +23,9 @@
     <ClInclude Include="Constants.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">

@@ -2,11 +2,7 @@
 
 #include "Rect2D.h"
 #include "Constants.h"
-
-struct Point {
-	float x;
-	float y;
-};
+#include "Structs.h"
 
 
 Rect2D::Rect2D(float px, float py, float sx, float sy, float r) : m_px(px), m_py(py), m_sx(sx), m_sy(sy), m_r(r) { UpdateHalfExtends(); }

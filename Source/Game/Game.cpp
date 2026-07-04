@@ -1,3 +1,5 @@
+/*
+
 #include <SDL3/SDL.h>
 #include <set>
 #include <algorithm>
@@ -10,7 +12,7 @@ int const WINDOW_HEIGHT = 1024;
 
 int main()
 {
-    nu::Renderer r;
+    STR_FALL::Renderer r;
     if (!r.Initialize("testing", WINDOW_WIDTH, WINDOW_HEIGHT))
     {
         return 1;
@@ -75,3 +77,5 @@ int main()
 
     return 0;
 }
+
+*/

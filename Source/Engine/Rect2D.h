@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Structs.h"
 struct Point;
 
 class Rect2D

@@ -2,7 +2,7 @@
 
 #include "Renderer.h"
 
-namespace nu
+namespace STR_FALL
 {
     bool Renderer::Initialize(const char* name, int WINDOW_WIDTH, int WINDOW_HEIGHT)
     {
@@ -45,22 +45,46 @@ namespace nu
         SDL_Quit();
     }
 
-    void Renderer::RenderPoint(float x, float y)
+    void Renderer::RenderPoint(Point point) { SDL_RenderPoint(m_renderer, point.x, point.y); }
+    void Renderer::RenderPoints(std::vector<Point> points)
     {
-        SDL_RenderPoint(m_renderer, x, y);
+        for (const Point point : points)
+        {
+            SDL_RenderPoint(m_renderer, point.x, point.y);
+        }
     }
-    void Renderer::RenderLine(float x1, float y1, float x2, float y2)
+    void Renderer::RenderLine(Point point1, Point point2) { SDL_RenderLine(m_renderer, point1.x, point1.y, point2.x, point2.y); }
+    void Renderer::RenderLines(std::vector<Point> points1, std::vector<Point> points2)
     {
-        SDL_RenderLine(m_renderer, x1, y1, x2, y2);
+        for (size_t index = 0; index < points1.size(); index++)
+        {
+            SDL_RenderLine(m_renderer, points1[index].x, points1[index].y, points2[index].x, points2[index].y);
+        }
     }
     void Renderer::RenderRectAABB(Rect2D rect)
     {
         SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
         SDL_RenderRect(m_renderer, &drawRect);
     }
+    void Renderer::RenderRectsAABB(std::vector<Rect2D> rects)
+    {
+        for (size_t index = 0; index < rects.size(); index++)
+        {
+            SDL_FRect drawRect = { rects[index].MinX(), rects[index].MinY(), rects[index].MaxX() - rects[index].MinX(), rects[index].MaxY() - rects[index].MinY() };
+            SDL_RenderRect(m_renderer, &drawRect);
+        }
+    }
     void Renderer::RenderFillRectAABB(Rect2D rect)
     {
         SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
         SDL_RenderFillRect(m_renderer, &drawRect);
+    }
+    void Renderer::RenderFillRectsAABB(std::vector<Rect2D> rects)
+    {
+        for (size_t index = 0; index < rects.size(); index++)
+        {
+            SDL_FRect drawRect = { rects[index].MinX(), rects[index].MinY(), rects[index].MaxX() - rects[index].MinX(), rects[index].MaxY() - rects[index].MinY() };
+            SDL_RenderFillRect(m_renderer, &drawRect);
+        }
     }
 }
