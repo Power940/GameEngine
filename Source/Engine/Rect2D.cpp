@@ -5,7 +5,7 @@
 #include "Structs.h"
 
 
-Rect2D::Rect2D(float px, float py, float sx, float sy, float r) : m_px(px), m_py(py), m_sx(sx), m_sy(sy), m_r(r) { UpdateHalfExtends(); }
+Rect2D::Rect2D(float px, float py, float sx, float sy, Color c, float r) : m_px(px), m_py(py), m_sx(sx), m_sy(sy), m_c(c), m_r(r) { UpdateHalfExtends(); }
 Point Rect2D::Center() const { return { m_px, m_py }; }
 
 float Rect2D::Deg() const { return m_r * CONST::RAD_DEG; }

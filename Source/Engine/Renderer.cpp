@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Renderer.h"
+#include "Color.h"
 
 namespace STR_FALL
 {
@@ -23,11 +24,17 @@ namespace STR_FALL
             return false;
         }
 
+        m_lastSetColor = new Color(255,255,255);
+
         return true;
     }
     void Renderer::SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {
         SDL_SetRenderDrawColor(m_renderer, r, g, b, a);
+        m_lastSetColor->m_r = r;
+        m_lastSetColor->m_g = g;
+        m_lastSetColor->m_b = b;
+        m_lastSetColor->m_a = a;
     }
     void Renderer::Clear(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {
@@ -42,6 +49,8 @@ namespace STR_FALL
     {
         SDL_DestroyRenderer(m_renderer);
         SDL_DestroyWindow(m_window);
+        delete m_lastSetColor;
+        m_lastSetColor = nullptr;
         SDL_Quit();
     }
 
@@ -53,12 +62,12 @@ namespace STR_FALL
             SDL_RenderPoint(m_renderer, point.x, point.y);
         }
     }
-    void Renderer::RenderLine(Point point1, Point point2) { SDL_RenderLine(m_renderer, point1.x, point1.y, point2.x, point2.y); }
-    void Renderer::RenderLines(std::vector<Point> points1, std::vector<Point> points2)
+    void Renderer::RenderLine(Line line) { SDL_RenderLine(m_renderer, line.point1.x, line.point1.y, line.point2.x, line.point2.y); }
+    void Renderer::RenderLines(std::vector<Line> lines)
     {
-        for (size_t index = 0; index < points1.size(); index++)
+        for (const Line line : lines)
         {
-            SDL_RenderLine(m_renderer, points1[index].x, points1[index].y, points2[index].x, points2[index].y);
+            SDL_RenderLine(m_renderer, line.point1.x, line.point1.y, line.point2.x, line.point2.y);
         }
     }
     void Renderer::RenderRectAABB(Rect2D rect)
@@ -81,10 +90,75 @@ namespace STR_FALL
     }
     void Renderer::RenderFillRectsAABB(std::vector<Rect2D> rects)
     {
-        for (size_t index = 0; index < rects.size(); index++)
+        for (const Rect2D& rect : rects)
         {
-            SDL_FRect drawRect = { rects[index].MinX(), rects[index].MinY(), rects[index].MaxX() - rects[index].MinX(), rects[index].MaxY() - rects[index].MinY() };
+            SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
             SDL_RenderFillRect(m_renderer, &drawRect);
         }
+    }
+
+    void Renderer::RenderPointColor(PointC point)
+    {
+        SDL_SetRenderDrawColor(m_renderer, point.c.m_r, point.c.m_g, point.c.m_b, point.c.m_a);
+        SDL_RenderPoint(m_renderer, point.x, point.y);
+        SDL_SetRenderDrawColor(m_renderer, m_lastSetColor->m_r, m_lastSetColor->m_g, m_lastSetColor->m_b, m_lastSetColor->m_a);
+    }
+    void Renderer::RenderPointsColor(std::vector<PointC> points)
+    {
+        for (const PointC& point : points)
+        {
+            SDL_SetRenderDrawColor(m_renderer, point.c.m_r, point.c.m_g, point.c.m_b, point.c.m_a);
+            SDL_RenderPoint(m_renderer, point.x, point.y);
+        }
+        SDL_SetRenderDrawColor(m_renderer, m_lastSetColor->m_r, m_lastSetColor->m_g, m_lastSetColor->m_b, m_lastSetColor->m_a);
+    }
+    void Renderer::RenderLineColor(LineC line)
+    {
+        SDL_SetRenderDrawColor(m_renderer, line.c.m_r, line.c.m_g, line.c.m_b, line.c.m_a);
+        SDL_RenderLine(m_renderer, line.point1.x, line.point1.y, line.point2.x, line.point2.y);
+        SDL_SetRenderDrawColor(m_renderer, m_lastSetColor->m_r, m_lastSetColor->m_g, m_lastSetColor->m_b, m_lastSetColor->m_a);
+    }
+    void Renderer::RenderLinesColor(std::vector<LineC> lines)
+    {
+        for (const LineC& line : lines)
+        {
+            SDL_SetRenderDrawColor(m_renderer, line.c.m_r, line.c.m_g, line.c.m_b, line.c.m_a);
+            SDL_RenderLine(m_renderer, line.point1.x, line.point1.y, line.point2.x, line.point2.y);
+        }
+        SDL_SetRenderDrawColor(m_renderer, m_lastSetColor->m_r, m_lastSetColor->m_g, m_lastSetColor->m_b, m_lastSetColor->m_a);
+    }
+    void Renderer::RenderRectAABBColor(Rect2D rect)
+    {
+        SDL_SetRenderDrawColor(m_renderer, rect.m_c.m_r, rect.m_c.m_g, rect.m_c.m_b, rect.m_c.m_a);
+        SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
+        SDL_RenderRect(m_renderer, &drawRect);
+        SDL_SetRenderDrawColor(m_renderer, m_lastSetColor->m_r, m_lastSetColor->m_g, m_lastSetColor->m_b, m_lastSetColor->m_a);
+    }
+    void Renderer::RenderRectsAABBColor(std::vector<Rect2D> rects)
+    {
+        for (const Rect2D& rect : rects)
+        {
+            SDL_SetRenderDrawColor(m_renderer, rect.m_c.m_r, rect.m_c.m_g, rect.m_c.m_b, rect.m_c.m_a);
+            SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
+            SDL_RenderRect(m_renderer, &drawRect);
+        }
+        SDL_SetRenderDrawColor(m_renderer, m_lastSetColor->m_r, m_lastSetColor->m_g, m_lastSetColor->m_b, m_lastSetColor->m_a);
+    }
+    void Renderer::RenderFillRectAABBColor(Rect2D rect)
+    {
+        SDL_SetRenderDrawColor(m_renderer, rect.m_c.m_r, rect.m_c.m_g, rect.m_c.m_b, rect.m_c.m_a);
+        SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
+        SDL_RenderFillRect(m_renderer, &drawRect);
+        SDL_SetRenderDrawColor(m_renderer, m_lastSetColor->m_r, m_lastSetColor->m_g, m_lastSetColor->m_b, m_lastSetColor->m_a);
+    }
+    void Renderer::RenderFillRectsAABBColor(std::vector<Rect2D> rects)
+    {
+        for (const Rect2D& rect : rects)
+        {
+            SDL_SetRenderDrawColor(m_renderer, rect.m_c.m_r, rect.m_c.m_g, rect.m_c.m_b, rect.m_c.m_a);
+            SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
+            SDL_RenderFillRect(m_renderer, &drawRect);
+        }
+        SDL_SetRenderDrawColor(m_renderer, m_lastSetColor->m_r, m_lastSetColor->m_g, m_lastSetColor->m_b, m_lastSetColor->m_a);
     }
 }

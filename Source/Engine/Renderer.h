@@ -13,6 +13,7 @@ namespace STR_FALL
 	private:
 		SDL_Window* m_window = nullptr;
 		SDL_Renderer* m_renderer = nullptr;
+		Color* m_lastSetColor = nullptr;
 	public:
         bool Initialize(const char* name, int WINDOW_WIDTH, int WINDOW_HEIGHT);
         void SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
@@ -22,11 +23,20 @@ namespace STR_FALL
 
 		void RenderPoint(Point point);
 		void RenderPoints(std::vector<Point> points);
-		void RenderLine(Point point1, Point point2);
-		void RenderLines(std::vector<Point> points1, std::vector<Point> points2);
+		void RenderLine(Line line);
+		void RenderLines(std::vector<Line> lines);
 		void RenderRectAABB(Rect2D rect);
 		void RenderRectsAABB(std::vector<Rect2D> rects);
 		void RenderFillRectAABB(Rect2D rect);
 		void RenderFillRectsAABB(std::vector<Rect2D> rects);
+
+		void RenderPointColor(PointC point);
+		void RenderPointsColor(std::vector<PointC> points);
+		void RenderLineColor(LineC line);
+		void RenderLinesColor(std::vector<LineC> lines);
+		void RenderRectAABBColor(Rect2D rect);
+		void RenderRectsAABBColor(std::vector<Rect2D> rects);
+		void RenderFillRectAABBColor(Rect2D rect);
+		void RenderFillRectsAABBColor(std::vector<Rect2D> rects);
 	};
 }

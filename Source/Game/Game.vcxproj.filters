@@ -10,7 +10,7 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="Test Render.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

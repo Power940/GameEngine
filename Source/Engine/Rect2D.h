@@ -12,8 +12,9 @@ public:
 	float m_px; float m_py;
 	float m_sx; float m_sy;
 	float m_r;
+	Color m_c;
 
-	Rect2D(float px, float py, float sx, float sy, float r = 0);
+	Rect2D(float px, float py, float sx, float sy, Color c = Color(255,255,255), float r = 0);
 	Point Center() const;
 
 	// safe conversions / setter logic options
