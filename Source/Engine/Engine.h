@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "Rect2D.h"
-#include "Renderer.h"
 
 bool CheckCollision_NonRotated_RectToRect(Rect2D rect1, Rect2D rect2);
 

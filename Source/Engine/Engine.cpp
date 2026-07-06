@@ -1,14 +1,11 @@
 #include <vector>
 
 #include "Rect2D.h"
-
-
 bool CheckCollision_NonRotated_RectToRect(Rect2D rect1, Rect2D rect2)
 {
 	return (rect1.MinX() < rect2.MaxX() && rect1.MaxX() > rect2.MinX())
 		&& (rect1.MinY() < rect2.MaxY() && rect1.MaxY() > rect2.MinY());
 }
-
 bool CheckCollision_NonRotated_RectToRects(Rect2D rect1, std::vector<Rect2D> rects)
 {
 	for (int index = 0; index < rects.size(); index++)

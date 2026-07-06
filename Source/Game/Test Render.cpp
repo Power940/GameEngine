@@ -1,93 +1,113 @@
-#include <SDL3/SDL.h>
-#include <random>
 #include <vector>
 
-#include "Engine.h"
+#include "Renderer.h"
+#include "Random.h"
+#include <Rect2D.h>
+#include <Structs.h>
+#include <SDL3/SDL_events.h>
+#include <cstdlib>
 
 int const WINDOW_WIDTH = 1280;
 int const WINDOW_HEIGHT = 1024;
 
-
 // run these to test to make sure basic rendering works as expected
-void hardcodedNonColorTests(STR_FALL::Renderer& r)
+static void hardcodedNonColorTests(STR_FALL::Renderer& r)
 {
-    r.SetColor(0, 255, 255);
-    r.RenderPoint({ 100,100 });
-    r.RenderPoints({ {150,150},{200,200},{250,250},{300,300} });
-    r.RenderLine({ { 100, 200 }, { 300,400 } });
-    r.RenderLines({ {{100,300}, {300,500}}, {{100,400}, {300,600}}, {{100,500}, {300,700}} });
-    r.RenderRectAABB(Rect2D(800, 800, 50, 50));
-    r.RenderRectsAABB({ Rect2D(900, 800, 50, 50), Rect2D(900, 900, 50, 50), Rect2D(800, 900, 50, 50) });
-    r.RenderFillRectAABB(Rect2D(800, 200, 50, 50));
-    r.RenderFillRectsAABB({ Rect2D(900, 200, 50, 50), Rect2D(900, 300, 50, 50), Rect2D(800, 300, 50, 50) });
+    r.SetColor(Color (0,1.0f,1.0f));
+
+    r.RenderPoint(Vector2 (100,100));
+    r.RenderPoints({
+        Vector2 (150,150),
+        Vector2 (200,200),
+        Vector2 (250,250),
+        Vector2 (300,300)
+        });
+    r.RenderLine(Line (Vector2 (100,200), Vector2(300,400)));
+    r.RenderLines({
+        Line (Vector2 (100,300), Vector2 (300,500)),
+        Line (Vector2 (100,400), Vector2 (300,600)),
+        Line (Vector2 (100,500), Vector2 (300,700))
+        });
+    r.RenderRectAABB(Rect2D (800,800,50,50));
+    r.RenderRectsAABB({
+        Rect2D (900,800,50,50),
+        Rect2D (900,900,50,50),
+        Rect2D (800,900,50,50)
+        });
+    r.RenderFillRectAABB(Rect2D (800,200,50,50));
+    r.RenderFillRectsAABB({
+        Rect2D (900,200,50,50),
+        Rect2D (900,300,50,50),
+        Rect2D (800,300,50,50)
+        });
 }
-void hardcodedColorTests(STR_FALL::Renderer& r)
+static void hardcodedColorTests(STR_FALL::Renderer& r)
 {
-    r.SetColor(0, 255, 255);
+    r.SetColor(Color (0,1.0f,1.0f));
 
-    r.RenderPointColor({ 100,100,Color(255,0,0) });
-    r.RenderPointsColor({ {150,150,Color(255,50,0)},{200,200,Color(255,100,0)},{250,250,Color(255,150,0)},{300,300,Color(255,200,0)} });
-    r.RenderLineColor({ { 100, 200 }, { 300,400 }, Color(255,0,0) });
-    r.RenderLinesColor({ {{100,300}, {300,500},Color(255,50,0)}, {{100,400}, {300,600},Color(255,100,0)}, {{100,500}, {300,700},Color(255,150,0)} });
-    r.RenderRectAABBColor(Rect2D(800, 800, 50, 50, Color(255, 0, 0)));
-    r.RenderRectsAABBColor({ Rect2D(900, 800, 50, 50, Color(255, 50, 0)), Rect2D(900, 900, 50, 50, Color(255, 150, 0)), Rect2D(800, 900, 50, 50, Color(255, 100, 0)) });
-    r.RenderFillRectAABBColor(Rect2D(800, 200, 50, 50, Color(255, 0, 0)));
-    r.RenderFillRectsAABBColor({ Rect2D(900, 200, 50, 50, Color(255, 50, 0)), Rect2D(900, 300, 50, 50, Color(255, 150, 0)), Rect2D(800, 300, 50, 50, Color(255, 100, 0)) });
+    r.RenderPointColor(Vector2C (100,100, Color (1.0f, 0.0f, 0.0f)));
+    r.RenderPointsColor({
+        Vector2C (150,150,Color (1.0f,0.25f,0.0f)),
+        Vector2C (200,200,Color (1.0f,0.5f,0.0f)),
+        Vector2C (250,250,Color (1.0f,0.75f,0.0f)),
+        Vector2C (300,300,Color (1.0f,1.0f,0.0f))
+        });
+    r.RenderLineColor(LineC (Vector2 (100,200), Vector2 (300,400), Color (1.0f, 0.0f, 0.0f)));
+    r.RenderLinesColor({
+        LineC (Vector2 (100,300), Vector2 (300,500), Color (1.0f,0.25f,0.0f)),
+        LineC (Vector2 (100,400), Vector2 (300,600), Color (1.0f,0.5f,0.0f)),
+        LineC (Vector2 (100,500), Vector2 (300,700), Color (1.0f,0.75f,0.0f))
+        });
+    r.RenderRectAABBColor(Rect2D (800, 800, 50, 50, Color (1.0f, 0.0f, 0.0f)));
+    r.RenderRectsAABBColor({
+        Rect2D (900,800,50,50, Color (1.0f,0.25f,0.0f)),
+        Rect2D (900,900,50,50, Color (1.0f,0.5f,0.0f)),
+        Rect2D (800,900,50,50, Color (1.0f,0.75f,0.0f))
+        });
+    r.RenderFillRectAABBColor(Rect2D (800, 200, 50, 50, Color (1.0f, 0.0f, 0.0f)));
+    r.RenderFillRectsAABBColor({
+        Rect2D (900,200,50,50, Color (1.0f,0.25f,0.0f)),
+        Rect2D (900,300,50,50, Color (1.0f,0.5f,0.0f)),
+        Rect2D (800,300,50,50, Color (1.0f,0.75f,0.0f))
+        });
 
-    r.RenderFillRectAABB(Rect2D(500, 500, 50, 50));
+    r.RenderFillRectAABB(Rect2D (500,500,50,50));
 }
-
 
 int main()
 {
     STR_FALL::Renderer r;
-    if (!r.Initialize("testing", WINDOW_WIDTH, WINDOW_HEIGHT))
-    {
-        return 1;
-    }
+    if (!r.Initialize("testing", WINDOW_WIDTH, WINDOW_HEIGHT)) { return 1; }
 
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    SeedRandom();
     SDL_Event e;
     bool quit = false;
 
-    std::vector<PointC> points;
+    std::vector<Vector2C> points;
     std::vector<LineC> lines;
     std::vector<Rect2D> rects;
 
-
     for (int i = 0; i < 20; i++)
     {
-        points.push_back(PointC{
-            std::rand() % WINDOW_WIDTH + 1.0f, std::rand() % WINDOW_HEIGHT + 1.0f,
-            Color(
-                static_cast<uint8_t>(std::rand() % 256),
-                static_cast<uint8_t>(std::rand() % 256),
-                static_cast<uint8_t>(std::rand() % 256)
-            )
+        points.push_back({
+            RandomFloat(WINDOW_WIDTH), RandomFloat(WINDOW_HEIGHT),
+            Color (RandomFloat(),RandomFloat(),RandomFloat())
             });
     }
     for (int i = 0; i < 10; i++)
     {
         lines.push_back(LineC{
-            {std::rand() % WINDOW_WIDTH + 1.0f, std::rand() % WINDOW_HEIGHT + 1.0f},
-            {std::rand() % WINDOW_WIDTH + 1.0f, std::rand() % WINDOW_HEIGHT + 1.0f},
-            Color(
-                static_cast<uint8_t>(std::rand() % 256),
-                static_cast<uint8_t>(std::rand() % 256),
-                static_cast<uint8_t>(std::rand() % 256)
-            )
+            Vector2 (RandomFloat(WINDOW_WIDTH), RandomFloat(WINDOW_HEIGHT)),
+            Vector2 (RandomFloat(WINDOW_WIDTH), RandomFloat(WINDOW_HEIGHT)),
+            Color (RandomFloat(),RandomFloat(),RandomFloat())
             });
     }
     for (int i = 0; i < 10; i++)
     {
         rects.push_back(Rect2D(
-            std::rand() % WINDOW_WIDTH + 1.0f, std::rand() % WINDOW_HEIGHT + 1.0f,
-            std::rand() % 100 + 1.0f, std::rand() % 100 + 1.0f,
-            Color(
-                static_cast<uint8_t>(std::rand() % 256),
-                static_cast<uint8_t>(std::rand() % 256),
-                static_cast<uint8_t>(std::rand() % 256)
-            )
+            Vector2 (RandomFloat(WINDOW_WIDTH), RandomFloat(WINDOW_HEIGHT)),
+            RandomFloat(100.0f, 1.0f), RandomFloat(100.0f, 1.0f),
+            Color(RandomFloat(), RandomFloat(), RandomFloat())
         ));
     }
 

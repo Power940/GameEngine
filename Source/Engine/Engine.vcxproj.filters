@@ -26,7 +26,7 @@
     <ClInclude Include="Structs.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="Color.h">
+    <ClInclude Include="Random.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,9 +38,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Color.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

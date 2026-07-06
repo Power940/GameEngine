@@ -5,18 +5,18 @@
 #include "Structs.h"
 
 
-Rect2D::Rect2D(float px, float py, float sx, float sy, Color c, float r) : m_px(px), m_py(py), m_sx(sx), m_sy(sy), m_c(c), m_r(r) { UpdateHalfExtends(); }
-Point Rect2D::Center() const { return { m_px, m_py }; }
+Rect2D::Rect2D(float px, float py, float sx, float sy, Color c, float r) : m_p(px, py), m_sx(sx), m_sy(sy), m_c(c), m_r(r) { UpdateHalfExtends(); }
+Rect2D::Rect2D(Vector2 p, float sx, float sy, Color c, float r) : m_p(p), m_sx(sx), m_sy(sy), m_c(c), m_r(r) { UpdateHalfExtends(); }
 
 float Rect2D::Deg() const { return m_r * CONST::RAD_DEG; }
 float Rect2D::Rad() const { return fmod(m_r,CONST::PI2); }
 void Rect2D::Deg(float val) { m_r = fmod(val * CONST::DEG_RAD, CONST::PI2); }
 void Rect2D::Rad(float val) { m_r = fmod(val, CONST::PI2); }
 
-float Rect2D::MinX() const { return m_px - halfX; }
-float Rect2D::MaxX() const { return m_px + halfX; }
-float Rect2D::MinY() const { return m_py - halfY; }
-float Rect2D::MaxY() const { return m_py + halfY; }
+float Rect2D::MinX() const { return m_p.x - halfX; }
+float Rect2D::MaxX() const { return m_p.x + halfX; }
+float Rect2D::MinY() const { return m_p.y - halfY; }
+float Rect2D::MaxY() const { return m_p.y + halfY; }
 
 void Rect2D::UpdateHalfExtends()
 {

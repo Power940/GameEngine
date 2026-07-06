@@ -1,11 +1,10 @@
 /*
-
-#include <SDL3/SDL.h>
 #include <set>
 #include <algorithm>
 
 #include "Engine.h"
 #include "Rect2D.h"
+#include <Renderer.h>
 
 int const WINDOW_WIDTH = 1280;
 int const WINDOW_HEIGHT = 1024;
@@ -18,28 +17,28 @@ int main()
         return 1;
     }
 
-    SDL_Event e;
+    SDL_Event event;
     bool quit = false;
 
-    Rect2D player = Rect2D(500, 500, 50, 50);
-    Rect2D block = Rect2D(200, 200, 50, 200);
+    Rect2D player = Rect2D(500, 500, 50, 50, Color(0,0,255));
+    Rect2D block = Rect2D(200, 200, 50, 200, Color(255,0,0));
 
     std::set<Uint32> heldKeys;
 
     while (!quit) {
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_EVENT_QUIT)
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_EVENT_QUIT)
             {
                 quit = true;
                 break;
             }
-            else if (e.type == SDL_EVENT_KEY_DOWN)
+            else if (event.type == SDL_EVENT_KEY_DOWN)
             {
-                heldKeys.insert(e.key.key);
+                heldKeys.insert(event.key.key);
             }
-            else if (e.type == SDL_EVENT_KEY_UP)
+            else if (event.type == SDL_EVENT_KEY_UP)
             {
-                heldKeys.erase(e.key.key);
+                heldKeys.erase(event.key.key);
             }
         }
 
@@ -64,11 +63,7 @@ int main()
 
         r.Clear();
 
-        r.SetColor(0, 0, 255);
-        r.RenderFillRectAABB(player);
-
-        r.SetColor(255, 0, 0);
-        r.RenderFillRectAABB(block);
+        r.RenderFillRectsAABBColor({ player, block });
 
         r.Present();
     }
@@ -77,5 +72,4 @@ int main()
 
     return 0;
 }
-
 */

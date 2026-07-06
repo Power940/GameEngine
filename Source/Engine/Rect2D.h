@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Structs.h"
-struct Point;
 
 class Rect2D
 {
@@ -9,13 +8,13 @@ protected:
 	float halfX; float halfY;
 
 public:
-	float m_px; float m_py;
+	Vector2 m_p;
 	float m_sx; float m_sy;
 	float m_r;
 	Color m_c;
 
-	Rect2D(float px, float py, float sx, float sy, Color c = Color(255,255,255), float r = 0);
-	Point Center() const;
+	Rect2D(float px, float py, float sx, float sy, Color c = Color(1.0f, 1.0f, 1.0f), float r = 0);
+	Rect2D(Vector2 p, float sx, float sy, Color c = Color(1.0f, 1.0f, 1.0f), float r = 0);
 
 	// safe conversions / setter logic options
 	float Deg() const;
