@@ -5,3 +5,4 @@
 #include "Structs.h"
 #include "Collision.h"
 #include "Renderer.h"
+#include "Input.h"

@@ -29,12 +29,18 @@
     <ClInclude Include="Collision.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
