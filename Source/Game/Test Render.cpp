@@ -1,11 +1,6 @@
-#include <vector>
+#include "StarFallEngine.h"
 
-#include "Renderer.h"
-#include "Random.h"
-#include <Rect2D.h>
-#include <Structs.h>
-#include <SDL3/SDL_events.h>
-#include <cstdlib>
+using namespace STR_FALL;
 
 int const WINDOW_WIDTH = 1280;
 int const WINDOW_HEIGHT = 1024;

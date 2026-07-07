@@ -2,9 +2,9 @@
 
 #include <SDL3/SDL.h>
 #include <vector>
+#include <iostream>
 
 #include "Structs.h"
-#include "Rect2D.h"
 
 namespace STR_FALL
 {

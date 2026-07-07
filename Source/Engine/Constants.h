@@ -2,7 +2,7 @@
 
 #include <numbers>
 
-namespace CONST
+namespace STR_FALL
 {
 	static const double PI = std::numbers::pi;
 	static const double PI2 = std::numbers::pi * 2.0;

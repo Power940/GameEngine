@@ -1,7 +1,4 @@
-#include <iostream>
-
 #include "Renderer.h"
-#include "Structs.h"
 
 namespace STR_FALL
 {
@@ -24,7 +21,7 @@ namespace STR_FALL
             return false;
         }
 
-        m_lastSetColor = new Color(255,255,255);
+        m_lastSetColor = new Color(255, 255, 255);
 
         return true;
     }
