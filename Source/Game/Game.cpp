@@ -35,21 +35,21 @@ int main()
         delta.y = static_cast<float>(input.GetKeyDown(SDL_SCANCODE_S) - input.GetKeyDown(SDL_SCANCODE_W));
         delta *= ((input.GetKeyDown(SDL_SCANCODE_LSHIFT) ? 2 : 1) * 0.1f);
 
-        if (!CheckCollision_NonRotated_RectToRect( Rect2D (player.m_p + delta, player.m_sx, player.m_sy), block))
+        if (!CheckCollision_NonRotated_RectToRect( Rect2D (player.m_p + delta, player.m_s), block))
         {
             player.m_p += delta;
-            player.m_p.ClampX(player.m_sx / 2.0f, static_cast<float>(WINDOW_WIDTH) - player.m_sx / 2.0f);
-            player.m_p.ClampY(player.m_sy / 2.0f, static_cast<float>(WINDOW_HEIGHT) - player.m_sy / 2.0f);
+            player.m_p.ClampX(player.m_s.x / 2.0f, static_cast<float>(WINDOW_WIDTH) - player.m_s.x / 2.0f);
+            player.m_p.ClampY(player.m_s.y / 2.0f, static_cast<float>(WINDOW_HEIGHT) - player.m_s.y / 2.0f);
         }
-        else if (!CheckCollision_NonRotated_RectToRect( Rect2D (player.m_p.x, player.m_p.y + delta.y, player.m_sx, player.m_sy), block))
+        else if (!CheckCollision_NonRotated_RectToRect( Rect2D (Vector2 (player.m_p.x, player.m_p.y + delta.y), player.m_s), block))
         {
             player.m_p.y += delta.y;
-            player.m_p.ClampY(player.m_sy / 2.0f, static_cast<float>(WINDOW_HEIGHT) - player.m_sy / 2.0f);
+            player.m_p.ClampY(player.m_s.y / 2.0f, static_cast<float>(WINDOW_HEIGHT) - player.m_s.y / 2.0f);
         }
-        else if (!CheckCollision_NonRotated_RectToRect( Rect2D (player.m_p.x + delta.x, player.m_p.y, player.m_sx, player.m_sy), block))
+        else if (!CheckCollision_NonRotated_RectToRect( Rect2D (Vector2 (player.m_p.x + delta.x, player.m_p.y), player.m_s), block))
         {
             player.m_p.x += delta.x;
-            player.m_p.ClampX(player.m_sx / 2.0f, static_cast<float>(WINDOW_WIDTH) - player.m_sx / 2.0f);
+            player.m_p.ClampX(player.m_s.x / 2.0f, static_cast<float>(WINDOW_WIDTH) - player.m_s.x / 2.0f);
         }
 
         r.Clear();

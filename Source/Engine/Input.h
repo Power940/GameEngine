@@ -19,6 +19,13 @@ namespace STR_FALL
 
 		Vector2 m_mousePos = Vector2();
 	public:
+		enum MouseButton
+		{
+			Left = 0b0001,
+			Middle = 0b0010,
+			Right = 0b0100
+		};
+
 		bool Initialize();
 
 		void Update();
@@ -28,7 +35,10 @@ namespace STR_FALL
 		bool GetKeyPressed(int key) const { return !m_prevKeyStates.at(key) && m_keyStates.at(key); }
 		bool GetKeyReleased(int key) const { return m_prevKeyStates.at(key) && !m_keyStates.at(key); }
 
-		Vector2 GetMouseDown() const { return m_mousePos; }
+		bool GetMouseDown(MouseButton button) const { return m_buttonStates & button; }
+		bool GetMousePrevDown(MouseButton button) const { return m_prevButtonStates & button; }
+		bool GetMousePressed(MouseButton button) const { return !(m_prevButtonStates & button) && (m_buttonStates & button); }
+		bool GetMouseReleased(MouseButton button) const { return (m_prevButtonStates & button) && !(m_buttonStates & button); }
 
 		Vector2 GetMousePos() const { return m_mousePos; }
 	};
