@@ -62,7 +62,6 @@ int main()
 
         if (input.GetMousePressed(Input::MouseButton::Left))
         {
-            tempStoke.clear();
             tempStoke.push_back(Vector2C(input.GetMousePos(), renderer.GetColor()));
         }
         if (input.GetMouseDown(Input::MouseButton::Left))
@@ -76,8 +75,9 @@ int main()
         {
             tempStoke.push_back(Vector2C(input.GetMousePos(), renderer.GetColor()));
             strokes.push_back(tempStoke);
+            tempStoke.clear();
         }
-
+        if (input.GetKeyDown(SDL_SCANCODE_LCTRL) && input.GetKeyPressed(SDL_SCANCODE_Z) && strokes.size() > 0) { strokes.pop_back(); }
 
 
         if (input.GetKeyPressed(SDL_SCANCODE_C))
@@ -234,7 +234,6 @@ int main()
             }
             else
             {
-                std::cout << "x: " << stroke[0].x << " | y: " << stroke[0].y << std::endl;
                 renderer.RenderPointColor(stroke[0]);
             }
         }
