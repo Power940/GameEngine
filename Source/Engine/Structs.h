@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 #include "Constants.h"
 
@@ -91,11 +92,11 @@ namespace STR_FALL
 		float m_r;
 		Color m_c;
 
-		Rect2D(float px = 0, float py = 0, float sx = 1, float sy = 1, Color c = Color(1.0f, 1.0f, 1.0f), float r = 0) :
+		Rect2D(float px = 0.0f, float py = 0.0f, float sx = 1.0f, float sy = 1.0f, Color c = Color(1.0f, 1.0f, 1.0f), float r = 0.0f) :
 			m_p(px, py), m_s(sx, sy), m_c(c), m_r(r) {
 			UpdateHalfExtends();
 		}
-		Rect2D(Vector2 p = (0,0), Vector2 s = (1, 1), Color c = Color(1.0f, 1.0f, 1.0f), float r = 0) :
+		Rect2D(Vector2 p = (0.0f, 0.0f), Vector2 s = (1.0f, 1.0f), Color c = Color(1.0f, 1.0f, 1.0f), float r = 0.0f) :
 			m_p(p), m_s(s), m_c(c), m_r(r) {
 			UpdateHalfExtends();
 		}
@@ -120,12 +121,30 @@ namespace STR_FALL
 		}
 	};
 
+	struct Triangle2D
+	{
+		Vector2 m_a;
+		Vector2 m_b;
+		Vector2 m_c;
+
+		inline Triangle2D(Vector2 a = Vector2(), Vector2 b = Vector2(), Vector2 c = Vector2()) : m_a(a), m_b(b), m_c(c) {}
+
+		inline Vector2 operator[](int element)
+		{
+			if (element == 0) { return m_a; }
+			if (element == 1) { return m_b; }
+			if (element == 2) { return m_c; }
+		}
+	};
+
 	struct Vector3 {
 		float x;
 		float y;
 		float z;
 
 		inline Vector3(float x = 0, float y = 0, float z = 0) : x(x), y(y), z(z) {}
+		inline Vector3(Vector3 initialPoint, Vector3 finalPoint):
+			x(finalPoint.x - initialPoint.x), y(finalPoint.y - initialPoint.y), z(finalPoint.z - initialPoint.z) {}
 
 		inline Vector3 operator+(const Vector3& rhs) const { return Vector3(x + rhs.x, y + rhs.y, z + rhs.z); }
 		inline Vector3 operator-(const Vector3& rhs) const { return Vector3(x - rhs.x, y - rhs.y, z - rhs.z); }
@@ -181,19 +200,19 @@ namespace STR_FALL
 	{
 		float m_m[3][3];
 
-		Matrix3()
+		inline Matrix3()
 		{
 			m_m[0][0] = 1; m_m[0][1] = 0; m_m[0][2] = 0;
 			m_m[1][0] = 0; m_m[1][1] = 1; m_m[1][2] = 0;
 			m_m[2][0] = 0; m_m[2][1] = 0; m_m[2][2] = 1;
 		}
-		Matrix3(float val)
+		inline Matrix3(float val)
 		{
 			m_m[0][0] = val; m_m[0][1] = val; m_m[0][2] = val;
 			m_m[1][0] = val; m_m[1][1] = val; m_m[1][2] = val;
 			m_m[2][0] = val; m_m[2][1] = val; m_m[2][2] = val;
 		}
-		Matrix3(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
+		inline Matrix3(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
 		{
 			m_m[0][0] = m00; m_m[0][1] = m01; m_m[0][2] = m02;
 			m_m[1][0] = m10; m_m[1][1] = m11; m_m[1][2] = m12;
@@ -219,7 +238,7 @@ namespace STR_FALL
 			);
 		}
 
-		Matrix3 Abs() const
+		inline Matrix3 Abs() const
 		{
 			return Matrix3(
 				std::abs(m_m[0][0]), std::abs(m_m[0][1]), std::abs(m_m[0][2]),
@@ -227,6 +246,10 @@ namespace STR_FALL
 				std::abs(m_m[2][0]), std::abs(m_m[2][1]), std::abs(m_m[2][2])
 			);
 		}
+
+		inline Vector3 Right() const { return Vector3(m_m[0][0], m_m[1][0], m_m[2][0]); }
+		inline Vector3 Up() const { return Vector3(m_m[0][1], m_m[1][1], m_m[2][1]); }
+		inline Vector3 Forward() const { return Vector3(m_m[0][2], m_m[1][2], m_m[2][2]); }
 
 		static Matrix3 RotationX(float r)
 		{
@@ -270,10 +293,29 @@ namespace STR_FALL
 		}
 	};
 
+	struct Triangle3D
+	{
+		Vector3 m_a;
+		Vector3 m_b;
+		Vector3 m_c;
+
+		inline Triangle3D(Vector3 a = Vector3(), Vector3 b = Vector3(), Vector3 c = Vector3()) : m_a(a), m_b(b), m_c(c) {}
+
+		inline Vector3& operator[](int element) { if (element >= 0 && element < 3) { return (&m_a)[element]; } }
+		inline const Vector3& operator[](int element) const { if (element >= 0 && element < 3) { return (&m_a)[element]; } }
+
+		inline Vector3 Normal()
+		{
+			return Vector3(m_b, m_a).Cross(Vector3(m_b, m_c)).Normalize();
+		}
+	};
+
 	struct Rect3D
 	{
 	protected:
-		float halfX; float halfY; float halfZ;
+		float m_halfX; float m_halfY; float m_halfZ;
+		Matrix3 m_rm;
+		std::vector<Triangle3D> m_Tris;
 
 	public:
 		Vector3 m_p;
@@ -283,11 +325,15 @@ namespace STR_FALL
 
 		Rect3D(float px = 0, float py = 0, float pz = 0, float sx = 1, float sy = 1, float sz = 1, float rx = 0, float ry = 0, float rz = 0, Color c = Color(1.0f, 1.0f, 1.0f)) :
 			m_p(px, py, pz), m_s(sx, sy, sz), m_r(rx, ry, rz), m_c(c) {
+			UpdateRotationMarix();
 			UpdateHalfExtends();
+			UpdateTriangles();
 		}
-		Rect3D(Vector3 p = Vector3(), Vector3 s = (1, 1, 1), Vector3 r = Vector3(), Color c = Color(1.0f, 1.0f, 1.0f)) :
+		Rect3D(Vector3 p = Vector3(), Vector3 s = (1,1,1), Vector3 r = Vector3(), Color c = Color(1.0f, 1.0f, 1.0f)) :
 			m_p(p), m_s(s), m_r(r), m_c(c) {
+			UpdateRotationMarix();
 			UpdateHalfExtends();
+			UpdateTriangles();
 		}
 
 		// safe conversions / setter logic options
@@ -304,21 +350,67 @@ namespace STR_FALL
 		void RadY(float val) { m_r.y = fmod(val, F_PI2); }
 		void RadZ(float val) { m_r.z = fmod(val, F_PI2); }
 
-		inline float MinX() const { return m_p.x - halfX; }
-		inline float MaxX() const { return m_p.x + halfX; }
-		inline float MinY() const { return m_p.y - halfY; }
-		inline float MaxY() const { return m_p.y + halfY; }
-		inline float MinZ() const { return m_p.z - halfZ; }
-		inline float MaxZ() const { return m_p.z + halfZ; }
+		inline float MinX() const { return m_p.x - m_halfX; }
+		inline float MaxX() const { return m_p.x + m_halfX; }
+		inline float MinY() const { return m_p.y - m_halfY; }
+		inline float MaxY() const { return m_p.y + m_halfY; }
+		inline float MinZ() const { return m_p.z - m_halfZ; }
+		inline float MaxZ() const { return m_p.z + m_halfZ; }
 
-		void UpdateHalfExtends() {
-			Matrix3 r = Matrix3::RotationXYZ(m_r.x, m_r.y, m_r.z).Abs();
-
-			Vector3 halfs = r * (m_s / 2.0f);
-
-			halfX = halfs.x;
-			halfY = halfs.y;
-			halfZ = halfs.z;
+		void UpdateRotationMarix()
+		{
+			m_rm = Matrix3::RotationXYZ(m_r.x, m_r.y, m_r.z);
 		}
+		void UpdateHalfExtends() {
+			Vector3 halfs = m_rm.Abs() * (m_s / 2.0f);
+
+			m_halfX = halfs.x;
+			m_halfY = halfs.y;
+			m_halfZ = halfs.z;
+		}
+		void UpdateTriangles()
+		{
+			Vector3 hs = m_s / 2.0f;
+
+			std::vector<Vector3> p = {
+				m_rm * Vector3(m_p.x + hs.x, m_p.y + hs.y, m_p.z + hs.z),
+				m_rm * Vector3(m_p.x + hs.x, m_p.y + hs.y, m_p.z - hs.z),
+				m_rm * Vector3(m_p.x + hs.x, m_p.y - hs.y, m_p.z + hs.z),
+				m_rm * Vector3(m_p.x + hs.x, m_p.y - hs.y, m_p.z - hs.z),
+				m_rm * Vector3(m_p.x - hs.x, m_p.y + hs.y, m_p.z + hs.z),
+				m_rm * Vector3(m_p.x - hs.x, m_p.y + hs.y, m_p.z - hs.z),
+				m_rm * Vector3(m_p.x - hs.x, m_p.y - hs.y, m_p.z + hs.z),
+				m_rm * Vector3(m_p.x - hs.x, m_p.y - hs.y, m_p.z - hs.z)
+			};
+			m_Tris = {
+				Triangle3D(p[2], p[0], p[1]),
+				Triangle3D(p[1], p[3], p[2]),
+				Triangle3D(p[6], p[2], p[3]),
+				Triangle3D(p[3], p[7], p[6]),
+				Triangle3D(p[4], p[6], p[7]),
+				Triangle3D(p[7], p[5], p[4]),
+				Triangle3D(p[0], p[4], p[5]),
+				Triangle3D(p[5], p[1], p[0]),
+				Triangle3D(p[4], p[0], p[2]),
+				Triangle3D(p[2], p[6], p[4]),
+				Triangle3D(p[5], p[7], p[3]),
+				Triangle3D(p[3], p[1], p[5])
+			};
+		}
+		std::vector<Triangle3D> GetTris() const
+		{
+			return m_Tris;
+		}
+	};
+
+	struct Camera3D
+	{
+		Vector3 m_p;
+		float m_fov;
+		Matrix3 m_r;
+		float m_aspect;
+		Vector2 m_screenDimension;
+
+		inline Camera3D(Vector3 p, float fov, Vector3 r, Vector2 screenDimension) : m_p(p), m_fov(fov), m_screenDimension(screenDimension), m_aspect(screenDimension.x / screenDimension.y) { m_r = Matrix3::RotationXYZ(r.x, r.y, r.z); }
 	};
 }

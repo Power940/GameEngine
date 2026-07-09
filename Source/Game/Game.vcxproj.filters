@@ -13,5 +13,8 @@
     <ClCompile Include="Test Render.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="CubeTest.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

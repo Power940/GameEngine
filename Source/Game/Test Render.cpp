@@ -102,7 +102,7 @@ int main()
     {
         rects.push_back(Rect2D(
             Vector2 (RandomFloat(WINDOW_WIDTH), RandomFloat(WINDOW_HEIGHT)),
-            RandomFloat(100.0f, 1.0f), RandomFloat(100.0f, 1.0f),
+            Vector2 (RandomFloat(100.0f, 1.0f), RandomFloat(100.0f, 1.0f)),
             Color(RandomFloat(), RandomFloat(), RandomFloat())
         ));
     }

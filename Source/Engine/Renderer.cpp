@@ -21,6 +21,8 @@ namespace STR_FALL
             return false;
         }
 
+        SDL_SetRenderVSync(m_renderer, 1);
+
         m_lastSetColor = new Color(255, 255, 255);
 
         return true;
@@ -126,6 +128,34 @@ namespace STR_FALL
         }
     }
 
+    void Renderer::RenderFillTriangle(Triangle2D tri) {
+        std::vector<SDL_Vertex> vertices;
+
+        vertices.push_back(SDL_Vertex(
+            SDL_FPoint(tri[0].x, tri[0].y),
+            SDL_FColor(m_lastSetColor->r, m_lastSetColor->g, m_lastSetColor->b, m_lastSetColor->a),
+            SDL_FPoint(0, 0)
+        ));
+        vertices.push_back(SDL_Vertex(
+            SDL_FPoint(tri[1].x, tri[1].y),
+            SDL_FColor(m_lastSetColor->r, m_lastSetColor->g, m_lastSetColor->b, m_lastSetColor->a),
+            SDL_FPoint(0, 0)
+        ));
+        vertices.push_back(SDL_Vertex(
+            SDL_FPoint(tri[2].x, tri[2].y),
+            SDL_FColor(m_lastSetColor->r, m_lastSetColor->g, m_lastSetColor->b, m_lastSetColor->a),
+            SDL_FPoint(0, 0)
+        ));
+
+        SDL_RenderGeometry(m_renderer, NULL, vertices.data(), vertices.size(), NULL, 0);
+    }
+    void Renderer::RenderOutlineTriangle(Triangle2D tri) {
+
+        SDL_RenderLine(m_renderer, tri[0].x, tri[0].y, tri[1].x, tri[1].y);
+        SDL_RenderLine(m_renderer, tri[1].x, tri[1].y, tri[2].x, tri[2].y);
+        SDL_RenderLine(m_renderer, tri[2].x, tri[2].y, tri[0].x, tri[0].y);
+    }
+
     void Renderer::RenderPointColor(Vector2C point)
     {
         SDL_SetRenderDrawColorFloat(m_renderer, point.c.r, point.c.g, point.c.b, point.c.a);
@@ -189,5 +219,61 @@ namespace STR_FALL
             SDL_RenderFillRect(m_renderer, &drawRect);
         }
         SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->r, m_lastSetColor->g, m_lastSetColor->b, m_lastSetColor->a);
+    }
+
+    void Renderer::Render3DFillTriangles(Camera3D cam, std::vector<Triangle3D> tris)
+    {
+        float FOVScaling = 1 / std::tan((cam.m_fov / 2) * STR_FALL::F_DEG_RAD);
+
+        std::vector<Triangle2D> drawTriangles;
+
+        float x1 = 0.0f, x2 = 0.0f, x3 = 0.0f;
+        float y1 = 0.0f, y2 = 0.0f, y3 = 0.0f;
+        float z1 = 0.0f, z2 = 0.0f, z3 = 0.0f;
+
+        float px1 = 0.0f, py1 = 0.0f;
+        float px2 = 0.0f, py2 = 0.0f;
+        float px3 = 0.0f, py3 = 0.0f;
+
+        Vector2 screenPos1;
+        Vector2 screenPos2;
+        Vector2 screenPos3;
+
+        Vector3 pointVector;
+
+        for (const Triangle3D& tri : tris)
+        {
+            pointVector = Vector3(cam.m_p, tri[0]);
+            x1 = pointVector.Dot(cam.m_r.Right());
+            y1 = pointVector.Dot(cam.m_r.Up());
+            z1 = pointVector.Dot(cam.m_r.Forward());
+            pointVector = Vector3(cam.m_p, tri[1]);
+            x2 = pointVector.Dot(cam.m_r.Right());
+            y2 = pointVector.Dot(cam.m_r.Up());
+            z2 = pointVector.Dot(cam.m_r.Forward());
+            pointVector = Vector3(cam.m_p, tri[2]);
+            x3 = pointVector.Dot(cam.m_r.Right());
+            y3 = pointVector.Dot(cam.m_r.Up());
+            z3 = pointVector.Dot(cam.m_r.Forward());
+
+            if ((z1 + z2 + z3) / 3.0f < 0.0f) { continue; }
+
+            px1 = x1 / ((z1 < 0.001f) ? -0.01f : z1) * FOVScaling / cam.m_aspect;
+            px2 = x2 / ((z2 < 0.001f) ? -0.01f : z2) * FOVScaling / cam.m_aspect;
+            px3 = x3 / ((z3 < 0.001f) ? -0.01f : z3) * FOVScaling / cam.m_aspect;
+            py1 = y1 / ((z1 < 0.001f) ? -0.01f : z1) * FOVScaling;
+            py2 = y2 / ((z2 < 0.001f) ? -0.01f : z2) * FOVScaling;
+            py3 = y3 / ((z3 < 0.001f) ? -0.01f : z3) * FOVScaling;
+
+            screenPos1 = Vector2((px1 + 1) * 0.5f * cam.m_screenDimension.x, (1 - py1) * 0.5f * cam.m_screenDimension.y);
+            screenPos2 = Vector2((px2 + 1) * 0.5f * cam.m_screenDimension.x, (1 - py2) * 0.5f * cam.m_screenDimension.y);
+            screenPos3 = Vector2((px3 + 1) * 0.5f * cam.m_screenDimension.x, (1 - py3) * 0.5f * cam.m_screenDimension.y);
+
+            drawTriangles.push_back(Triangle2D(screenPos1, screenPos2, screenPos3));
+        }
+        for (const Triangle2D& tri : drawTriangles)
+        {
+            RenderOutlineTriangle(tri);
+        }
     }
 }

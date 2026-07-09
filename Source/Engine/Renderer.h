@@ -34,6 +34,9 @@ namespace STR_FALL
 		void RenderFillRectAABB(Rect2D rect);
 		void RenderFillRectsAABB(std::vector<Rect2D> rects);
 
+		void RenderFillTriangle(Triangle2D tri);
+		void RenderOutlineTriangle(Triangle2D tri);
+
 		void RenderPointColor(Vector2C point);
 		void RenderPointsColor(std::vector<Vector2C> points);
 		void RenderLineColor(LineC line);
@@ -42,5 +45,7 @@ namespace STR_FALL
 		void RenderRectsAABBColor(std::vector<Rect2D> rects);
 		void RenderFillRectAABBColor(Rect2D rect);
 		void RenderFillRectsAABBColor(std::vector<Rect2D> rects);
+
+		void Render3DFillTriangles(Camera3D cam, std::vector<Triangle3D> tris);
 	};
 }

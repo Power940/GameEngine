@@ -145,6 +145,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CubeTest.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Test Render.cpp" />
   </ItemGroup>
