@@ -23,6 +23,8 @@ namespace STR_FALL
 		float y;
 
 		inline Vector2(float x = 0, float y = 0) : x(x), y(y) {}
+		inline Vector2(Vector2 initialPoint, Vector2 finalPoint):
+			x(finalPoint.x - initialPoint.x), y(finalPoint.y - initialPoint.y) {}
 
 		inline Vector2 operator+(const Vector2& rhs) const { return Vector2(x + rhs.x, y + rhs.y); }
 		inline Vector2 operator-(const Vector2& rhs) const { return Vector2(x - rhs.x, y - rhs.y); }
@@ -72,6 +74,7 @@ namespace STR_FALL
 		Color c;
 
 		inline Vector2C(float x, float y, Color c) : Vector2(x, y), c(c) {}
+		inline Vector2C(Vector2 p, Color c) : Vector2(p.x, p.y), c(c) {}
 	};
 
 	struct LineC : Line
@@ -134,6 +137,7 @@ namespace STR_FALL
 			if (element == 0) { return m_a; }
 			if (element == 1) { return m_b; }
 			if (element == 2) { return m_c; }
+			return m_a;
 		}
 	};
 
@@ -301,8 +305,16 @@ namespace STR_FALL
 
 		inline Triangle3D(Vector3 a = Vector3(), Vector3 b = Vector3(), Vector3 c = Vector3()) : m_a(a), m_b(b), m_c(c) {}
 
-		inline Vector3& operator[](int element) { if (element >= 0 && element < 3) { return (&m_a)[element]; } }
-		inline const Vector3& operator[](int element) const { if (element >= 0 && element < 3) { return (&m_a)[element]; } }
+		inline Vector3& operator[](int element)
+		{
+			if (element >= 0 && element < 3) { return (&m_a)[element]; }
+			return m_a;
+		}
+		inline const Vector3& operator[](int element) const
+		{
+			if (element >= 0 && element < 3) { return (&m_a)[element]; }
+			return m_a;
+		}
 
 		inline Vector3 Normal()
 		{
@@ -323,13 +335,13 @@ namespace STR_FALL
 		Vector3 m_r;
 		Color m_c;
 
-		Rect3D(float px = 0, float py = 0, float pz = 0, float sx = 1, float sy = 1, float sz = 1, float rx = 0, float ry = 0, float rz = 0, Color c = Color(1.0f, 1.0f, 1.0f)) :
+		Rect3D(float px = 0.0f, float py = 0.0f, float pz = 0.0f, float sx = 1.0f, float sy = 1.0f, float sz = 1.0f, float rx = 0.0f, float ry = 0.0f, float rz = 0.0f, Color c = Color(1.0f, 1.0f, 1.0f)) :
 			m_p(px, py, pz), m_s(sx, sy, sz), m_r(rx, ry, rz), m_c(c) {
 			UpdateRotationMarix();
 			UpdateHalfExtends();
 			UpdateTriangles();
 		}
-		Rect3D(Vector3 p = Vector3(), Vector3 s = (1,1,1), Vector3 r = Vector3(), Color c = Color(1.0f, 1.0f, 1.0f)) :
+		Rect3D(Vector3 p = Vector3(), Vector3 s = (1.0f, 1.0f, 1.0f), Vector3 r = Vector3(), Color c = Color(1.0f, 1.0f, 1.0f)) :
 			m_p(p), m_s(s), m_r(r), m_c(c) {
 			UpdateRotationMarix();
 			UpdateHalfExtends();
@@ -412,5 +424,12 @@ namespace STR_FALL
 		Vector2 m_screenDimension;
 
 		inline Camera3D(Vector3 p, float fov, Vector3 r, Vector2 screenDimension) : m_p(p), m_fov(fov), m_screenDimension(screenDimension), m_aspect(screenDimension.x / screenDimension.y) { m_r = Matrix3::RotationXYZ(r.x, r.y, r.z); }
+	};
+
+	struct Transform
+	{
+		Vector3 m_p;
+		Vector3 m_r;
+		Vector3 m_s;
 	};
 }

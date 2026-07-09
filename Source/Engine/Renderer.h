@@ -3,6 +3,7 @@
 #include <SDL3/SDL.h>
 #include <vector>
 #include <iostream>
+#include <String>
 
 #include "Structs.h"
 
@@ -19,11 +20,14 @@ namespace STR_FALL
 		void SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 		void SetColor(Color c);
 		void SetColorF(float r, float g, float b, float a = 1.0f);
+		Color GetColor();
 		void Clear(Uint8 r = 0, Uint8 g = 0, Uint8 b = 0, Uint8 a = 255);
 		void Clear(Color c);
 		void ClearF(float r = 0, float g = 0, float b = 0, float a = 1.0f);
         void Present();
 		void ShutDown();
+
+		void RenderDebugText(std::string text, Vector2 point);
 
 		void RenderPoint(Vector2 point);
 		void RenderPoints(std::vector<Vector2> points);

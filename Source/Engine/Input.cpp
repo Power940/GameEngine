@@ -19,6 +19,7 @@ bool Input::Initialize()
 void Input::Update()
 {
 	m_prevKeyStates = m_keyStates;
+	m_prevButtonStates = m_buttonStates;
 	int numKeys;
 	const bool* keyState = SDL_GetKeyboardState(&numKeys);
 	if (numKeys != m_keyStates.size())
@@ -33,5 +34,5 @@ void Input::Update()
 		std::copy(keyState, keyState + m_keyStates.size(), m_keyStates.begin());
 	}
 
-	m_buttonStates = SDL_GetMouseState(&m_mousePos.x, &m_mousePos.x);
+	m_buttonStates = SDL_GetMouseState(&m_mousePos.x, &m_mousePos.y);
 }

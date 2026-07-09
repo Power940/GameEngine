@@ -9,7 +9,7 @@ namespace STR_FALL
 	class Input
 	{
 	private:
-		int m_numKeys;
+		int m_numKeys = 0;
 
 		std::vector<bool> m_keyStates;
 		std::vector<bool> m_prevKeyStates;

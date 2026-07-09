@@ -1,21 +1,19 @@
 #pragma once
 
-#include <numbers>
-
 namespace STR_FALL
 {
-	static const double PI = std::numbers::pi;
-	static const float F_PI = static_cast<float>(std::numbers::pi);
+	static constexpr double PI = 3.1415926535897932384626433832795;
+	static constexpr float F_PI = 3.1415926535897932384626433832795f;
 
-	static const double PI2 = std::numbers::pi * 2.0;
-	static const float F_PI2 = static_cast<float>(std::numbers::pi) * 2.0f;
+	static constexpr double PI2 = 6.283185307179586476925286766559;
+	static constexpr float F_PI2 = 6.283185307179586476925286766559f;
 
-	static const double HPI = std::numbers::pi / 2.0;
-	static const float F_HPI = static_cast<float>(std::numbers::pi) / 2.0f;
+	static constexpr double HPI = 1.5707963267948966192313216916398;
+	static constexpr float F_HPI = 1.5707963267948966192313216916398f;
 
-	static const double RAD_DEG = std::numbers::pi / 180.0;
-	static const float F_RAD_DEG = static_cast<float>(std::numbers::pi) / 180.0f;
+	static constexpr double RAD_DEG = 0.01745329251994329576923690768489;
+	static constexpr float F_RAD_DEG = 0.01745329251994329576923690768489f;
 
-	static const double DEG_RAD = 180.0 / std::numbers::pi;
-	static const float F_DEG_RAD = 180.0f / static_cast<float>(std::numbers::pi);
+	static constexpr double DEG_RAD = 57.295779513082320876798154814105;
+	static constexpr float F_DEG_RAD = 57.295779513082320876798154814105f;
 }

@@ -23,7 +23,7 @@ namespace STR_FALL
 
         SDL_SetRenderVSync(m_renderer, 1);
 
-        m_lastSetColor = new Color(255, 255, 255);
+        m_lastSetColor = new Color(1.0f, 1.0f, 1.0f);
 
         return true;
     }
@@ -52,6 +52,8 @@ namespace STR_FALL
         m_lastSetColor->b = b;
         m_lastSetColor->a = a;
     }
+
+    Color Renderer::GetColor() { return *m_lastSetColor; }
 
     void Renderer::Clear(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {
@@ -83,6 +85,12 @@ namespace STR_FALL
         delete m_lastSetColor;
         m_lastSetColor = nullptr;
         SDL_Quit();
+    }
+
+    void Renderer::RenderDebugText(std::string text, Vector2 point)
+    {
+        SDL_SetRenderDrawColorFloat(m_renderer, 1.0f, 1.0f, 1.0f, 1.0f);
+        SDL_RenderDebugText(m_renderer, point.x, point.y, text.c_str());
     }
 
     void Renderer::RenderPoint(Vector2 point) { SDL_RenderPoint(m_renderer, point.x, point.y); }
@@ -147,7 +155,7 @@ namespace STR_FALL
             SDL_FPoint(0, 0)
         ));
 
-        SDL_RenderGeometry(m_renderer, NULL, vertices.data(), vertices.size(), NULL, 0);
+        SDL_RenderGeometry(m_renderer, NULL, vertices.data(), 3, NULL, 0);
     }
     void Renderer::RenderOutlineTriangle(Triangle2D tri) {
 
