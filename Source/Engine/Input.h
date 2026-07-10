@@ -1,7 +1,7 @@
 #pragma once
-
+#include <SDL3/SDL.h>
+#include <cstdint>
 #include <vector>
-
 #include "Structs.h"
 
 namespace STR_FALL

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <SDL3/SDL.h>
 #include <cstdint>
 
 namespace STR_FALL

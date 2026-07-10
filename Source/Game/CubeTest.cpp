@@ -1,4 +1,3 @@
-/*
 #include "StarFallEngine.h"
 
 using namespace STR_FALL;
@@ -50,4 +49,3 @@ int main()
 
     return 0;
 }
-*/

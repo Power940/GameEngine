@@ -1,10 +1,11 @@
 #pragma once
-
 #include <SDL3/SDL.h>
-#include <vector>
+#include <cmath>
 #include <iostream>
-#include <String>
-
+#include <ostream>
+#include <string>
+#include <vector>
+#include "Constants.h"
 #include "Structs.h"
 
 namespace STR_FALL

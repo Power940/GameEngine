@@ -1,7 +1,5 @@
 #pragma once
-
 #include <vector>
-
 #include "Structs.h"
 
 namespace STR_FALL

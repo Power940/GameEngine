@@ -49,5 +49,8 @@
     <ClCompile Include="StarTime.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Structs.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

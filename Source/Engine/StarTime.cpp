@@ -1,5 +1,3 @@
-#include <SDL3/SDL.h>
-
 #include "StarTime.h"
 
 using namespace STR_FALL;

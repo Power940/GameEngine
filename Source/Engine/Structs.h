@@ -1,9 +1,8 @@
 #pragma once
-
 #include <algorithm>
 #include <cmath>
 #include <vector>
-
+#include <cstdlib>
 #include "Constants.h"
 
 namespace STR_FALL
@@ -15,7 +14,7 @@ namespace STR_FALL
 		float b;
 		float a;
 
-		inline Color(float r, float g, float b, float a = 1.0f) : r(r), g(g), b(b), a(a) {}
+		inline Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) : r(r), g(g), b(b), a(a) {}
 	};
 
 	struct Vector2 {
@@ -31,20 +30,20 @@ namespace STR_FALL
 		inline Vector2 operator*(const Vector2& rhs) const { return Vector2(x * rhs.x, y * rhs.y); }
 		inline Vector2 operator/(const Vector2& rhs) const { return Vector2(x / rhs.x, y / rhs.y); }
 
-		inline Vector2 operator+(const float& rhs) const { return Vector2(x + rhs, y + rhs); }
-		inline Vector2 operator-(const float& rhs) const { return Vector2(x - rhs, y - rhs); }
-		inline Vector2 operator*(const float& rhs) const { return Vector2(x * rhs, y * rhs); }
-		inline Vector2 operator/(const float& rhs) const { return Vector2(x / rhs, y / rhs); }
+		inline Vector2 operator+(const float rhs) const { return Vector2(x + rhs, y + rhs); }
+		inline Vector2 operator-(const float rhs) const { return Vector2(x - rhs, y - rhs); }
+		inline Vector2 operator*(const float rhs) const { return Vector2(x * rhs, y * rhs); }
+		inline Vector2 operator/(const float rhs) const { return Vector2(x / rhs, y / rhs); }
 
 		inline Vector2& operator+=(const Vector2& rhs) { x += rhs.x; y += rhs.y; return *this; }
 		inline Vector2& operator-=(const Vector2& rhs) { x -= rhs.x; y -= rhs.y; return *this; }
 		inline Vector2& operator*=(const Vector2& rhs) { x *= rhs.x; y *= rhs.y; return *this; }
 		inline Vector2& operator/=(const Vector2& rhs) { x /= rhs.x; y /= rhs.y; return *this; }
 
-		inline Vector2& operator+=(const float& rhs) { x += rhs; y += rhs; return *this; }
-		inline Vector2& operator-=(const float& rhs) { x -= rhs; y -= rhs; return *this; }
-		inline Vector2& operator*=(const float& rhs) { x *= rhs; y *= rhs; return *this; }
-		inline Vector2& operator/=(const float& rhs) { x /= rhs; y /= rhs; return *this; }
+		inline Vector2& operator+=(const float rhs) { x += rhs; y += rhs; return *this; }
+		inline Vector2& operator-=(const float rhs) { x -= rhs; y -= rhs; return *this; }
+		inline Vector2& operator*=(const float rhs) { x *= rhs; y *= rhs; return *this; }
+		inline Vector2& operator/=(const float rhs) { x /= rhs; y /= rhs; return *this; }
 
 		inline bool operator==(const Vector2& rhs) const { return (x == rhs.x) && (y == rhs.y); }
 
@@ -53,7 +52,7 @@ namespace STR_FALL
 		inline void ClampY(float min, float max) { y = std::clamp(y, min, max); }
 
 		inline float Magnitude() const { return std::sqrt((x * x) + (y * y)); }
-		inline float Dot(Vector2& vect) const { return x * vect.x + y * vect.y; }
+		inline float Dot(const Vector2& vect) const { return x * vect.x + y * vect.y; }
 		Vector2 Normalize() const
 		{
 			float mag = this->Magnitude();
@@ -67,21 +66,21 @@ namespace STR_FALL
 		Vector2 point1;
 		Vector2 point2;
 
-		inline Line(Vector2 point1, Vector2 point2) : point1(point1), point2(point2) {}
+		inline Line(const Vector2& point1, const Vector2& point2) : point1(point1), point2(point2) {}
 	};
 
 	struct Vector2C : Vector2 {
 		Color c;
 
-		inline Vector2C(float x, float y, Color c) : Vector2(x, y), c(c) {}
-		inline Vector2C(Vector2 p, Color c) : Vector2(p.x, p.y), c(c) {}
+		inline Vector2C(float x, float y, const Color& c) : Vector2(x, y), c(c) {}
+		inline Vector2C(const Vector2& p, const Color& c) : Vector2(p.x, p.y), c(c) {}
 	};
 
 	struct LineC : Line
 	{
 		Color c;
 
-		inline LineC(Vector2 point1, Vector2 point2, Color c) : Line(point1, point2), c(c) {}
+		inline LineC(const Vector2& point1, const Vector2& point2, const Color& c) : Line(point1, point2), c(c) {}
 	};
 
 	struct Rect2D
@@ -95,11 +94,7 @@ namespace STR_FALL
 		float m_r;
 		Color m_c;
 
-		Rect2D(float px = 0.0f, float py = 0.0f, float sx = 1.0f, float sy = 1.0f, Color c = Color(1.0f, 1.0f, 1.0f), float r = 0.0f) :
-			m_p(px, py), m_s(sx, sy), m_c(c), m_r(r) {
-			UpdateHalfExtends();
-		}
-		Rect2D(Vector2 p = (0.0f, 0.0f), Vector2 s = (1.0f, 1.0f), Color c = Color(1.0f, 1.0f, 1.0f), float r = 0.0f) :
+		Rect2D(const Vector2& p = (0.0f, 0.0f), const Vector2& s = (1.0f, 1.0f), const Color& c = Color(1.0f, 1.0f, 1.0f), float r = 0.0f) :
 			m_p(p), m_s(s), m_c(c), m_r(r) {
 			UpdateHalfExtends();
 		}
@@ -130,9 +125,16 @@ namespace STR_FALL
 		Vector2 m_b;
 		Vector2 m_c;
 
-		inline Triangle2D(Vector2 a = Vector2(), Vector2 b = Vector2(), Vector2 c = Vector2()) : m_a(a), m_b(b), m_c(c) {}
+		inline Triangle2D(const Vector2& a = Vector2(), const Vector2& b = Vector2(), const Vector2& c = Vector2()) : m_a(a), m_b(b), m_c(c) {}
 
-		inline Vector2 operator[](int element)
+		inline Vector2& operator[](int element)
+		{
+			if (element == 0) { return m_a; }
+			if (element == 1) { return m_b; }
+			if (element == 2) { return m_c; }
+			return m_a;
+		}
+		const inline Vector2& operator[](int element) const
 		{
 			if (element == 0) { return m_a; }
 			if (element == 1) { return m_b; }
@@ -146,8 +148,8 @@ namespace STR_FALL
 		float y;
 		float z;
 
-		inline Vector3(float x = 0, float y = 0, float z = 0) : x(x), y(y), z(z) {}
-		inline Vector3(Vector3 initialPoint, Vector3 finalPoint):
+		inline Vector3(float x = 0.0f, float y = 0.0f, float z = 0.0f) : x(x), y(y), z(z) {}
+		inline Vector3(const Vector3& initialPoint, const Vector3& finalPoint):
 			x(finalPoint.x - initialPoint.x), y(finalPoint.y - initialPoint.y), z(finalPoint.z - initialPoint.z) {}
 
 		inline Vector3 operator+(const Vector3& rhs) const { return Vector3(x + rhs.x, y + rhs.y, z + rhs.z); }
@@ -155,20 +157,20 @@ namespace STR_FALL
 		inline Vector3 operator*(const Vector3& rhs) const { return Vector3(x * rhs.x, y * rhs.y, z * rhs.z); }
 		inline Vector3 operator/(const Vector3& rhs) const { return Vector3(x / rhs.x, y / rhs.y, z / rhs.z); }
 
-		inline Vector3 operator+(const float& rhs) const { return Vector3(x + rhs, y + rhs, z + rhs); }
-		inline Vector3 operator-(const float& rhs) const { return Vector3(x - rhs, y - rhs, z - rhs); }
-		inline Vector3 operator*(const float& rhs) const { return Vector3(x * rhs, y * rhs, z * rhs); }
-		inline Vector3 operator/(const float& rhs) const { return Vector3(x / rhs, y / rhs, z / rhs); }
+		inline Vector3 operator+(const float rhs) const { return Vector3(x + rhs, y + rhs, z + rhs); }
+		inline Vector3 operator-(const float rhs) const { return Vector3(x - rhs, y - rhs, z - rhs); }
+		inline Vector3 operator*(const float rhs) const { return Vector3(x * rhs, y * rhs, z * rhs); }
+		inline Vector3 operator/(const float rhs) const { return Vector3(x / rhs, y / rhs, z / rhs); }
 
 		inline Vector3 operator+=(const Vector3& rhs) { x += rhs.x; y += rhs.y, z += rhs.z; return *this; }
 		inline Vector3 operator-=(const Vector3& rhs) { x -= rhs.x; y -= rhs.y, z -= rhs.z; return *this; }
 		inline Vector3 operator*=(const Vector3& rhs) { x *= rhs.x; y *= rhs.y, z *= rhs.z; return *this; }
 		inline Vector3 operator/=(const Vector3& rhs) { x /= rhs.x; y /= rhs.y, z /= rhs.z; return *this; }
 
-		inline Vector3 operator+=(const float& rhs) { x += rhs; y += rhs, z += rhs; return *this; }
-		inline Vector3 operator-=(const float& rhs) { x -= rhs; y -= rhs, z -= rhs; return *this; }
-		inline Vector3 operator*=(const float& rhs) { x *= rhs; y *= rhs, z *= rhs; return *this; }
-		inline Vector3 operator/=(const float& rhs) { x /= rhs; y /= rhs, z /= rhs; return *this; }
+		inline Vector3 operator+=(const float rhs) { x += rhs; y += rhs, z += rhs; return *this; }
+		inline Vector3 operator-=(const float rhs) { x -= rhs; y -= rhs, z -= rhs; return *this; }
+		inline Vector3 operator*=(const float rhs) { x *= rhs; y *= rhs, z *= rhs; return *this; }
+		inline Vector3 operator/=(const float rhs) { x /= rhs; y /= rhs, z /= rhs; return *this; }
 
 		inline bool operator==(const Vector3& rhs) const { return (x == rhs.x) && (y == rhs.y) && (z == rhs.z); }
 
@@ -307,16 +309,20 @@ namespace STR_FALL
 
 		inline Vector3& operator[](int element)
 		{
-			if (element >= 0 && element < 3) { return (&m_a)[element]; }
+			if (element == 0) { return m_a; }
+			if (element == 1) { return m_b; }
+			if (element == 2) { return m_c; }
 			return m_a;
 		}
-		inline const Vector3& operator[](int element) const
+		const inline Vector3& operator[](int element) const
 		{
-			if (element >= 0 && element < 3) { return (&m_a)[element]; }
+			if (element == 0) { return m_a; }
+			if (element == 1) { return m_b; }
+			if (element == 2) { return m_c; }
 			return m_a;
 		}
 
-		inline Vector3 Normal()
+		inline Vector3 Normal() const
 		{
 			return Vector3(m_b, m_a).Cross(Vector3(m_b, m_c)).Normalize();
 		}
@@ -335,13 +341,7 @@ namespace STR_FALL
 		Vector3 m_r;
 		Color m_c;
 
-		Rect3D(float px = 0.0f, float py = 0.0f, float pz = 0.0f, float sx = 1.0f, float sy = 1.0f, float sz = 1.0f, float rx = 0.0f, float ry = 0.0f, float rz = 0.0f, Color c = Color(1.0f, 1.0f, 1.0f)) :
-			m_p(px, py, pz), m_s(sx, sy, sz), m_r(rx, ry, rz), m_c(c) {
-			UpdateRotationMarix();
-			UpdateHalfExtends();
-			UpdateTriangles();
-		}
-		Rect3D(Vector3 p = Vector3(), Vector3 s = (1.0f, 1.0f, 1.0f), Vector3 r = Vector3(), Color c = Color(1.0f, 1.0f, 1.0f)) :
+		Rect3D(const Vector3& p = Vector3(), const Vector3& s = (1.0f, 1.0f, 1.0f), const Vector3& r = Vector3(), const Color& c = Color(1.0f, 1.0f, 1.0f)) :
 			m_p(p), m_s(s), m_r(r), m_c(c) {
 			UpdateRotationMarix();
 			UpdateHalfExtends();
@@ -423,7 +423,7 @@ namespace STR_FALL
 		float m_aspect;
 		Vector2 m_screenDimension;
 
-		inline Camera3D(Vector3 p, float fov, Vector3 r, Vector2 screenDimension) : m_p(p), m_fov(fov), m_screenDimension(screenDimension), m_aspect(screenDimension.x / screenDimension.y) { m_r = Matrix3::RotationXYZ(r.x, r.y, r.z); }
+		inline Camera3D(const Vector3& p, float fov, const Vector3& r, const Vector2& screenDimension) : m_p(p), m_fov(fov), m_screenDimension(screenDimension), m_aspect(screenDimension.x / screenDimension.y) { m_r = Matrix3::RotationXYZ(r.x, r.y, r.z); }
 	};
 
 	struct Transform

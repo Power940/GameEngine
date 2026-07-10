@@ -1,5 +1,4 @@
 #pragma once
-
 #include <ctime>
 #include <cstdlib>
 

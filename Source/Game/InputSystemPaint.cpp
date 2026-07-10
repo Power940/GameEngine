@@ -1,3 +1,4 @@
+/*
 #include "StarFallEngine.h"
 
 #include <format>
@@ -79,7 +80,6 @@ int main()
         }
         if (input.GetKeyDown(SDL_SCANCODE_LCTRL) && input.GetKeyPressed(SDL_SCANCODE_Z) && strokes.size() > 0) { strokes.pop_back(); }
 
-
         if (input.GetKeyPressed(SDL_SCANCODE_C))
         {
             if (mode == 0) { mode = 1; }
@@ -111,8 +111,6 @@ int main()
             if (mode == 4) { userNumB = userNum; mode = 1; }
             userNum = 0;
         }
-
-
 
         if (input.GetKeyPressed(SDL_SCANCODE_0) && mode > 1)
         {
@@ -217,8 +215,6 @@ int main()
 
 
 
-
-
         renderer.Clear();
 
         for (std::vector<Vector2C>& stroke : strokes) {
@@ -277,3 +273,4 @@ int main()
 
     return 0;
 }
+*/

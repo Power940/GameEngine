@@ -1,7 +1,5 @@
 #include "Input.h"
 
-#include <SDL3/SDL.h>
-
 using namespace STR_FALL;
 
 bool Input::Initialize()
