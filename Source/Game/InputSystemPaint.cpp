@@ -5,29 +5,6 @@
 
 using namespace STR_FALL;
 
-
-
-
-//class GameObject
-//{
-//public:
-//    GameObject(const Transform& transform) : m_transform(transform) {}
-//
-//    void Update(float dt) { m_transform.m_p += m_v * dt; }
-//
-//    void Draw()
-//    {
-//
-//    }
-//
-//protected:
-//    Transform m_transform;
-//    Vector3 m_v = Vector3();
-//};
-
-
-
-
 int const WINDOW_WIDTH = 1280;
 int const WINDOW_HEIGHT = 1024;
 

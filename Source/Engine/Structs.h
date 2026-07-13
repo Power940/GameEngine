@@ -3,202 +3,261 @@
 #include <cmath>
 #include <vector>
 #include <cstdlib>
+#include <concepts>
 #include "Constants.h"
+
 
 namespace STR_FALL
 {
-	struct Color
+	struct Vector2
 	{
-		float r;
-		float g;
-		float b;
-		float a;
+		float m_x;
+		float m_y;
 
-		inline Color(float r = 1.0f, float g = 1.0f, float b = 1.0f, float a = 1.0f) : r(r), g(g), b(b), a(a) {}
-	};
+		inline Vector2(const float x = 0.0f, const float y = 0.0f) : m_x(x), m_y(y) {}
+		inline Vector2(const Vector2& ip, const Vector2& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y) {}
+		inline explicit Vector2(const Vector3& vect) : m_x(vect.m_x), m_y(vect.m_y) {}
+		inline explicit Vector2(const Vector4& vect) : m_x(vect.m_x), m_y(vect.m_y) {}
 
-	struct Vector2 {
-		float x;
-		float y;
+		inline Vector2 operator+(const Vector2& rhs) const { return Vector2(m_x + rhs.m_x, m_y + rhs.m_y); }
+		inline Vector2 operator-(const Vector2& rhs) const { return Vector2(m_x - rhs.m_x, m_y - rhs.m_y); }
+		inline Vector2 operator*(const Vector2& rhs) const { return Vector2(m_x * rhs.m_x, m_y * rhs.m_y); }
+		inline Vector2 operator/(const Vector2& rhs) const { return Vector2(m_x / rhs.m_x, m_y / rhs.m_y); }
 
-		inline Vector2(float x = 0, float y = 0) : x(x), y(y) {}
-		inline Vector2(Vector2 initialPoint, Vector2 finalPoint):
-			x(finalPoint.x - initialPoint.x), y(finalPoint.y - initialPoint.y) {}
+		inline Vector2 operator+(const float rhs) const { return Vector2(m_x + rhs, m_y + rhs); }
+		inline Vector2 operator-(const float rhs) const { return Vector2(m_x - rhs, m_y - rhs); }
+		inline Vector2 operator*(const float rhs) const { return Vector2(m_x * rhs, m_y * rhs); }
+		inline Vector2 operator/(const float rhs) const { return Vector2(m_x / rhs, m_y / rhs); }
 
-		inline Vector2 operator+(const Vector2& rhs) const { return Vector2(x + rhs.x, y + rhs.y); }
-		inline Vector2 operator-(const Vector2& rhs) const { return Vector2(x - rhs.x, y - rhs.y); }
-		inline Vector2 operator*(const Vector2& rhs) const { return Vector2(x * rhs.x, y * rhs.y); }
-		inline Vector2 operator/(const Vector2& rhs) const { return Vector2(x / rhs.x, y / rhs.y); }
+		inline Vector2& operator+=(const Vector2& rhs) { m_x += rhs.m_x; m_y += rhs.m_y; return *this; }
+		inline Vector2& operator-=(const Vector2& rhs) { m_x -= rhs.m_x; m_y -= rhs.m_y; return *this; }
+		inline Vector2& operator*=(const Vector2& rhs) { m_x *= rhs.m_x; m_y *= rhs.m_y; return *this; }
+		inline Vector2& operator/=(const Vector2& rhs) { m_x /= rhs.m_x; m_y /= rhs.m_y; return *this; }
 
-		inline Vector2 operator+(const float rhs) const { return Vector2(x + rhs, y + rhs); }
-		inline Vector2 operator-(const float rhs) const { return Vector2(x - rhs, y - rhs); }
-		inline Vector2 operator*(const float rhs) const { return Vector2(x * rhs, y * rhs); }
-		inline Vector2 operator/(const float rhs) const { return Vector2(x / rhs, y / rhs); }
+		inline Vector2& operator+=(const float rhs) { m_x += rhs; m_y += rhs; return *this; }
+		inline Vector2& operator-=(const float rhs) { m_x -= rhs; m_y -= rhs; return *this; }
+		inline Vector2& operator*=(const float rhs) { m_x *= rhs; m_y *= rhs; return *this; }
+		inline Vector2& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs; return *this; }
 
-		inline Vector2& operator+=(const Vector2& rhs) { x += rhs.x; y += rhs.y; return *this; }
-		inline Vector2& operator-=(const Vector2& rhs) { x -= rhs.x; y -= rhs.y; return *this; }
-		inline Vector2& operator*=(const Vector2& rhs) { x *= rhs.x; y *= rhs.y; return *this; }
-		inline Vector2& operator/=(const Vector2& rhs) { x /= rhs.x; y /= rhs.y; return *this; }
+		inline bool operator==(const Vector2& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y); }
 
-		inline Vector2& operator+=(const float rhs) { x += rhs; y += rhs; return *this; }
-		inline Vector2& operator-=(const float rhs) { x -= rhs; y -= rhs; return *this; }
-		inline Vector2& operator*=(const float rhs) { x *= rhs; y *= rhs; return *this; }
-		inline Vector2& operator/=(const float rhs) { x /= rhs; y /= rhs; return *this; }
+		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); }
+		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
+		inline void ClampY(const float min, const float max) { m_y = std::clamp(m_y, min, max); }
 
-		inline bool operator==(const Vector2& rhs) const { return (x == rhs.x) && (y == rhs.y); }
-
-		inline void Clamp(float min, float max) { x = std::clamp(x, min, max); y = std::clamp(y, min, max); }
-		inline void ClampX(float min, float max) { x = std::clamp(x, min, max); }
-		inline void ClampY(float min, float max) { y = std::clamp(y, min, max); }
-
-		inline float Magnitude() const { return std::sqrt((x * x) + (y * y)); }
-		inline float Dot(const Vector2& vect) const { return x * vect.x + y * vect.y; }
+		inline float Magnitude() const { return std::sqrt((m_x * m_x) + (m_y * m_y)); }
+		inline float Dot(const Vector2& vect) const { return m_x * vect.m_x + m_y * vect.m_y; }
 		Vector2 Normalize() const
 		{
 			float mag = this->Magnitude();
 			if (mag == 0.0f) { return Vector2(); }
-			return Vector2(x / mag, y / mag);
+			return Vector2(m_x / mag, m_y / mag);
 		}
-	};
-
-	struct Line
-	{
-		Vector2 point1;
-		Vector2 point2;
-
-		inline Line(const Vector2& point1, const Vector2& point2) : point1(point1), point2(point2) {}
-	};
-
-	struct Vector2C : Vector2 {
-		Color c;
-
-		inline Vector2C(float x, float y, const Color& c) : Vector2(x, y), c(c) {}
-		inline Vector2C(const Vector2& p, const Color& c) : Vector2(p.x, p.y), c(c) {}
-	};
-
-	struct LineC : Line
-	{
-		Color c;
-
-		inline LineC(const Vector2& point1, const Vector2& point2, const Color& c) : Line(point1, point2), c(c) {}
-	};
-
-	struct Rect2D
-	{
-	protected:
-		float halfX; float halfY;
-
-	public:
-		Vector2 m_p;
-		Vector2 m_s;
-		float m_r;
-		Color m_c;
-
-		Rect2D(const Vector2& p = (0.0f, 0.0f), const Vector2& s = (1.0f, 1.0f), const Color& c = Color(1.0f, 1.0f, 1.0f), float r = 0.0f) :
-			m_p(p), m_s(s), m_c(c), m_r(r) {
-			UpdateHalfExtends();
-		}
-
-		// safe conversions / setter logic options
-		float Deg() const { return m_r * F_RAD_DEG; }
-		float Rad() const { return fmod(m_r, F_PI2); }
-		void Deg(float val) { m_r = fmod(val * F_DEG_RAD, F_PI2); }
-		void Rad(float val) { m_r = fmod(val, F_PI2); }
-
-		inline float MinX() const { return m_p.x - halfX; }
-		inline float MaxX() const { return m_p.x + halfX; }
-		inline float MinY() const { return m_p.y - halfY; }
-		inline float MaxY() const { return m_p.y + halfY; }
-
-		void UpdateHalfExtends() {
-			float c = std::abs(std::cos(m_r));
-			float s = std::abs(std::sin(m_r));
-
-			halfX = c * m_s.x * 0.5f + s * m_s.y * 0.5f;
-			halfY = s * m_s.x * 0.5f + c * m_s.y * 0.5f;
-		}
-	};
-
-	struct Triangle2D
-	{
-		Vector2 m_a;
-		Vector2 m_b;
-		Vector2 m_c;
-
-		inline Triangle2D(const Vector2& a = Vector2(), const Vector2& b = Vector2(), const Vector2& c = Vector2()) : m_a(a), m_b(b), m_c(c) {}
-
-		inline Vector2& operator[](int element)
+		float Distance(const Vector2& vect) const
 		{
-			if (element == 0) { return m_a; }
-			if (element == 1) { return m_b; }
-			if (element == 2) { return m_c; }
-			return m_a;
+			float dx = vect.m_x - m_x;
+			float dy = vect.m_y - m_y;
+			return std::sqrt(dx * dx + dy * dy);
 		}
-		const inline Vector2& operator[](int element) const
+		Vector2 Lerp(const Vector2& vect, const float t = 0.5f) const
 		{
-			if (element == 0) { return m_a; }
-			if (element == 1) { return m_b; }
-			if (element == 2) { return m_c; }
-			return m_a;
+			return *this + (vect - *this) * t;
 		}
 	};
 
-	struct Vector3 {
-		float x;
-		float y;
-		float z;
+	struct Vector3
+	{
+		float m_x;
+		float m_y;
+		float m_z;
 
-		inline Vector3(float x = 0.0f, float y = 0.0f, float z = 0.0f) : x(x), y(y), z(z) {}
-		inline Vector3(const Vector3& initialPoint, const Vector3& finalPoint):
-			x(finalPoint.x - initialPoint.x), y(finalPoint.y - initialPoint.y), z(finalPoint.z - initialPoint.z) {}
+		inline Vector3(const float x = 0.0f, const float y = 0.0f, const float z = 0.0f) : m_x(x), m_y(y), m_z(z) {}
+		inline Vector3(const Vector3& ip, const Vector3& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y), m_z(fp.m_z - ip.m_z) {}
+		inline explicit Vector3(const Vector2& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(0.0f) {}
+		inline explicit Vector3(const Vector4& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(vect.m_z) {}
 
-		inline Vector3 operator+(const Vector3& rhs) const { return Vector3(x + rhs.x, y + rhs.y, z + rhs.z); }
-		inline Vector3 operator-(const Vector3& rhs) const { return Vector3(x - rhs.x, y - rhs.y, z - rhs.z); }
-		inline Vector3 operator*(const Vector3& rhs) const { return Vector3(x * rhs.x, y * rhs.y, z * rhs.z); }
-		inline Vector3 operator/(const Vector3& rhs) const { return Vector3(x / rhs.x, y / rhs.y, z / rhs.z); }
+		inline Vector3 operator+(const Vector3& rhs) const { return Vector3(m_x + rhs.m_x, m_y + rhs.m_y, m_z + rhs.m_z); }
+		inline Vector3 operator-(const Vector3& rhs) const { return Vector3(m_x - rhs.m_x, m_y - rhs.m_y, m_z - rhs.m_z); }
+		inline Vector3 operator*(const Vector3& rhs) const { return Vector3(m_x * rhs.m_x, m_y * rhs.m_y, m_z * rhs.m_z); }
+		inline Vector3 operator/(const Vector3& rhs) const { return Vector3(m_x / rhs.m_x, m_y / rhs.m_y, m_z / rhs.m_z); }
 
-		inline Vector3 operator+(const float rhs) const { return Vector3(x + rhs, y + rhs, z + rhs); }
-		inline Vector3 operator-(const float rhs) const { return Vector3(x - rhs, y - rhs, z - rhs); }
-		inline Vector3 operator*(const float rhs) const { return Vector3(x * rhs, y * rhs, z * rhs); }
-		inline Vector3 operator/(const float rhs) const { return Vector3(x / rhs, y / rhs, z / rhs); }
+		inline Vector3 operator+(const float rhs) const { return Vector3(m_x + rhs, m_y + rhs, m_z + rhs); }
+		inline Vector3 operator-(const float rhs) const { return Vector3(m_x - rhs, m_y - rhs, m_z - rhs); }
+		inline Vector3 operator*(const float rhs) const { return Vector3(m_x * rhs, m_y * rhs, m_z * rhs); }
+		inline Vector3 operator/(const float rhs) const { return Vector3(m_x / rhs, m_y / rhs, m_z / rhs); }
 
-		inline Vector3 operator+=(const Vector3& rhs) { x += rhs.x; y += rhs.y, z += rhs.z; return *this; }
-		inline Vector3 operator-=(const Vector3& rhs) { x -= rhs.x; y -= rhs.y, z -= rhs.z; return *this; }
-		inline Vector3 operator*=(const Vector3& rhs) { x *= rhs.x; y *= rhs.y, z *= rhs.z; return *this; }
-		inline Vector3 operator/=(const Vector3& rhs) { x /= rhs.x; y /= rhs.y, z /= rhs.z; return *this; }
+		inline Vector3& operator+=(const Vector3& rhs) { m_x += rhs.m_x; m_y += rhs.m_y, m_z += rhs.m_z; return *this; }
+		inline Vector3& operator-=(const Vector3& rhs) { m_x -= rhs.m_x; m_y -= rhs.m_y, m_z -= rhs.m_z; return *this; }
+		inline Vector3& operator*=(const Vector3& rhs) { m_x *= rhs.m_x; m_y *= rhs.m_y, m_z *= rhs.m_z; return *this; }
+		inline Vector3& operator/=(const Vector3& rhs) { m_x /= rhs.m_x; m_y /= rhs.m_y, m_z /= rhs.m_z; return *this; }
 
-		inline Vector3 operator+=(const float rhs) { x += rhs; y += rhs, z += rhs; return *this; }
-		inline Vector3 operator-=(const float rhs) { x -= rhs; y -= rhs, z -= rhs; return *this; }
-		inline Vector3 operator*=(const float rhs) { x *= rhs; y *= rhs, z *= rhs; return *this; }
-		inline Vector3 operator/=(const float rhs) { x /= rhs; y /= rhs, z /= rhs; return *this; }
+		inline Vector3& operator+=(const float rhs) { m_x += rhs; m_y += rhs, m_z += rhs; return *this; }
+		inline Vector3& operator-=(const float rhs) { m_x -= rhs; m_y -= rhs, m_z -= rhs; return *this; }
+		inline Vector3& operator*=(const float rhs) { m_x *= rhs; m_y *= rhs, m_z *= rhs; return *this; }
+		inline Vector3& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs, m_z /= rhs; return *this; }
 
-		inline bool operator==(const Vector3& rhs) const { return (x == rhs.x) && (y == rhs.y) && (z == rhs.z); }
+		inline bool operator==(const Vector3& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z); }
 
-		inline void Clamp(float min, float max) { x = std::clamp(x, min, max); y = std::clamp(y, min, max); z = std::clamp(z, min, max); }
-		inline void ClampX(float min, float max) { x = std::clamp(x, min, max); }
-		inline void ClampY(float min, float max) { y = std::clamp(y, min, max); }
-		inline void ClampZ(float min, float max) { z = std::clamp(z, min, max); }
+		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); m_z = std::clamp(m_z, min, max); }
+		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
+		inline void ClampY(const float min, const float max) { m_y = std::clamp(m_y, min, max); }
+		inline void ClampZ(const float min, const float max) { m_z = std::clamp(m_z, min, max); }
 
-		inline float Magnitude() const { return std::sqrt((x * x) + (y * y) + (z * z)); }
-		inline float Dot(const Vector3& vect) const { return x * vect.x + y * vect.y + z * vect.z; }
+		inline float Magnitude() const { return std::sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z)); }
+		inline float Dot(const Vector3& vect) const { return m_x * vect.m_x + m_y * vect.m_y + m_z * vect.m_z; }
 		Vector3 Normalize() const
 		{
 			float mag = this->Magnitude();
 			if (mag == 0.0f) { return Vector3(); }
-			return Vector3(x / mag, y / mag, z / mag);
+			return Vector3(m_x / mag, m_y / mag, m_z / mag);
 		}
-		Vector3 Cross(const Vector3& vect) const
+		inline Vector3 Cross(const Vector3& vect) const
 		{
-			float crossX = y * vect.z - z * vect.y;
-			float crossY = z * vect.x - x * vect.z;
-			float crossZ = x * vect.y - y * vect.x;
-			return Vector3(crossX, crossY, crossZ);
+			return Vector3(
+				m_y * vect.m_z - m_z * vect.m_y,
+				m_z * vect.m_x - m_x * vect.m_z,
+				m_x * vect.m_y - m_y * vect.m_x
+			);
 		}
 		float Angle(const Vector3& vect) const
 		{
-			float dotProduct = Dot(vect);
-			float magnitudeProduct = Magnitude() * vect.Magnitude();
-			return std::acos(dotProduct / magnitudeProduct);
+			return std::acos(
+				Dot(vect) /
+				(Magnitude() * vect.Magnitude())
+			);
+		}
+		float Distance(const Vector3& vect) const
+		{
+			float dx = vect.m_x - m_x;
+			float dy = vect.m_y - m_y;
+			float dz = vect.m_z - m_z;
+			return std::sqrt(dx * dx + dy * dy + dz * dz);
+		}
+		Vector3 Lerp(const Vector3& vect, const float t = 0.5f) const
+		{
+			return *this + (vect - *this) * t;
+		}
+	};
+
+	struct Vector4
+	{
+		float m_x;
+		float m_y;
+		float m_z;
+		float m_w;
+
+		inline Vector4(const float x = 0.0f, const float y = 0.0f, const float z = 0.0f, const float w = 0.0f) : m_x(x), m_y(y), m_z(z), m_w(w) {}
+		inline Vector4(const Vector4& ip, const Vector4& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y), m_z(fp.m_z - ip.m_z), m_w(fp.m_w - ip.m_w) {}
+		inline explicit Vector4(const Vector2& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(0.0f), m_w(0.0f) {}
+		inline explicit Vector4(const Vector3& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(vect.m_z), m_w(0.0f) {}
+
+		inline Vector4 operator+(const Vector4& rhs) const { return Vector4(m_x + rhs.m_x, m_y + rhs.m_y, m_z + rhs.m_z, m_w + rhs.m_w); }
+		inline Vector4 operator-(const Vector4& rhs) const { return Vector4(m_x - rhs.m_x, m_y - rhs.m_y, m_z - rhs.m_z, m_w - rhs.m_w); }
+		inline Vector4 operator*(const Vector4& rhs) const { return Vector4(m_x * rhs.m_x, m_y * rhs.m_y, m_z * rhs.m_z, m_w * rhs.m_w); }
+		inline Vector4 operator/(const Vector4& rhs) const { return Vector4(m_x / rhs.m_x, m_y / rhs.m_y, m_z / rhs.m_z, m_w / rhs.m_w); }
+
+		inline Vector4 operator+(const float rhs) const { return Vector4(m_x + rhs, m_y + rhs, m_z + rhs, m_w + rhs); }
+		inline Vector4 operator-(const float rhs) const { return Vector4(m_x - rhs, m_y - rhs, m_z - rhs, m_w - rhs); }
+		inline Vector4 operator*(const float rhs) const { return Vector4(m_x * rhs, m_y * rhs, m_z * rhs, m_w * rhs); }
+		inline Vector4 operator/(const float rhs) const { return Vector4(m_x / rhs, m_y / rhs, m_z / rhs, m_w / rhs); }
+
+		inline Vector4& operator+=(const Vector4& rhs) { m_x + rhs.m_x; m_y + rhs.m_y; m_z + rhs.m_z; m_w + rhs.m_w; return *this; }
+		inline Vector4& operator-=(const Vector4& rhs) { m_x - rhs.m_x; m_y - rhs.m_y; m_z - rhs.m_z; m_w - rhs.m_w; return *this; }
+		inline Vector4& operator*=(const Vector4& rhs) { m_x* rhs.m_x; m_y* rhs.m_y; m_z* rhs.m_z; m_w* rhs.m_w; return *this; }
+		inline Vector4& operator/=(const Vector4& rhs) { m_x / rhs.m_x; m_y / rhs.m_y; m_z / rhs.m_z; m_w / rhs.m_w; return *this; }
+
+		inline Vector4& operator+=(const float rhs) { m_x + rhs; m_y + rhs; m_z + rhs; m_w + rhs; return *this; }
+		inline Vector4& operator-=(const float rhs) { m_x - rhs; m_y - rhs; m_z - rhs; m_w - rhs; return *this; }
+		inline Vector4& operator*=(const float rhs) { m_x* rhs; m_y* rhs; m_z* rhs; m_w* rhs; return *this; }
+		inline Vector4& operator/=(const float rhs) { m_x / rhs; m_y / rhs; m_z / rhs; m_w / rhs; return *this; }
+
+		inline bool operator==(const Vector4& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z) && (m_w == rhs.m_w); }
+
+		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); m_z = std::clamp(m_z, min, max); m_w = std::clamp(m_w, min, max); }
+		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
+		inline void ClampY(const float min, const float max) { m_y = std::clamp(m_y, min, max); }
+		inline void ClampZ(const float min, const float max) { m_z = std::clamp(m_z, min, max); }
+		inline void ClampW(const float min, const float max) { m_w = std::clamp(m_w, min, max); }
+
+		inline float Magnitude() const { return std::sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z) + (m_w * m_w)); }
+		inline float Dot(const Vector4& vect) const { return m_x * vect.m_x + m_y * vect.m_y + m_z * vect.m_z + m_w * vect.m_w; }
+		Vector4 Normalize() const
+		{
+			float mag = this->Magnitude();
+			if (mag == 0.0f) { return Vector4(); }
+			return Vector4(m_x / mag, m_y / mag, m_z / mag, m_w / mag);
+		}
+		float Distance(const Vector4& vect) const
+		{
+			float dx = vect.m_x - m_x;
+			float dy = vect.m_y - m_y;
+			float dz = vect.m_z - m_z;
+			float dw = vect.m_w - m_w;
+			return std::sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
+		}
+		Vector4 Lerp(const Vector4& vect, const float t = 0.5f) const
+		{
+			return *this + (vect - *this) * t;
+		}
+	};
+
+	struct Matrix2
+	{
+		float m_m[2][2];
+
+		inline Matrix2()
+		{
+			m_m[0][0] = 1; m_m[0][1] = 0;
+			m_m[1][0] = 0; m_m[1][1] = 1;
+		}
+		inline Matrix2(float val)
+		{
+			m_m[0][0] = val; m_m[0][1] = val;
+			m_m[1][0] = val; m_m[1][1] = val;
+		}
+		inline Matrix2(float m00, float m01, float m10, float m11)
+		{
+			m_m[0][0] = m00; m_m[0][1] = m01;
+			m_m[1][0] = m10; m_m[1][1] = m11;
+		}
+
+		inline float* operator[](int element) { return m_m[element]; }
+		inline const float* operator[](int element) const { return m_m[element]; }
+		inline Matrix2 operator*(const Matrix2& rhs) const
+		{
+			return Matrix2(
+				m_m[0][0] * rhs[0][0] + m_m[0][1] * rhs[1][0], m_m[0][0] * rhs[0][1] + m_m[0][1] * rhs[1][1],
+				m_m[1][0] * rhs[0][0] + m_m[1][1] * rhs[1][0], m_m[1][0] * rhs[0][1] + m_m[1][1] * rhs[1][1]
+			);
+		}
+		inline Vector2 operator*(const Vector2& vect) const
+		{
+			return Vector2(
+				m_m[0][0] * vect.m_x + m_m[0][1] * vect.m_y,
+				m_m[1][0] * vect.m_x + m_m[1][1] * vect.m_y
+			);
+		}
+
+		inline Matrix2 Abs() const
+		{
+			return Matrix2(
+				std::abs(m_m[0][0]), std::abs(m_m[0][1]),
+				std::abs(m_m[1][0]), std::abs(m_m[1][1])
+			);
+		}
+
+		inline Vector2 Right() const { return Vector2(m_m[0][0], m_m[1][0]); }
+		inline Vector2 Up() const { return Vector2(m_m[0][1], m_m[1][1]); }
+
+		static Matrix2 RotationXY(float r)
+		{
+			float c = std::cos(r);
+			float s = std::sin(r);
+			return Matrix2
+			(
+				c, s,
+				-s, c
+			);
 		}
 	};
 
@@ -238,9 +297,9 @@ namespace STR_FALL
 		inline Vector3 operator*(const Vector3& vect) const
 		{
 			return Vector3(
-				m_m[0][0] * vect.x + m_m[0][1] * vect.y + m_m[0][2] * vect.z,
-				m_m[1][0] * vect.x + m_m[1][1] * vect.y + m_m[1][2] * vect.z,
-				m_m[2][0] * vect.x + m_m[2][1] * vect.y + m_m[2][2] * vect.z
+				m_m[0][0] * vect.m_x + m_m[0][1] * vect.m_y + m_m[0][2] * vect.m_z,
+				m_m[1][0] * vect.m_x + m_m[1][1] * vect.m_y + m_m[1][2] * vect.m_z,
+				m_m[2][0] * vect.m_x + m_m[2][1] * vect.m_y + m_m[2][2] * vect.m_z
 			);
 		}
 
@@ -261,41 +320,105 @@ namespace STR_FALL
 		{
 			float c = std::cos(r);
 			float s = std::sin(r);
-
 			return Matrix3
 			(
-				1,0,0,
-				0,c,-s,
-				0,s,c
+				1, 0, 0,
+				0, c, -s,
+				0, s, c
 			);
 		}
 		static Matrix3 RotationY(float r)
 		{
 			float c = std::cos(r);
 			float s = std::sin(r);
-
 			return Matrix3
 			(
-				c,0,s,
-				0,1,0,
-				-s,0,c
+				c, 0, s,
+				0, 1, 0,
+				-s, 0, c
 			);
 		}
 		static Matrix3 RotationZ(float r)
 		{
 			float c = std::cos(r);
 			float s = std::sin(r);
-
 			return Matrix3
 			(
-				c,-s,0,
-				s,c,0,
-				0,0,1
+				c, -s, 0,
+				s, c, 0,
+				0, 0, 1
 			);
 		}
 		static Matrix3 RotationXYZ(float rx, float ry, float rz)
 		{
-			return RotationZ(rz) * RotationY(ry) * RotationX(rx);
+			float cx = std::cos(rx);
+			float sx = std::sin(rx);
+			float cy = std::cos(ry);
+			float sy = std::sin(ry);
+			float cz = std::cos(rz);
+			float sz = std::sin(rz);
+
+			return Matrix3(
+				cz * cy,
+				cz * sy * sx - sz * cx,
+				cz * sy * cx + sz * sx,
+				sz * cy,
+				sz * sy * sx + cz * cx,
+				sz * sy * cx - cz * sx,
+				-sy,
+				cy * sx,
+				cy * cx
+			);
+		}
+		static Matrix3 RotationXYZ(const Vector3& r)
+		{
+			float cx = std::cos(r.m_x);
+			float sx = std::sin(r.m_x);
+			float cy = std::cos(r.m_y);
+			float sy = std::sin(r.m_y);
+			float cz = std::cos(r.m_z);
+			float sz = std::sin(r.m_z);
+
+			return Matrix3(
+				cz * cy,
+				cz * sy * sx - sz * cx,
+				cz * sy * cx + sz * sx,
+				sz * cy,
+				sz * sy * sx + cz * cx,
+				sz * sy * cx - cz * sx,
+				-sy,
+				cy * sx,
+				cy * cx
+			);
+		}
+	};
+
+	struct Matrix4
+	{
+
+	};
+
+	struct Triangle2D
+	{
+		Vector2 m_a;
+		Vector2 m_b;
+		Vector2 m_c;
+
+		inline Triangle2D(const Vector2& a = Vector2(), const Vector2& b = Vector2(), const Vector2& c = Vector2()) : m_a(a), m_b(b), m_c(c) {}
+
+		inline Vector2& operator[](int element)
+		{
+			if (element == 0) { return m_a; }
+			if (element == 1) { return m_b; }
+			if (element == 2) { return m_c; }
+			return m_a;
+		}
+		const inline Vector2& operator[](int element) const
+		{
+			if (element == 0) { return m_a; }
+			if (element == 1) { return m_b; }
+			if (element == 2) { return m_c; }
+			return m_a;
 		}
 	};
 
@@ -305,7 +428,7 @@ namespace STR_FALL
 		Vector3 m_b;
 		Vector3 m_c;
 
-		inline Triangle3D(Vector3 a = Vector3(), Vector3 b = Vector3(), Vector3 c = Vector3()) : m_a(a), m_b(b), m_c(c) {}
+		inline Triangle3D(const Vector3& a = Vector3(), const Vector3& b = Vector3(), const Vector3& c = Vector3()) : m_a(a), m_b(b), m_c(c) {}
 
 		inline Vector3& operator[](int element)
 		{
@@ -328,71 +451,232 @@ namespace STR_FALL
 		}
 	};
 
-	struct Rect3D
+	struct Transform2D
+	{
+	protected:
+		Matrix2 m_rotMat;
+	public:
+		Vector2 m_pos;
+		Vector2 m_scale;
+		float m_rot;
+
+		inline Transform2D(const Vector2& pos = Vector2(), const Vector2& scale = Vector2(1.0f, 1.0f), const float rot = 0) :
+			m_pos(pos), m_scale(scale), m_rot(rot), m_rotMat(Matrix2::RotationXY(rot)) {
+		}
+
+		inline void SetRotation(const float rot)
+		{
+			if (m_rot != rot)
+			{
+				m_rot = rot;
+				m_rotMat = Matrix2::RotationXY(rot);
+			}
+		}
+
+		inline Matrix2 GetRotationMatrix()
+		{
+			return m_rotMat;
+		}
+	};
+
+	struct Transform3D
+	{
+	protected:
+		Matrix3 m_rotMat;
+	public:
+		Vector3 m_pos;
+		Vector3 m_scale;
+		Vector3 m_rot;
+
+		inline Transform3D(const Vector3& pos = Vector3(), const Vector3& scale = Vector3(1.0f, 1.0f, 1.0f), const Vector3& rot = Vector3()) :
+			m_pos(pos), m_scale(scale), m_rot(rot), m_rotMat(Matrix3::RotationXYZ(rot)) {
+		}
+
+		inline void SetRotation(const Vector3& rot)
+		{
+			if (m_rot != rot)
+			{
+				m_rot = rot;
+				m_rotMat = Matrix3::RotationXYZ(rot);
+			}
+		}
+		inline void SetRotationX(const float& rot)
+		{
+			Vector3 prev = m_rot;
+			m_rot.m_x = rot;
+			if (prev != m_rot)
+			{
+				m_rotMat = Matrix3::RotationXYZ(rot);
+			}
+		}
+		inline void SetRotationY(const float& rot)
+		{
+			Vector3 prev = m_rot;
+			m_rot.m_y = rot;
+			if (prev != m_rot)
+			{
+				m_rotMat = Matrix3::RotationXYZ(rot);
+			}
+		}
+		inline void SetRotationZ(const float& rot)
+		{
+			Vector3 prev = m_rot;
+			m_rot.m_z = rot;
+			if (prev != m_rot)
+			{
+				m_rotMat = Matrix3::RotationXYZ(rot);
+			}
+		}
+
+		inline Matrix3 GetRotationMatrix()
+		{
+			return m_rotMat;
+		}
+	};
+
+	struct Camera3D
+	{
+		Transform3D m_transform;
+		Matrix3 m_rotMat;
+		float m_fov;
+		Vector2 m_ScreenDim;
+		float m_aspect;
+
+		inline Camera3D(const Transform3D& t, const float fov, const Vector2& screenDim) :
+			m_transform(t), m_fov(fov), m_ScreenDim(screenDim), m_aspect(screenDim.m_x / screenDim.m_y), m_rotMat(Matrix3::RotationXYZ(t.m_rot)) {
+		}
+	};
+
+	struct Color
+	{
+		Vector4 m_color;
+
+		inline Color(const float r = 1.0f, const float g = 1.0f, const float b = 1.0f, const float a = 1.0f) : m_color(r, g, b, a) {}
+	};
+
+	struct Vector2C : Vector2 {
+		Color m_color;
+
+		inline Vector2C(float x, float y, const Color& color) : Vector2(x, y), m_color(color) {}
+		inline Vector2C(const Vector2& p, const Color& color) : Vector2(p.m_x, p.m_x), m_color(color) {}
+	};
+
+	struct Line2D
+	{
+		Vector2 m_1;
+		Vector2 m_2;
+
+		inline Line2D(const Vector2& p1, const Vector2& p2) : m_1(p1), m_2(p2) {}
+	};
+
+	struct Line2DC : Line2D
+	{
+		Color m_color;
+
+		inline Line2DC(const Vector2& p1, const Vector2& p2, const Color& color) : Line2D(p1, p2), m_color(color) {}
+	};
+
+	template<typename T>
+	concept Transforms = std::same_as<T, Transform2D> || std::same_as<T, Transform3D>;
+	template<Transforms T>
+	struct Object
+	{
+	protected:
+		T m_transform;
+
+	public:
+		Vector3 m_vel = Vector3();
+
+		Object(const T& transform) : m_transform(transform) {}
+
+		virtual void Update(float dt) { m_transform.m_p += m_vel * dt; }
+		virtual void Draw() = 0;
+	};
+
+	struct Rect2D : Object<Transform2D>
+	{
+	protected:
+		float halfX; float halfY;
+
+	public:
+		Color m_color;
+
+		Rect2D(const Transform2D& t = Transform2D(), const Color& c = Color(1.0f, 1.0f, 1.0f)) :
+			Object(t), m_color(c) { UpdateHalfExtends(); }
+
+		// safe conversions / setter logic options
+		inline float Deg() const { return fmod(m_transform.m_rot * F_RAD_DEG, 360.0f); }
+		inline float Rad() const { return fmod(m_transform.m_rot, F_PI2); }
+		inline void Deg(float val) { m_transform.SetRotation(fmod(val * F_DEG_RAD, F_PI2)); }
+		inline void Rad(float val) { m_transform.SetRotation(fmod(val, F_PI2)); }
+
+		inline float MinX() const { return m_transform.m_pos.m_x - halfX; }
+		inline float MaxX() const { return m_transform.m_pos.m_x + halfX; }
+		inline float MinY() const { return m_transform.m_pos.m_y - halfY; }
+		inline float MaxY() const { return m_transform.m_pos.m_y + halfY; }
+
+		void UpdateHalfExtends() {
+			Vector2 halfs = m_transform.GetRotationMatrix().Abs() * (m_transform.m_scale * 0.5f);
+			
+			halfX = halfs.m_x;
+			halfY = halfs.m_y;
+		}
+	};
+
+	struct Rect3D : Object<Transform3D>
 	{
 	protected:
 		float m_halfX; float m_halfY; float m_halfZ;
-		Matrix3 m_rm;
 		std::vector<Triangle3D> m_Tris;
 
 	public:
-		Vector3 m_p;
-		Vector3 m_s;
-		Vector3 m_r;
-		Color m_c;
+		Color m_color;
 
-		Rect3D(const Vector3& p = Vector3(), const Vector3& s = (1.0f, 1.0f, 1.0f), const Vector3& r = Vector3(), const Color& c = Color(1.0f, 1.0f, 1.0f)) :
-			m_p(p), m_s(s), m_r(r), m_c(c) {
-			UpdateRotationMarix();
-			UpdateHalfExtends();
-			UpdateTriangles();
-		}
+		Rect3D(const Transform3D& t, const Color& c = Color(1.0f, 1.0f, 1.0f)) :
+			Object(t), m_color(c) { UpdateHalfExtends(); UpdateTriangles(); }
 
+		
 		// safe conversions / setter logic options
-		float DegX() const { return m_r.x * F_RAD_DEG; }
-		float DegY() const { return m_r.y * F_RAD_DEG; }
-		float DegZ() const { return m_r.z * F_RAD_DEG; }
-		float RadX() const { return fmod(m_r.x, F_PI2); }
-		float RadY() const { return fmod(m_r.y, F_PI2); }
-		float RadZ() const { return fmod(m_r.z, F_PI2); }
-		void DegX(float val) { m_r.x = fmod(val * F_DEG_RAD, F_PI2); }
-		void DegY(float val) { m_r.y = fmod(val * F_DEG_RAD, F_PI2); }
-		void DegZ(float val) { m_r.z = fmod(val * F_DEG_RAD, F_PI2); }
-		void RadX(float val) { m_r.x = fmod(val, F_PI2); }
-		void RadY(float val) { m_r.y = fmod(val, F_PI2); }
-		void RadZ(float val) { m_r.z = fmod(val, F_PI2); }
+		float DegX() const { return fmod(m_transform.m_rot.m_x * F_RAD_DEG, 360.0f); }
+		float DegY() const { return fmod(m_transform.m_rot.m_y * F_RAD_DEG, 360.0f); }
+		float DegZ() const { return fmod(m_transform.m_rot.m_z * F_RAD_DEG, 360.0f); }
+		float RadX() const { return fmod(m_transform.m_rot.m_x, F_PI2); }
+		float RadY() const { return fmod(m_transform.m_rot.m_y, F_PI2); }
+		float RadZ() const { return fmod(m_transform.m_rot.m_z, F_PI2); }
+		void DegX(float val) { m_transform.SetRotationX(fmod(val * F_DEG_RAD, F_PI2)); }
+		void DegY(float val) { m_transform.SetRotationY(fmod(val * F_DEG_RAD, F_PI2)); }
+		void DegZ(float val) { m_transform.SetRotationZ(fmod(val * F_DEG_RAD, F_PI2)); }
+		void RadX(float val) { m_transform.SetRotationX(fmod(val, F_PI2)); }
+		void RadY(float val) { m_transform.SetRotationY(fmod(val, F_PI2)); }
+		void RadZ(float val) { m_transform.SetRotationZ(fmod(val, F_PI2)); }
 
-		inline float MinX() const { return m_p.x - m_halfX; }
-		inline float MaxX() const { return m_p.x + m_halfX; }
-		inline float MinY() const { return m_p.y - m_halfY; }
-		inline float MaxY() const { return m_p.y + m_halfY; }
-		inline float MinZ() const { return m_p.z - m_halfZ; }
-		inline float MaxZ() const { return m_p.z + m_halfZ; }
+		inline float MinX() const { return m_transform.m_pos.m_x - m_halfX; }
+		inline float MaxX() const { return m_transform.m_pos.m_x + m_halfX; }
+		inline float MinY() const { return m_transform.m_pos.m_y - m_halfY; }
+		inline float MaxY() const { return m_transform.m_pos.m_y + m_halfY; }
+		inline float MinZ() const { return m_transform.m_pos.m_z - m_halfZ; }
+		inline float MaxZ() const { return m_transform.m_pos.m_z + m_halfZ; }
 
-		void UpdateRotationMarix()
-		{
-			m_rm = Matrix3::RotationXYZ(m_r.x, m_r.y, m_r.z);
-		}
 		void UpdateHalfExtends() {
-			Vector3 halfs = m_rm.Abs() * (m_s / 2.0f);
-
-			m_halfX = halfs.x;
-			m_halfY = halfs.y;
-			m_halfZ = halfs.z;
+			Vector3 halfs = m_transform.GetRotationMatrix().Abs() * (m_transform.m_scale * 0.5f);
+			
+			m_halfX = halfs.m_x;
+			m_halfY = halfs.m_y;
+			m_halfZ = halfs.m_z;
 		}
 		void UpdateTriangles()
 		{
-			Vector3 hs = m_s / 2.0f;
+			Vector3 hs = m_transform.m_scale * 0.5f;
 
 			std::vector<Vector3> p = {
-				m_rm * Vector3(m_p.x + hs.x, m_p.y + hs.y, m_p.z + hs.z),
-				m_rm * Vector3(m_p.x + hs.x, m_p.y + hs.y, m_p.z - hs.z),
-				m_rm * Vector3(m_p.x + hs.x, m_p.y - hs.y, m_p.z + hs.z),
-				m_rm * Vector3(m_p.x + hs.x, m_p.y - hs.y, m_p.z - hs.z),
-				m_rm * Vector3(m_p.x - hs.x, m_p.y + hs.y, m_p.z + hs.z),
-				m_rm * Vector3(m_p.x - hs.x, m_p.y + hs.y, m_p.z - hs.z),
-				m_rm * Vector3(m_p.x - hs.x, m_p.y - hs.y, m_p.z + hs.z),
-				m_rm * Vector3(m_p.x - hs.x, m_p.y - hs.y, m_p.z - hs.z)
+				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x + hs.m_x, m_transform.m_pos.m_y + hs.m_y, m_transform.m_pos.m_z + hs.m_z),
+				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x + hs.m_x, m_transform.m_pos.m_y + hs.m_y, m_transform.m_pos.m_z - hs.m_z),
+				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x + hs.m_x, m_transform.m_pos.m_y - hs.m_y, m_transform.m_pos.m_z + hs.m_z),
+				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x + hs.m_x, m_transform.m_pos.m_y - hs.m_y, m_transform.m_pos.m_z - hs.m_z),
+				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x - hs.m_x, m_transform.m_pos.m_y + hs.m_y, m_transform.m_pos.m_z + hs.m_z),
+				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x - hs.m_x, m_transform.m_pos.m_y + hs.m_y, m_transform.m_pos.m_z - hs.m_z),
+				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x - hs.m_x, m_transform.m_pos.m_y - hs.m_y, m_transform.m_pos.m_z + hs.m_z),
+				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x - hs.m_x, m_transform.m_pos.m_y - hs.m_y, m_transform.m_pos.m_z - hs.m_z)
 			};
 			m_Tris = {
 				Triangle3D(p[2], p[0], p[1]),
@@ -413,23 +697,5 @@ namespace STR_FALL
 		{
 			return m_Tris;
 		}
-	};
-
-	struct Camera3D
-	{
-		Vector3 m_p;
-		float m_fov;
-		Matrix3 m_r;
-		float m_aspect;
-		Vector2 m_screenDimension;
-
-		inline Camera3D(const Vector3& p, float fov, const Vector3& r, const Vector2& screenDimension) : m_p(p), m_fov(fov), m_screenDimension(screenDimension), m_aspect(screenDimension.x / screenDimension.y) { m_r = Matrix3::RotationXYZ(r.x, r.y, r.z); }
-	};
-
-	struct Transform
-	{
-		Vector3 m_p;
-		Vector3 m_r;
-		Vector3 m_s;
 	};
 }
