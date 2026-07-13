@@ -1,14 +1,15 @@
 #pragma once
 #include <algorithm>
 #include <cmath>
-#include <vector>
 #include <cstdlib>
-#include <concepts>
-#include "Constants.h"
-
+#include <cassert>
 
 namespace STR_FALL
 {
+	struct Vector2;
+	struct Vector3;
+	struct Vector4;
+
 	struct Vector2
 	{
 		float m_x;
@@ -16,8 +17,11 @@ namespace STR_FALL
 
 		inline Vector2(const float x = 0.0f, const float y = 0.0f) : m_x(x), m_y(y) {}
 		inline Vector2(const Vector2& ip, const Vector2& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y) {}
-		inline explicit Vector2(const Vector3& vect) : m_x(vect.m_x), m_y(vect.m_y) {}
-		inline explicit Vector2(const Vector4& vect) : m_x(vect.m_x), m_y(vect.m_y) {}
+		inline Vector2(const Vector3& vect);
+		inline Vector2(const Vector4& vect);
+
+		float operator[](const unsigned int element) const { assert(element < 2); return (&m_x)[element]; }
+		float& operator[](const unsigned int element) { assert(element < 2); return (&m_x)[element]; }
 
 		inline Vector2 operator+(const Vector2& rhs) const { return Vector2(m_x + rhs.m_x, m_y + rhs.m_y); }
 		inline Vector2 operator-(const Vector2& rhs) const { return Vector2(m_x - rhs.m_x, m_y - rhs.m_y); }
@@ -40,6 +44,7 @@ namespace STR_FALL
 		inline Vector2& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs; return *this; }
 
 		inline bool operator==(const Vector2& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y); }
+		inline bool operator!=(const Vector2& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y); }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); }
 		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
@@ -47,11 +52,13 @@ namespace STR_FALL
 
 		inline float Magnitude() const { return std::sqrt((m_x * m_x) + (m_y * m_y)); }
 		inline float Dot(const Vector2& vect) const { return m_x * vect.m_x + m_y * vect.m_y; }
+		inline float AngleBetween(const Vector2& vect) const { return std::acos(Dot(vect)); }
+		inline float Angle() const { return std::atan2(m_y, m_x); }
 		Vector2 Normalize() const
 		{
 			float mag = this->Magnitude();
 			if (mag == 0.0f) { return Vector2(); }
-			return Vector2(m_x / mag, m_y / mag);
+			return *this / mag;
 		}
 		float Distance(const Vector2& vect) const
 		{
@@ -73,8 +80,11 @@ namespace STR_FALL
 
 		inline Vector3(const float x = 0.0f, const float y = 0.0f, const float z = 0.0f) : m_x(x), m_y(y), m_z(z) {}
 		inline Vector3(const Vector3& ip, const Vector3& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y), m_z(fp.m_z - ip.m_z) {}
-		inline explicit Vector3(const Vector2& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(0.0f) {}
-		inline explicit Vector3(const Vector4& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(vect.m_z) {}
+		inline Vector3(const Vector2& vect);
+		inline Vector3(const Vector4& vect);
+
+		float operator[](const unsigned int element) const { assert(element < 3); return (&m_x)[element]; }
+		float& operator[](const unsigned int element) { assert(element < 3); return (&m_x)[element]; }
 
 		inline Vector3 operator+(const Vector3& rhs) const { return Vector3(m_x + rhs.m_x, m_y + rhs.m_y, m_z + rhs.m_z); }
 		inline Vector3 operator-(const Vector3& rhs) const { return Vector3(m_x - rhs.m_x, m_y - rhs.m_y, m_z - rhs.m_z); }
@@ -97,6 +107,7 @@ namespace STR_FALL
 		inline Vector3& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs, m_z /= rhs; return *this; }
 
 		inline bool operator==(const Vector3& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z); }
+		inline bool operator!=(const Vector3& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y) || (m_z != rhs.m_z); }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); m_z = std::clamp(m_z, min, max); }
 		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
@@ -105,11 +116,12 @@ namespace STR_FALL
 
 		inline float Magnitude() const { return std::sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z)); }
 		inline float Dot(const Vector3& vect) const { return m_x * vect.m_x + m_y * vect.m_y + m_z * vect.m_z; }
+		inline float Angle(const Vector3& vect) const { return std::acos(Dot(vect)); }
 		Vector3 Normalize() const
 		{
 			float mag = this->Magnitude();
 			if (mag == 0.0f) { return Vector3(); }
-			return Vector3(m_x / mag, m_y / mag, m_z / mag);
+			return *this / mag;
 		}
 		inline Vector3 Cross(const Vector3& vect) const
 		{
@@ -117,13 +129,6 @@ namespace STR_FALL
 				m_y * vect.m_z - m_z * vect.m_y,
 				m_z * vect.m_x - m_x * vect.m_z,
 				m_x * vect.m_y - m_y * vect.m_x
-			);
-		}
-		float Angle(const Vector3& vect) const
-		{
-			return std::acos(
-				Dot(vect) /
-				(Magnitude() * vect.Magnitude())
 			);
 		}
 		float Distance(const Vector3& vect) const
@@ -148,8 +153,11 @@ namespace STR_FALL
 
 		inline Vector4(const float x = 0.0f, const float y = 0.0f, const float z = 0.0f, const float w = 0.0f) : m_x(x), m_y(y), m_z(z), m_w(w) {}
 		inline Vector4(const Vector4& ip, const Vector4& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y), m_z(fp.m_z - ip.m_z), m_w(fp.m_w - ip.m_w) {}
-		inline explicit Vector4(const Vector2& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(0.0f), m_w(0.0f) {}
-		inline explicit Vector4(const Vector3& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(vect.m_z), m_w(0.0f) {}
+		inline Vector4(const Vector2& vect);
+		inline Vector4(const Vector3& vect);
+
+		float operator[](const unsigned int element) const { assert(element < 4); return (&m_x)[element]; }
+		float& operator[](const unsigned int element) { assert(element < 4); return (&m_x)[element]; }
 
 		inline Vector4 operator+(const Vector4& rhs) const { return Vector4(m_x + rhs.m_x, m_y + rhs.m_y, m_z + rhs.m_z, m_w + rhs.m_w); }
 		inline Vector4 operator-(const Vector4& rhs) const { return Vector4(m_x - rhs.m_x, m_y - rhs.m_y, m_z - rhs.m_z, m_w - rhs.m_w); }
@@ -161,17 +169,18 @@ namespace STR_FALL
 		inline Vector4 operator*(const float rhs) const { return Vector4(m_x * rhs, m_y * rhs, m_z * rhs, m_w * rhs); }
 		inline Vector4 operator/(const float rhs) const { return Vector4(m_x / rhs, m_y / rhs, m_z / rhs, m_w / rhs); }
 
-		inline Vector4& operator+=(const Vector4& rhs) { m_x + rhs.m_x; m_y + rhs.m_y; m_z + rhs.m_z; m_w + rhs.m_w; return *this; }
-		inline Vector4& operator-=(const Vector4& rhs) { m_x - rhs.m_x; m_y - rhs.m_y; m_z - rhs.m_z; m_w - rhs.m_w; return *this; }
-		inline Vector4& operator*=(const Vector4& rhs) { m_x* rhs.m_x; m_y* rhs.m_y; m_z* rhs.m_z; m_w* rhs.m_w; return *this; }
-		inline Vector4& operator/=(const Vector4& rhs) { m_x / rhs.m_x; m_y / rhs.m_y; m_z / rhs.m_z; m_w / rhs.m_w; return *this; }
+		inline Vector4& operator+=(const Vector4& rhs) { m_x += rhs.m_x; m_y += rhs.m_y; m_z += rhs.m_z; m_w += rhs.m_w; return *this; }
+		inline Vector4& operator-=(const Vector4& rhs) { m_x -= rhs.m_x; m_y -= rhs.m_y; m_z -= rhs.m_z; m_w -= rhs.m_w; return *this; }
+		inline Vector4& operator*=(const Vector4& rhs) { m_x *= rhs.m_x; m_y *= rhs.m_y; m_z *= rhs.m_z; m_w *= rhs.m_w; return *this; }
+		inline Vector4& operator/=(const Vector4& rhs) { m_x /= rhs.m_x; m_y /= rhs.m_y; m_z /= rhs.m_z; m_w /= rhs.m_w; return *this; }
 
-		inline Vector4& operator+=(const float rhs) { m_x + rhs; m_y + rhs; m_z + rhs; m_w + rhs; return *this; }
-		inline Vector4& operator-=(const float rhs) { m_x - rhs; m_y - rhs; m_z - rhs; m_w - rhs; return *this; }
-		inline Vector4& operator*=(const float rhs) { m_x* rhs; m_y* rhs; m_z* rhs; m_w* rhs; return *this; }
-		inline Vector4& operator/=(const float rhs) { m_x / rhs; m_y / rhs; m_z / rhs; m_w / rhs; return *this; }
+		inline Vector4& operator+=(const float rhs) { m_x += rhs; m_y += rhs; m_z += rhs; m_w += rhs; return *this; }
+		inline Vector4& operator-=(const float rhs) { m_x -= rhs; m_y -= rhs; m_z -= rhs; m_w -= rhs; return *this; }
+		inline Vector4& operator*=(const float rhs) { m_x *= rhs; m_y *= rhs; m_z *= rhs; m_w *= rhs; return *this; }
+		inline Vector4& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs; m_z /= rhs; m_w /= rhs; return *this; }
 
 		inline bool operator==(const Vector4& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z) && (m_w == rhs.m_w); }
+		inline bool operator!=(const Vector4& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y) || (m_z != rhs.m_z) || (m_w != rhs.m_w); }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); m_z = std::clamp(m_z, min, max); m_w = std::clamp(m_w, min, max); }
 		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
@@ -185,7 +194,7 @@ namespace STR_FALL
 		{
 			float mag = this->Magnitude();
 			if (mag == 0.0f) { return Vector4(); }
-			return Vector4(m_x / mag, m_y / mag, m_z / mag, m_w / mag);
+			return *this / mag;
 		}
 		float Distance(const Vector4& vect) const
 		{
@@ -200,6 +209,13 @@ namespace STR_FALL
 			return *this + (vect - *this) * t;
 		}
 	};
+
+	inline Vector2::Vector2(const Vector3& vect) : m_x(vect.m_x), m_y(vect.m_y) {}
+	inline Vector2::Vector2(const Vector4& vect) : m_x(vect.m_x), m_y(vect.m_y) {}
+	inline Vector3::Vector3(const Vector2& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(0.0f) {}
+	inline Vector3::Vector3(const Vector4& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(vect.m_z) {}
+	inline Vector4::Vector4(const Vector2& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(0.0f), m_w(0.0f) {}
+	inline Vector4::Vector4(const Vector3& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(vect.m_z), m_w(0.0f) {}
 
 	struct Matrix2
 	{
@@ -528,7 +544,7 @@ namespace STR_FALL
 			}
 		}
 
-		inline Matrix3 GetRotationMatrix()
+		inline Matrix3 GetRotationMatrix() const
 		{
 			return m_rotMat;
 		}
@@ -574,128 +590,5 @@ namespace STR_FALL
 		Color m_color;
 
 		inline Line2DC(const Vector2& p1, const Vector2& p2, const Color& color) : Line2D(p1, p2), m_color(color) {}
-	};
-
-	template<typename T>
-	concept Transforms = std::same_as<T, Transform2D> || std::same_as<T, Transform3D>;
-	template<Transforms T>
-	struct Object
-	{
-	protected:
-		T m_transform;
-
-	public:
-		Vector3 m_vel = Vector3();
-
-		Object(const T& transform) : m_transform(transform) {}
-
-		virtual void Update(float dt) { m_transform.m_p += m_vel * dt; }
-		virtual void Draw() = 0;
-	};
-
-	struct Rect2D : Object<Transform2D>
-	{
-	protected:
-		float halfX; float halfY;
-
-	public:
-		Color m_color;
-
-		Rect2D(const Transform2D& t = Transform2D(), const Color& c = Color(1.0f, 1.0f, 1.0f)) :
-			Object(t), m_color(c) { UpdateHalfExtends(); }
-
-		// safe conversions / setter logic options
-		inline float Deg() const { return fmod(m_transform.m_rot * F_RAD_DEG, 360.0f); }
-		inline float Rad() const { return fmod(m_transform.m_rot, F_PI2); }
-		inline void Deg(float val) { m_transform.SetRotation(fmod(val * F_DEG_RAD, F_PI2)); }
-		inline void Rad(float val) { m_transform.SetRotation(fmod(val, F_PI2)); }
-
-		inline float MinX() const { return m_transform.m_pos.m_x - halfX; }
-		inline float MaxX() const { return m_transform.m_pos.m_x + halfX; }
-		inline float MinY() const { return m_transform.m_pos.m_y - halfY; }
-		inline float MaxY() const { return m_transform.m_pos.m_y + halfY; }
-
-		void UpdateHalfExtends() {
-			Vector2 halfs = m_transform.GetRotationMatrix().Abs() * (m_transform.m_scale * 0.5f);
-			
-			halfX = halfs.m_x;
-			halfY = halfs.m_y;
-		}
-	};
-
-	struct Rect3D : Object<Transform3D>
-	{
-	protected:
-		float m_halfX; float m_halfY; float m_halfZ;
-		std::vector<Triangle3D> m_Tris;
-
-	public:
-		Color m_color;
-
-		Rect3D(const Transform3D& t, const Color& c = Color(1.0f, 1.0f, 1.0f)) :
-			Object(t), m_color(c) { UpdateHalfExtends(); UpdateTriangles(); }
-
-		
-		// safe conversions / setter logic options
-		float DegX() const { return fmod(m_transform.m_rot.m_x * F_RAD_DEG, 360.0f); }
-		float DegY() const { return fmod(m_transform.m_rot.m_y * F_RAD_DEG, 360.0f); }
-		float DegZ() const { return fmod(m_transform.m_rot.m_z * F_RAD_DEG, 360.0f); }
-		float RadX() const { return fmod(m_transform.m_rot.m_x, F_PI2); }
-		float RadY() const { return fmod(m_transform.m_rot.m_y, F_PI2); }
-		float RadZ() const { return fmod(m_transform.m_rot.m_z, F_PI2); }
-		void DegX(float val) { m_transform.SetRotationX(fmod(val * F_DEG_RAD, F_PI2)); }
-		void DegY(float val) { m_transform.SetRotationY(fmod(val * F_DEG_RAD, F_PI2)); }
-		void DegZ(float val) { m_transform.SetRotationZ(fmod(val * F_DEG_RAD, F_PI2)); }
-		void RadX(float val) { m_transform.SetRotationX(fmod(val, F_PI2)); }
-		void RadY(float val) { m_transform.SetRotationY(fmod(val, F_PI2)); }
-		void RadZ(float val) { m_transform.SetRotationZ(fmod(val, F_PI2)); }
-
-		inline float MinX() const { return m_transform.m_pos.m_x - m_halfX; }
-		inline float MaxX() const { return m_transform.m_pos.m_x + m_halfX; }
-		inline float MinY() const { return m_transform.m_pos.m_y - m_halfY; }
-		inline float MaxY() const { return m_transform.m_pos.m_y + m_halfY; }
-		inline float MinZ() const { return m_transform.m_pos.m_z - m_halfZ; }
-		inline float MaxZ() const { return m_transform.m_pos.m_z + m_halfZ; }
-
-		void UpdateHalfExtends() {
-			Vector3 halfs = m_transform.GetRotationMatrix().Abs() * (m_transform.m_scale * 0.5f);
-			
-			m_halfX = halfs.m_x;
-			m_halfY = halfs.m_y;
-			m_halfZ = halfs.m_z;
-		}
-		void UpdateTriangles()
-		{
-			Vector3 hs = m_transform.m_scale * 0.5f;
-
-			std::vector<Vector3> p = {
-				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x + hs.m_x, m_transform.m_pos.m_y + hs.m_y, m_transform.m_pos.m_z + hs.m_z),
-				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x + hs.m_x, m_transform.m_pos.m_y + hs.m_y, m_transform.m_pos.m_z - hs.m_z),
-				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x + hs.m_x, m_transform.m_pos.m_y - hs.m_y, m_transform.m_pos.m_z + hs.m_z),
-				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x + hs.m_x, m_transform.m_pos.m_y - hs.m_y, m_transform.m_pos.m_z - hs.m_z),
-				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x - hs.m_x, m_transform.m_pos.m_y + hs.m_y, m_transform.m_pos.m_z + hs.m_z),
-				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x - hs.m_x, m_transform.m_pos.m_y + hs.m_y, m_transform.m_pos.m_z - hs.m_z),
-				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x - hs.m_x, m_transform.m_pos.m_y - hs.m_y, m_transform.m_pos.m_z + hs.m_z),
-				m_transform.GetRotationMatrix() * Vector3(m_transform.m_pos.m_x - hs.m_x, m_transform.m_pos.m_y - hs.m_y, m_transform.m_pos.m_z - hs.m_z)
-			};
-			m_Tris = {
-				Triangle3D(p[2], p[0], p[1]),
-				Triangle3D(p[1], p[3], p[2]),
-				Triangle3D(p[6], p[2], p[3]),
-				Triangle3D(p[3], p[7], p[6]),
-				Triangle3D(p[4], p[6], p[7]),
-				Triangle3D(p[7], p[5], p[4]),
-				Triangle3D(p[0], p[4], p[5]),
-				Triangle3D(p[5], p[1], p[0]),
-				Triangle3D(p[4], p[0], p[2]),
-				Triangle3D(p[2], p[6], p[4]),
-				Triangle3D(p[5], p[7], p[3]),
-				Triangle3D(p[3], p[1], p[5])
-			};
-		}
-		std::vector<Triangle3D> GetTris() const
-		{
-			return m_Tris;
-		}
 	};
 }

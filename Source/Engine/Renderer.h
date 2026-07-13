@@ -28,29 +28,29 @@ namespace STR_FALL
         void Present();
 		void ShutDown();
 
-		void RenderDebugText(std::string text, Vector2 point);
+		void RenderDebugText(const std::string& text, const Vector2& point) const;
 
-		void RenderPoint(Vector2 point);
-		void RenderPoints(std::vector<Vector2> points);
-		void RenderLine(Line line);
-		void RenderLines(std::vector<Line> lines);
-		void RenderRectAABB(Rect2D rect);
-		void RenderRectsAABB(std::vector<Rect2D> rects);
-		void RenderFillRectAABB(Rect2D rect);
-		void RenderFillRectsAABB(std::vector<Rect2D> rects);
+		void RenderPoint(const Vector2& point) const;
+		void RenderPoints(const std::vector<Vector2>& points) const;
+		void RenderLine(const Line2D& line) const;
+		void RenderLines(const std::vector<Line2D>& lines) const;
+		void RenderRectAABB(const Rect2D& rect) const;
+		void RenderRectsAABB(const std::vector<Rect2D>& rects) const;
+		void RenderFillRectAABB(const Rect2D& rect) const;
+		void RenderFillRectsAABB(const std::vector<Rect2D>& rects) const;
 
-		void RenderFillTriangle(Triangle2D tri);
-		void RenderOutlineTriangle(Triangle2D tri);
+		void RenderFillTriangle(const Triangle2D& tri) const;
+		void RenderOutlineTriangle(const Triangle2D& tri) const;
 
-		void RenderPointColor(Vector2C point);
-		void RenderPointsColor(std::vector<Vector2C> points);
-		void RenderLineColor(LineC line);
-		void RenderLinesColor(std::vector<LineC> lines);
-		void RenderRectAABBColor(Rect2D rect);
-		void RenderRectsAABBColor(std::vector<Rect2D> rects);
-		void RenderFillRectAABBColor(Rect2D rect);
-		void RenderFillRectsAABBColor(std::vector<Rect2D> rects);
+		void RenderPointColor(const Vector2C& point) const;
+		void RenderPointsColor(const std::vector<Vector2C>& points) const;
+		void RenderLineColor(const Line2DC& line) const;
+		void RenderLinesColor(const std::vector<Line2DC>& lines) const;
+		void RenderRectAABBColor(const Rect2D& rect) const;
+		void RenderRectsAABBColor(const std::vector<Rect2D>& rects) const;
+		void RenderFillRectAABBColor(const Rect2D& rect) const;
+		void RenderFillRectsAABBColor(const std::vector<Rect2D>& rects) const;
 
-		void Render3DFillTriangles(Camera3D cam, std::vector<Triangle3D> tris);
+		void Render3DFillTriangles(const Camera3D& cam, const std::vector<Triangle3D>& tris) const;
 	};
 }
