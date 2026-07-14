@@ -38,7 +38,7 @@ int main()
 
         r.SetColor(Color(0.0f, 1.0f, 1.0f));
 
-        r.Render3DFillTriangles(cam, block.GetTris());
+        //r.Render3DFillTriangles(cam, block.GetTris());
 
         r.Present();
     }
