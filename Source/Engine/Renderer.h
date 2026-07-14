@@ -34,23 +34,20 @@ namespace STR_FALL
 		void RenderPoints(const std::vector<Vector2>& points) const;
 		void RenderLine(const Line2D& line) const;
 		void RenderLines(const std::vector<Line2D>& lines) const;
-		void RenderRectAABB(const Rect2D& rect) const;
-		void RenderRectsAABB(const std::vector<Rect2D>& rects) const;
-		void RenderFillRectAABB(const Rect2D& rect) const;
-		void RenderFillRectsAABB(const std::vector<Rect2D>& rects) const;
-
 		void RenderFillTriangle(const Triangle2D& tri) const;
 		void RenderOutlineTriangle(const Triangle2D& tri) const;
+		void RenderCustomFilled(const std::vector<Vector2>& points) const;
+		void RenderCustomOutline(const std::vector<Vector2>& points) const;
 
 		void RenderPointColor(const Vector2C& point) const;
 		void RenderPointsColor(const std::vector<Vector2C>& points) const;
 		void RenderLineColor(const Line2DC& line) const;
 		void RenderLinesColor(const std::vector<Line2DC>& lines) const;
-		void RenderRectAABBColor(const Rect2D& rect) const;
-		void RenderRectsAABBColor(const std::vector<Rect2D>& rects) const;
-		void RenderFillRectAABBColor(const Rect2D& rect) const;
-		void RenderFillRectsAABBColor(const std::vector<Rect2D>& rects) const;
+		void RenderFillTriangleColor(const Triangle2DC& tri) const;
+		void RenderOutlineTriangleColor(const Triangle2DC& tri) const;
+		void RenderCustomFilledColor(const std::vector<Vector2C>& points) const;
+		void RenderCustomOutlineColor(const std::vector<Vector2C>& points) const;
 
-		void Render3DFillTriangles(const Camera3D& cam, const std::vector<Triangle3D>& tris) const;
+		void Render3DOutlineTriangles(const Camera3D& cam, const std::vector<Triangle3D>& tris) const;
 	};
 }

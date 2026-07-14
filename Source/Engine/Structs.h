@@ -9,6 +9,9 @@ namespace STR_FALL
 	struct Vector2;
 	struct Vector3;
 	struct Vector4;
+	struct Matrix2;
+	struct Matrix3;
+	struct Matrix4;
 
 	struct Vector2
 	{
@@ -43,6 +46,9 @@ namespace STR_FALL
 		inline Vector2& operator*=(const float rhs) { m_x *= rhs; m_y *= rhs; return *this; }
 		inline Vector2& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs; return *this; }
 
+		inline Vector2 operator*(const Matrix2& rhs) const;
+		inline Vector2& operator*=(const Matrix2& rhs);
+
 		inline bool operator==(const Vector2& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y); }
 		inline bool operator!=(const Vector2& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y); }
 
@@ -51,25 +57,27 @@ namespace STR_FALL
 		inline void ClampY(const float min, const float max) { m_y = std::clamp(m_y, min, max); }
 
 		inline float Magnitude() const { return std::sqrt((m_x * m_x) + (m_y * m_y)); }
+		inline float MagnitudeSqr() const { return (m_x * m_x) + (m_y * m_y); }
 		inline float Dot(const Vector2& vect) const { return m_x * vect.m_x + m_y * vect.m_y; }
 		inline float AngleBetween(const Vector2& vect) const { return std::acos(Dot(vect)); }
 		inline float Angle() const { return std::atan2(m_y, m_x); }
-		Vector2 Normalize() const
-		{
-			float mag = this->Magnitude();
-			if (mag == 0.0f) { return Vector2(); }
-			return *this / mag;
-		}
 		float Distance(const Vector2& vect) const
 		{
 			float dx = vect.m_x - m_x;
 			float dy = vect.m_y - m_y;
 			return std::sqrt(dx * dx + dy * dy);
 		}
+		Vector2 Normalize() const
+		{
+			float mag = this->Magnitude();
+			if (mag == 0.0f) { return Vector2(); }
+			return *this / mag;
+		}
 		Vector2 Lerp(const Vector2& vect, const float t = 0.5f) const
 		{
 			return *this + (vect - *this) * t;
 		}
+		Vector2 Rotate(const float rad) const;
 	};
 
 	struct Vector3
@@ -115,13 +123,15 @@ namespace STR_FALL
 		inline void ClampZ(const float min, const float max) { m_z = std::clamp(m_z, min, max); }
 
 		inline float Magnitude() const { return std::sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z)); }
+		inline float MagnitudeSqr() const { return (m_x * m_x) + (m_y * m_y) + (m_z * m_z); }
 		inline float Dot(const Vector3& vect) const { return m_x * vect.m_x + m_y * vect.m_y + m_z * vect.m_z; }
 		inline float Angle(const Vector3& vect) const { return std::acos(Dot(vect)); }
-		Vector3 Normalize() const
+		float Distance(const Vector3& vect) const
 		{
-			float mag = this->Magnitude();
-			if (mag == 0.0f) { return Vector3(); }
-			return *this / mag;
+			float dx = vect.m_x - m_x;
+			float dy = vect.m_y - m_y;
+			float dz = vect.m_z - m_z;
+			return std::sqrt(dx * dx + dy * dy + dz * dz);
 		}
 		inline Vector3 Cross(const Vector3& vect) const
 		{
@@ -131,12 +141,11 @@ namespace STR_FALL
 				m_x * vect.m_y - m_y * vect.m_x
 			);
 		}
-		float Distance(const Vector3& vect) const
+		Vector3 Normalize() const
 		{
-			float dx = vect.m_x - m_x;
-			float dy = vect.m_y - m_y;
-			float dz = vect.m_z - m_z;
-			return std::sqrt(dx * dx + dy * dy + dz * dz);
+			float mag = this->Magnitude();
+			if (mag == 0.0f) { return Vector3(); }
+			return *this / mag;
 		}
 		Vector3 Lerp(const Vector3& vect, const float t = 0.5f) const
 		{
@@ -414,6 +423,23 @@ namespace STR_FALL
 
 	};
 
+	inline Vector2 Vector2::operator*(const Matrix2& rhs) const {
+		return Vector2(
+			rhs.m_m[0][0] * m_x + rhs.m_m[0][1] * m_y,
+			rhs.m_m[1][0] * m_x + rhs.m_m[1][1] * m_y
+		);
+	}
+	inline Vector2& Vector2::operator*=(const Matrix2& rhs) {
+		m_x = rhs.m_m[0][0] * m_x + rhs.m_m[0][1] * m_y;
+		m_y = rhs.m_m[1][0] * m_x + rhs.m_m[1][1] * m_y;
+		return *this;
+	}
+
+	Vector2 Vector2::Rotate(const float rad) const
+	{
+		return *this * Matrix2::RotationXY(rad);
+	}
+
 	struct Triangle2D
 	{
 		Vector2 m_a;
@@ -563,14 +589,13 @@ namespace STR_FALL
 		}
 	};
 
-	struct Color
+	struct Color : Vector4
 	{
-		Vector4 m_color;
-
-		inline Color(const float r = 1.0f, const float g = 1.0f, const float b = 1.0f, const float a = 1.0f) : m_color(r, g, b, a) {}
+		inline Color(const float r = 1.0f, const float g = 1.0f, const float b = 1.0f, const float a = 1.0f) : Vector4(r,g,b,a) {}
 	};
 
-	struct Vector2C : Vector2 {
+	struct Vector2C : Vector2
+	{
 		Color m_color;
 
 		inline Vector2C(float x, float y, const Color& color) : Vector2(x, y), m_color(color) {}
@@ -590,5 +615,29 @@ namespace STR_FALL
 		Color m_color;
 
 		inline Line2DC(const Vector2& p1, const Vector2& p2, const Color& color) : Line2D(p1, p2), m_color(color) {}
+	};
+
+	struct Triangle2DC : Triangle2D
+	{
+		Color m_color;
+
+		inline Triangle2DC(const Vector2& a = Vector2(), const Vector2& b = Vector2(), const Vector2& c = Vector2(), const Color& color = Color()) :
+			Triangle2D(a, b, c), m_color(color) {
+		}
+		inline Triangle2DC(const Triangle2D& tri, const Color& color) :
+			Triangle2D(tri.m_a, tri.m_b, tri.m_c), m_color(color) {
+		}
+	};
+
+	struct Triangle3DC : Triangle3D
+	{
+		Color m_color;
+
+		inline Triangle3DC(const Vector3& a = Vector3(), const Vector3& b = Vector3(), const Vector3& c = Vector3(), const Color& color = Color()) :
+			Triangle3D(a, b, c), m_color(color) {
+		}
+		inline Triangle3DC(const Triangle3D& tri, const Color& color) :
+			Triangle3D(tri.m_a, tri.m_b, tri.m_c), m_color(color) {
+		}
 	};
 }

@@ -31,26 +31,26 @@ namespace STR_FALL
     void Renderer::SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {
         SDL_SetRenderDrawColorFloat(m_renderer, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
-        m_lastSetColor->m_color.m_x = r / 255.0f;
-        m_lastSetColor->m_color.m_y = g / 255.0f;
-        m_lastSetColor->m_color.m_z = b / 255.0f;
-        m_lastSetColor->m_color.m_w = a / 255.0f;
+        m_lastSetColor->m_x = r / 255.0f;
+        m_lastSetColor->m_y = g / 255.0f;
+        m_lastSetColor->m_z = b / 255.0f;
+        m_lastSetColor->m_w = a / 255.0f;
     }
     void Renderer::SetColor(Color c)
     {
-        SDL_SetRenderDrawColorFloat(m_renderer, c.m_color.m_x, c.m_color.m_y, c.m_color.m_z, c.m_color.m_w);
-        m_lastSetColor->m_color.m_x = c.m_color.m_x;
-        m_lastSetColor->m_color.m_y = c.m_color.m_y;
-        m_lastSetColor->m_color.m_z = c.m_color.m_z;
-        m_lastSetColor->m_color.m_w = c.m_color.m_w;
+        SDL_SetRenderDrawColorFloat(m_renderer, c.m_x, c.m_y, c.m_z, c.m_w);
+        m_lastSetColor->m_x = c.m_x;
+        m_lastSetColor->m_y = c.m_y;
+        m_lastSetColor->m_z = c.m_z;
+        m_lastSetColor->m_w = c.m_w;
     }
     void Renderer::SetColorF(float r, float g, float b, float a)
     {
         SDL_SetRenderDrawColorFloat(m_renderer, r, g, b, a);
-        m_lastSetColor->m_color.m_x = r;
-        m_lastSetColor->m_color.m_y = g;
-        m_lastSetColor->m_color.m_z = b;
-        m_lastSetColor->m_color.m_w = a;
+        m_lastSetColor->m_x = r;
+        m_lastSetColor->m_y = g;
+        m_lastSetColor->m_z = b;
+        m_lastSetColor->m_w = a;
     }
 
     Color Renderer::GetColor() { return *m_lastSetColor; }
@@ -59,19 +59,19 @@ namespace STR_FALL
     {
         SDL_SetRenderDrawColorFloat(m_renderer, r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
         SDL_RenderClear(m_renderer);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
     }
     void Renderer::Clear(Color c)
     {
-        SDL_SetRenderDrawColorFloat(m_renderer, c.m_color.m_x, c.m_color.m_y, c.m_color.m_z, c.m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, c.m_x, c.m_y, c.m_z, c.m_w);
         SDL_RenderClear(m_renderer);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
     }
     void Renderer::ClearF(float r, float g, float b, float a)
     {
         SDL_SetRenderDrawColorFloat(m_renderer, r, g, b, a);
         SDL_RenderClear(m_renderer);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
     }
 
     void Renderer::Present()
@@ -109,49 +109,22 @@ namespace STR_FALL
             SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
         }
     }
-    void Renderer::RenderRectAABB(const Rect2D& rect) const
-    {
-        SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
-        SDL_RenderRect(m_renderer, &drawRect);
-    }
-    void Renderer::RenderRectsAABB(const std::vector<Rect2D>& rects) const
-    {
-        for (size_t index = 0; index < rects.size(); index++)
-        {
-            SDL_FRect drawRect = { rects[index].MinX(), rects[index].MinY(), rects[index].MaxX() - rects[index].MinX(), rects[index].MaxY() - rects[index].MinY() };
-            SDL_RenderRect(m_renderer, &drawRect);
-        }
-    }
-    void Renderer::RenderFillRectAABB(const Rect2D& rect) const
-    {
-        SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
-        SDL_RenderFillRect(m_renderer, &drawRect);
-    }
-    void Renderer::RenderFillRectsAABB(const std::vector<Rect2D>& rects) const
-    {
-        for (const Rect2D& rect : rects)
-        {
-            SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
-            SDL_RenderFillRect(m_renderer, &drawRect);
-        }
-    }
-
     void Renderer::RenderFillTriangle(const Triangle2D& tri) const {
         std::vector<SDL_Vertex> vertices;
 
         vertices.push_back(SDL_Vertex(
             SDL_FPoint(tri[0].m_x, tri[0].m_y),
-            SDL_FColor(m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w),
+            SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
             SDL_FPoint(0, 0)
         ));
         vertices.push_back(SDL_Vertex(
             SDL_FPoint(tri[1].m_x, tri[1].m_y),
-            SDL_FColor(m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w),
+            SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
             SDL_FPoint(0, 0)
         ));
         vertices.push_back(SDL_Vertex(
             SDL_FPoint(tri[2].m_x, tri[2].m_y),
-            SDL_FColor(m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w),
+            SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
             SDL_FPoint(0, 0)
         ));
 
@@ -163,73 +136,125 @@ namespace STR_FALL
         SDL_RenderLine(m_renderer, tri[1].m_x, tri[1].m_y, tri[2].m_x, tri[2].m_y);
         SDL_RenderLine(m_renderer, tri[2].m_x, tri[2].m_y, tri[0].m_x, tri[0].m_y);
     }
+    void Renderer::RenderCustomFilled(const std::vector<Vector2>& points) const
+    {
+        if (points.size() > 1)
+        {
+            std::vector<SDL_Vertex> vertices;
+
+            for (const Vector2& point : points)
+            {
+                vertices.push_back(SDL_Vertex(
+                    SDL_FPoint(point.m_x, point.m_y),
+                    SDL_FColor(m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w),
+                    SDL_FPoint(0, 0)
+                ));
+            }
+            SDL_RenderGeometry(m_renderer, NULL, vertices.data(), static_cast<int>(vertices.size()), NULL, 0);
+        }
+    }
+    void Renderer::RenderCustomOutline(const std::vector<Vector2>& points) const
+    {
+        if (points.size() > 1)
+        {
+            for (unsigned int index = 0; index < static_cast<unsigned int>(points.size() - 1); index++)
+            {
+                SDL_RenderLine(m_renderer, points[index].m_x, points[index].m_y, points[index + 1].m_x, points[index + 1].m_y);
+            }
+        }
+    }
 
     void Renderer::RenderPointColor(const Vector2C& point) const
     {
-        SDL_SetRenderDrawColorFloat(m_renderer, point.m_color.m_color.m_x, point.m_color.m_color.m_y, point.m_color.m_color.m_z, point.m_color.m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w);
         SDL_RenderPoint(m_renderer, point.m_x, point.m_y);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
     }
     void Renderer::RenderPointsColor(const std::vector<Vector2C>& points) const
     {
         for (const Vector2C& point : points)
         {
-            SDL_SetRenderDrawColorFloat(m_renderer, point.m_color.m_color.m_x, point.m_color.m_color.m_y, point.m_color.m_color.m_z, point.m_color.m_color.m_w);
+            SDL_SetRenderDrawColorFloat(m_renderer, point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w);
             SDL_RenderPoint(m_renderer, point.m_x, point.m_y);
         }
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
     }
     void Renderer::RenderLineColor(const Line2DC& line) const
     {
-        SDL_SetRenderDrawColorFloat(m_renderer, line.m_color.m_color.m_x, line.m_color.m_color.m_y, line.m_color.m_color.m_z, line.m_color.m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, line.m_color.m_x, line.m_color.m_y, line.m_color.m_z, line.m_color.m_w);
         SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
     }
     void Renderer::RenderLinesColor(const std::vector<Line2DC>& lines) const
     {
         for (const Line2DC& line : lines)
         {
-            SDL_SetRenderDrawColorFloat(m_renderer, line.m_color.m_color.m_x, line.m_color.m_color.m_y, line.m_color.m_color.m_z, line.m_color.m_color.m_w);
+            SDL_SetRenderDrawColorFloat(m_renderer, line.m_color.m_x, line.m_color.m_y, line.m_color.m_z, line.m_color.m_w);
             SDL_RenderLine(m_renderer, line.m_1.m_x, line.m_1.m_y, line.m_2.m_x, line.m_2.m_y);
         }
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
+        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
     }
-    void Renderer::RenderRectAABBColor(const Rect2D& rect) const
+    void Renderer::RenderFillTriangleColor(const Triangle2DC& tri) const
     {
-        SDL_SetRenderDrawColorFloat(m_renderer, rect.m_color.m_color.m_x, rect.m_color.m_color.m_y, rect.m_color.m_color.m_z, rect.m_color.m_color.m_w);
-        SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
-        SDL_RenderRect(m_renderer, &drawRect);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
+        std::vector<SDL_Vertex> vertices;
+
+        vertices.push_back(SDL_Vertex(
+            SDL_FPoint(tri[0].m_x, tri[0].m_y),
+            SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
+            SDL_FPoint(0, 0)
+        ));
+        vertices.push_back(SDL_Vertex(
+            SDL_FPoint(tri[1].m_x, tri[1].m_y),
+            SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
+            SDL_FPoint(0, 0)
+        ));
+        vertices.push_back(SDL_Vertex(
+            SDL_FPoint(tri[2].m_x, tri[2].m_y),
+            SDL_FColor(tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w),
+            SDL_FPoint(0, 0)
+        ));
+
+        SDL_RenderGeometry(m_renderer, NULL, vertices.data(), 3, NULL, 0);
     }
-    void Renderer::RenderRectsAABBColor(const std::vector<Rect2D>& rects) const
+    void Renderer::RenderOutlineTriangleColor(const Triangle2DC& tri) const
     {
-        for (const Rect2D& rect : rects)
+        SDL_SetRenderDrawColorFloat(m_renderer, tri.m_color.m_x, tri.m_color.m_y, tri.m_color.m_z, tri.m_color.m_w);
+        SDL_RenderLine(m_renderer, tri[0].m_x, tri[0].m_y, tri[1].m_x, tri[1].m_y);
+        SDL_RenderLine(m_renderer, tri[1].m_x, tri[1].m_y, tri[2].m_x, tri[2].m_y);
+        SDL_RenderLine(m_renderer, tri[2].m_x, tri[2].m_y, tri[0].m_x, tri[0].m_y);
+        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
+    }
+    void Renderer::RenderCustomFilledColor(const std::vector<Vector2C>& points) const
+    {
+        if (points.size() > 1)
         {
-            SDL_SetRenderDrawColorFloat(m_renderer, rect.m_color.m_color.m_x, rect.m_color.m_color.m_y, rect.m_color.m_color.m_z, rect.m_color.m_color.m_w);
-            SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
-            SDL_RenderRect(m_renderer, &drawRect);
+            std::vector<SDL_Vertex> vertices;
+
+            for (const Vector2C& point : points)
+            {
+                vertices.push_back(SDL_Vertex(
+                    SDL_FPoint(point.m_x, point.m_y),
+                    SDL_FColor(point.m_color.m_x, point.m_color.m_y, point.m_color.m_z, point.m_color.m_w),
+                    SDL_FPoint(0, 0)
+                ));
+            }
+            SDL_RenderGeometry(m_renderer, NULL, vertices.data(), static_cast<int>(vertices.size()), NULL, 0);
         }
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
     }
-    void Renderer::RenderFillRectAABBColor(const Rect2D& rect) const
+    void Renderer::RenderCustomOutlineColor(const std::vector<Vector2C>& points) const
     {
-        SDL_SetRenderDrawColorFloat(m_renderer, rect.m_color.m_color.m_x, rect.m_color.m_color.m_y, rect.m_color.m_color.m_z, rect.m_color.m_color.m_w);
-        SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
-        SDL_RenderFillRect(m_renderer, &drawRect);
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
-    }
-    void Renderer::RenderFillRectsAABBColor(const std::vector<Rect2D>& rects) const
-    {
-        for (const Rect2D& rect : rects)
+        if (points.size() > 1)
         {
-            SDL_SetRenderDrawColorFloat(m_renderer, rect.m_color.m_color.m_x, rect.m_color.m_color.m_y, rect.m_color.m_color.m_z, rect.m_color.m_color.m_w);
-            SDL_FRect drawRect = { rect.MinX(), rect.MinY(), rect.MaxX() - rect.MinX(), rect.MaxY() - rect.MinY() };
-            SDL_RenderFillRect(m_renderer, &drawRect);
+            for (unsigned int index = 0; index < static_cast<unsigned int>(points.size() - 1); index++)
+            {
+                SDL_SetRenderDrawColorFloat(m_renderer, points[index].m_color.m_x, points[index].m_color.m_y, points[index].m_color.m_z, points[index].m_color.m_w);
+                SDL_RenderLine(m_renderer, points[index].m_x, points[index].m_y, points[index + 1].m_x, points[index + 1].m_y);
+            }
+            SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
         }
-        SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_color.m_x, m_lastSetColor->m_color.m_y, m_lastSetColor->m_color.m_z, m_lastSetColor->m_color.m_w);
     }
 
-    void Renderer::Render3DFillTriangles(const Camera3D& cam, const std::vector<Triangle3D>& tris) const
+    void Renderer::Render3DOutlineTriangles(const Camera3D& cam, const std::vector<Triangle3D>& tris) const
     {
         float FOVScaling = 1 / std::tan((cam.m_fov / 2) * STR_FALL::F_DEG_RAD);
 

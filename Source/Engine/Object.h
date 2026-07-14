@@ -57,7 +57,6 @@ namespace STR_FALL
 
 		void Draw(const Renderer& r) const override
 		{
-			r.RenderFillRectAABBColor(*this);
 		}
 	};
 
