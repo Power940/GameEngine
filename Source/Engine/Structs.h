@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cassert>
+#include "Constants.h"
 
 namespace STR_FALL
 {
@@ -20,8 +21,8 @@ namespace STR_FALL
 
 		inline Vector2(const float x = 0.0f, const float y = 0.0f) : m_x(x), m_y(y) {}
 		inline Vector2(const Vector2& ip, const Vector2& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y) {}
-		inline Vector2(const Vector3& vect);
-		inline Vector2(const Vector4& vect);
+		Vector2(const Vector3& vect);
+		Vector2(const Vector4& vect);
 
 		float operator[](const unsigned int element) const { assert(element < 2); return (&m_x)[element]; }
 		float& operator[](const unsigned int element) { assert(element < 2); return (&m_x)[element]; }
@@ -30,29 +31,38 @@ namespace STR_FALL
 		inline Vector2 operator-(const Vector2& rhs) const { return Vector2(m_x - rhs.m_x, m_y - rhs.m_y); }
 		inline Vector2 operator*(const Vector2& rhs) const { return Vector2(m_x * rhs.m_x, m_y * rhs.m_y); }
 		inline Vector2 operator/(const Vector2& rhs) const { return Vector2(m_x / rhs.m_x, m_y / rhs.m_y); }
+		inline Vector2 operator%(const Vector2& rhs) const { return Vector2(fmod(m_x, rhs.m_x), fmod(m_y, rhs.m_y)); }
 
 		inline Vector2 operator+(const float rhs) const { return Vector2(m_x + rhs, m_y + rhs); }
 		inline Vector2 operator-(const float rhs) const { return Vector2(m_x - rhs, m_y - rhs); }
 		inline Vector2 operator*(const float rhs) const { return Vector2(m_x * rhs, m_y * rhs); }
 		inline Vector2 operator/(const float rhs) const { return Vector2(m_x / rhs, m_y / rhs); }
+		inline Vector2 operator%(const float rhs) const { return Vector2(fmod(m_x, rhs), fmod(m_y, rhs)); }
 
 		inline Vector2& operator+=(const Vector2& rhs) { m_x += rhs.m_x; m_y += rhs.m_y; return *this; }
 		inline Vector2& operator-=(const Vector2& rhs) { m_x -= rhs.m_x; m_y -= rhs.m_y; return *this; }
 		inline Vector2& operator*=(const Vector2& rhs) { m_x *= rhs.m_x; m_y *= rhs.m_y; return *this; }
 		inline Vector2& operator/=(const Vector2& rhs) { m_x /= rhs.m_x; m_y /= rhs.m_y; return *this; }
+		inline Vector2& operator%=(const Vector2& rhs) { m_x = fmod(m_x, rhs.m_x); m_y = fmod(m_y, rhs.m_y); return *this; }
 
 		inline Vector2& operator+=(const float rhs) { m_x += rhs; m_y += rhs; return *this; }
 		inline Vector2& operator-=(const float rhs) { m_x -= rhs; m_y -= rhs; return *this; }
 		inline Vector2& operator*=(const float rhs) { m_x *= rhs; m_y *= rhs; return *this; }
 		inline Vector2& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs; return *this; }
+		inline Vector2& operator%=(const float rhs) { m_x = fmod(m_x, rhs); m_y = fmod(m_y, rhs); return *this; }
 
-		inline Vector2 operator*(const Matrix2& rhs) const;
-		inline Vector2& operator*=(const Matrix2& rhs);
+		Vector2 operator*(const Matrix2& rhs) const;
+		Vector2& operator*=(const Matrix2& rhs);
 
 		inline bool operator==(const Vector2& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y); }
 		inline bool operator!=(const Vector2& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y); }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); }
+		inline void ClampMag(const float min, const float max)
+		{
+			if (Magnitude() > max) { m_x = (Normalize() * max).m_x; m_y = (Normalize() * max).m_y; }
+			if (Magnitude() < min) { m_x = (Normalize() * min).m_x; m_y = (Normalize() * min).m_y; }
+		}
 		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
 		inline void ClampY(const float min, const float max) { m_y = std::clamp(m_y, min, max); }
 
@@ -61,22 +71,17 @@ namespace STR_FALL
 		inline float Dot(const Vector2& vect) const { return m_x * vect.m_x + m_y * vect.m_y; }
 		inline float AngleBetween(const Vector2& vect) const { return std::acos(Dot(vect)); }
 		inline float Angle() const { return std::atan2(m_y, m_x); }
-		float Distance(const Vector2& vect) const
+		inline float Distance(const Vector2& vect) const
 		{
-			float dx = vect.m_x - m_x;
-			float dy = vect.m_y - m_y;
+			float dx = vect.m_x - m_x; float dy = vect.m_y - m_y;
 			return std::sqrt(dx * dx + dy * dy);
 		}
-		Vector2 Normalize() const
+		inline Vector2 Normalize() const
 		{
-			float mag = this->Magnitude();
-			if (mag == 0.0f) { return Vector2(); }
-			return *this / mag;
+			float mag = std::sqrt((m_x * m_x) + (m_y * m_y));
+			return (mag == 0.0f) ? Vector2() : *this / mag;
 		}
-		Vector2 Lerp(const Vector2& vect, const float t = 0.5f) const
-		{
-			return *this + (vect - *this) * t;
-		}
+		inline Vector2 Lerp(const Vector2& vect, const float t = 0.5f) const { return *this + (vect - *this) * t; }
 		Vector2 Rotate(const float rad) const;
 	};
 
@@ -88,8 +93,8 @@ namespace STR_FALL
 
 		inline Vector3(const float x = 0.0f, const float y = 0.0f, const float z = 0.0f) : m_x(x), m_y(y), m_z(z) {}
 		inline Vector3(const Vector3& ip, const Vector3& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y), m_z(fp.m_z - ip.m_z) {}
-		inline Vector3(const Vector2& vect);
-		inline Vector3(const Vector4& vect);
+		Vector3(const Vector2& vect);
+		Vector3(const Vector4& vect);
 
 		float operator[](const unsigned int element) const { assert(element < 3); return (&m_x)[element]; }
 		float& operator[](const unsigned int element) { assert(element < 3); return (&m_x)[element]; }
@@ -98,21 +103,28 @@ namespace STR_FALL
 		inline Vector3 operator-(const Vector3& rhs) const { return Vector3(m_x - rhs.m_x, m_y - rhs.m_y, m_z - rhs.m_z); }
 		inline Vector3 operator*(const Vector3& rhs) const { return Vector3(m_x * rhs.m_x, m_y * rhs.m_y, m_z * rhs.m_z); }
 		inline Vector3 operator/(const Vector3& rhs) const { return Vector3(m_x / rhs.m_x, m_y / rhs.m_y, m_z / rhs.m_z); }
+		inline Vector3 operator%(const Vector3& rhs) const { return Vector3(fmod(m_x, rhs.m_x), fmod(m_y, rhs.m_y), fmod(m_z, rhs.m_z)); }
 
 		inline Vector3 operator+(const float rhs) const { return Vector3(m_x + rhs, m_y + rhs, m_z + rhs); }
 		inline Vector3 operator-(const float rhs) const { return Vector3(m_x - rhs, m_y - rhs, m_z - rhs); }
 		inline Vector3 operator*(const float rhs) const { return Vector3(m_x * rhs, m_y * rhs, m_z * rhs); }
 		inline Vector3 operator/(const float rhs) const { return Vector3(m_x / rhs, m_y / rhs, m_z / rhs); }
+		inline Vector3 operator%(const float rhs) const { return Vector3(fmod(m_x, rhs), fmod(m_y, rhs), fmod(m_z, rhs)); }
 
 		inline Vector3& operator+=(const Vector3& rhs) { m_x += rhs.m_x; m_y += rhs.m_y, m_z += rhs.m_z; return *this; }
 		inline Vector3& operator-=(const Vector3& rhs) { m_x -= rhs.m_x; m_y -= rhs.m_y, m_z -= rhs.m_z; return *this; }
 		inline Vector3& operator*=(const Vector3& rhs) { m_x *= rhs.m_x; m_y *= rhs.m_y, m_z *= rhs.m_z; return *this; }
 		inline Vector3& operator/=(const Vector3& rhs) { m_x /= rhs.m_x; m_y /= rhs.m_y, m_z /= rhs.m_z; return *this; }
+		inline Vector3& operator%=(const Vector3& rhs) { m_x = fmod(m_x, rhs.m_x); m_y = fmod(m_y, rhs.m_y); m_z = fmod(m_z, rhs.m_z); return *this; }
 
 		inline Vector3& operator+=(const float rhs) { m_x += rhs; m_y += rhs, m_z += rhs; return *this; }
 		inline Vector3& operator-=(const float rhs) { m_x -= rhs; m_y -= rhs, m_z -= rhs; return *this; }
 		inline Vector3& operator*=(const float rhs) { m_x *= rhs; m_y *= rhs, m_z *= rhs; return *this; }
 		inline Vector3& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs, m_z /= rhs; return *this; }
+		inline Vector3& operator%=(const float rhs) { m_x = fmod(m_x, rhs); m_y = fmod(m_y, rhs); m_z = fmod(m_z, rhs); return *this; }
+
+		Vector3 operator*(const Matrix3& rhs) const;
+		Vector3& operator*=(const Matrix3& rhs);
 
 		inline bool operator==(const Vector3& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z); }
 		inline bool operator!=(const Vector3& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y) || (m_z != rhs.m_z); }
@@ -126,7 +138,7 @@ namespace STR_FALL
 		inline float MagnitudeSqr() const { return (m_x * m_x) + (m_y * m_y) + (m_z * m_z); }
 		inline float Dot(const Vector3& vect) const { return m_x * vect.m_x + m_y * vect.m_y + m_z * vect.m_z; }
 		inline float Angle(const Vector3& vect) const { return std::acos(Dot(vect)); }
-		float Distance(const Vector3& vect) const
+		inline float Distance(const Vector3& vect) const
 		{
 			float dx = vect.m_x - m_x;
 			float dy = vect.m_y - m_y;
@@ -141,16 +153,12 @@ namespace STR_FALL
 				m_x * vect.m_y - m_y * vect.m_x
 			);
 		}
-		Vector3 Normalize() const
+		inline Vector3 Normalize() const
 		{
-			float mag = this->Magnitude();
-			if (mag == 0.0f) { return Vector3(); }
-			return *this / mag;
+			float mag = std::sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z));
+			return (mag == 0.0f) ? Vector3() : *this / mag;
 		}
-		Vector3 Lerp(const Vector3& vect, const float t = 0.5f) const
-		{
-			return *this + (vect - *this) * t;
-		}
+		inline Vector3 Lerp(const Vector3& vect, const float t = 0.5f) const { return *this + (vect - *this) * t; }
 	};
 
 	struct Vector4
@@ -162,8 +170,8 @@ namespace STR_FALL
 
 		inline Vector4(const float x = 0.0f, const float y = 0.0f, const float z = 0.0f, const float w = 0.0f) : m_x(x), m_y(y), m_z(z), m_w(w) {}
 		inline Vector4(const Vector4& ip, const Vector4& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y), m_z(fp.m_z - ip.m_z), m_w(fp.m_w - ip.m_w) {}
-		inline Vector4(const Vector2& vect);
-		inline Vector4(const Vector3& vect);
+		Vector4(const Vector2& vect);
+		Vector4(const Vector3& vect);
 
 		float operator[](const unsigned int element) const { assert(element < 4); return (&m_x)[element]; }
 		float& operator[](const unsigned int element) { assert(element < 4); return (&m_x)[element]; }
@@ -172,21 +180,25 @@ namespace STR_FALL
 		inline Vector4 operator-(const Vector4& rhs) const { return Vector4(m_x - rhs.m_x, m_y - rhs.m_y, m_z - rhs.m_z, m_w - rhs.m_w); }
 		inline Vector4 operator*(const Vector4& rhs) const { return Vector4(m_x * rhs.m_x, m_y * rhs.m_y, m_z * rhs.m_z, m_w * rhs.m_w); }
 		inline Vector4 operator/(const Vector4& rhs) const { return Vector4(m_x / rhs.m_x, m_y / rhs.m_y, m_z / rhs.m_z, m_w / rhs.m_w); }
+		inline Vector4 operator%(const Vector4& rhs) const { return Vector4(fmod(m_x, rhs.m_x), fmod(m_y, rhs.m_y), fmod(m_z, rhs.m_z), fmod(m_w, rhs.m_w)); }
 
 		inline Vector4 operator+(const float rhs) const { return Vector4(m_x + rhs, m_y + rhs, m_z + rhs, m_w + rhs); }
 		inline Vector4 operator-(const float rhs) const { return Vector4(m_x - rhs, m_y - rhs, m_z - rhs, m_w - rhs); }
 		inline Vector4 operator*(const float rhs) const { return Vector4(m_x * rhs, m_y * rhs, m_z * rhs, m_w * rhs); }
 		inline Vector4 operator/(const float rhs) const { return Vector4(m_x / rhs, m_y / rhs, m_z / rhs, m_w / rhs); }
+		inline Vector4 operator%(const float rhs) const { return Vector4(fmod(m_x, rhs), fmod(m_y, rhs), fmod(m_z, rhs), fmod(m_w, rhs)); }
 
 		inline Vector4& operator+=(const Vector4& rhs) { m_x += rhs.m_x; m_y += rhs.m_y; m_z += rhs.m_z; m_w += rhs.m_w; return *this; }
 		inline Vector4& operator-=(const Vector4& rhs) { m_x -= rhs.m_x; m_y -= rhs.m_y; m_z -= rhs.m_z; m_w -= rhs.m_w; return *this; }
 		inline Vector4& operator*=(const Vector4& rhs) { m_x *= rhs.m_x; m_y *= rhs.m_y; m_z *= rhs.m_z; m_w *= rhs.m_w; return *this; }
 		inline Vector4& operator/=(const Vector4& rhs) { m_x /= rhs.m_x; m_y /= rhs.m_y; m_z /= rhs.m_z; m_w /= rhs.m_w; return *this; }
+		inline Vector4& operator%=(const Vector4& rhs) { m_x = fmod(m_x, rhs.m_x); m_y = fmod(m_y, rhs.m_y); m_z = fmod(m_z, rhs.m_z); m_w = fmod(m_w, rhs.m_w); return *this; }
 
 		inline Vector4& operator+=(const float rhs) { m_x += rhs; m_y += rhs; m_z += rhs; m_w += rhs; return *this; }
 		inline Vector4& operator-=(const float rhs) { m_x -= rhs; m_y -= rhs; m_z -= rhs; m_w -= rhs; return *this; }
 		inline Vector4& operator*=(const float rhs) { m_x *= rhs; m_y *= rhs; m_z *= rhs; m_w *= rhs; return *this; }
 		inline Vector4& operator/=(const float rhs) { m_x /= rhs; m_y /= rhs; m_z /= rhs; m_w /= rhs; return *this; }
+		inline Vector4& operator%=(const float rhs) { m_x = fmod(m_x, rhs); m_y = fmod(m_y, rhs); m_z = fmod(m_z, rhs); m_w = fmod(m_w, rhs); return *this; }
 
 		inline bool operator==(const Vector4& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z) && (m_w == rhs.m_w); }
 		inline bool operator!=(const Vector4& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y) || (m_z != rhs.m_z) || (m_w != rhs.m_w); }
@@ -199,13 +211,7 @@ namespace STR_FALL
 
 		inline float Magnitude() const { return std::sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z) + (m_w * m_w)); }
 		inline float Dot(const Vector4& vect) const { return m_x * vect.m_x + m_y * vect.m_y + m_z * vect.m_z + m_w * vect.m_w; }
-		Vector4 Normalize() const
-		{
-			float mag = this->Magnitude();
-			if (mag == 0.0f) { return Vector4(); }
-			return *this / mag;
-		}
-		float Distance(const Vector4& vect) const
+		inline float Distance(const Vector4& vect) const
 		{
 			float dx = vect.m_x - m_x;
 			float dy = vect.m_y - m_y;
@@ -213,10 +219,12 @@ namespace STR_FALL
 			float dw = vect.m_w - m_w;
 			return std::sqrt(dx * dx + dy * dy + dz * dz + dw * dw);
 		}
-		Vector4 Lerp(const Vector4& vect, const float t = 0.5f) const
+		inline Vector4 Normalize() const
 		{
-			return *this + (vect - *this) * t;
+			float mag = std::sqrt((m_x * m_x) + (m_y * m_y) + (m_z * m_z) + (m_w * m_w));
+			return (mag == 0.0f) ? Vector4() : *this / mag;
 		}
+		inline Vector4 Lerp(const Vector4& vect, const float t = 0.5f) const { return *this + (vect - *this) * t; }
 	};
 
 	struct Matrix2
@@ -479,19 +487,20 @@ namespace STR_FALL
 		float m_rot;
 
 		inline Transform2D(const Vector2& pos = Vector2(), const Vector2& scale = Vector2(1.0f, 1.0f), const float rot = 0) :
-			m_pos(pos), m_scale(scale), m_rot(rot), m_rotMat(Matrix2::RotationXY(rot)) {
+			m_pos(pos), m_scale(scale), m_rot(fmod(rot, F_PI2)), m_rotMat(Matrix2::RotationXY(rot)) {
 		}
 
 		inline void SetRotation(const float rot)
 		{
-			if (m_rot != rot)
+			float rotMod = fmod(rot, F_PI2);
+			if (m_rot != rotMod)
 			{
-				m_rot = rot;
-				m_rotMat = Matrix2::RotationXY(rot);
+				m_rot = rotMod;
+				m_rotMat = Matrix2::RotationXY(rotMod);
 			}
 		}
 
-		inline Matrix2 GetRotationMatrix()
+		inline Matrix2 GetRotationMatrix() const
 		{
 			return m_rotMat;
 		}
@@ -507,11 +516,12 @@ namespace STR_FALL
 		Vector3 m_rot;
 
 		inline Transform3D(const Vector3& pos = Vector3(), const Vector3& scale = Vector3(1.0f, 1.0f, 1.0f), const Vector3& rot = Vector3()) :
-			m_pos(pos), m_scale(scale), m_rot(rot), m_rotMat(Matrix3::RotationXYZ(rot)) {
+			m_pos(pos), m_scale(scale), m_rot(rot % F_PI2), m_rotMat(Matrix3::RotationXYZ(rot)) {
 		}
 
 		inline void SetRotation(const Vector3& rot)
 		{
+			Vector3 rotMod = rot % F_PI2;
 			if (m_rot != rot)
 			{
 				m_rot = rot;
@@ -520,29 +530,32 @@ namespace STR_FALL
 		}
 		inline void SetRotationX(const float& rot)
 		{
+			float rotMod = fmod(rot, F_PI2);
 			Vector3 prev = m_rot;
-			m_rot.m_x = rot;
+			m_rot.m_x = rotMod;
 			if (prev != m_rot)
 			{
-				m_rotMat = Matrix3::RotationXYZ(rot);
+				m_rotMat = Matrix3::RotationX(rotMod);
 			}
 		}
 		inline void SetRotationY(const float& rot)
 		{
+			float rotMod = fmod(rot, F_PI2);
 			Vector3 prev = m_rot;
-			m_rot.m_y = rot;
+			m_rot.m_y = rotMod;
 			if (prev != m_rot)
 			{
-				m_rotMat = Matrix3::RotationXYZ(rot);
+				m_rotMat = Matrix3::RotationY(rotMod);
 			}
 		}
 		inline void SetRotationZ(const float& rot)
 		{
+			float rotMod = fmod(rot, F_PI2);
 			Vector3 prev = m_rot;
-			m_rot.m_z = rot;
+			m_rot.m_z = rotMod;
 			if (prev != m_rot)
 			{
-				m_rotMat = Matrix3::RotationXYZ(rot);
+				m_rotMat = Matrix3::RotationZ(rotMod);
 			}
 		}
 

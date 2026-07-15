@@ -1,3 +1,4 @@
+/*
 #include "StarFallEngine.h"
 
 using namespace STR_FALL;
@@ -16,7 +17,6 @@ int main()
 
     SDL_Event e;
     bool quit = false;
-    float rotation = 0;
 
     while (!quit) {
         while (SDL_PollEvent(&e)) {
@@ -29,16 +29,13 @@ int main()
         input.Update();
         time.Tick();
 
-        rotation += time.GetDeltaTime() * 0.1f;
-
-        block.DegZ(rotation);
-        block.UpdateTriangles();
+        block.IncrementTransformRotation(Vector3(time.GetDeltaTime() * 0.5f, time.GetDeltaTime() * 0.5f, time.GetDeltaTime() * 0.5f));
 
         r.Clear();
 
         r.SetColor(Color(0.0f, 1.0f, 1.0f));
 
-        //r.Render3DFillTriangles(cam, block.GetTris());
+        block.Draw(r, cam);
 
         r.Present();
     }
@@ -47,3 +44,4 @@ int main()
 
     return 0;
 }
+*/

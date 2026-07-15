@@ -24,6 +24,8 @@ namespace STR_FALL
         SDL_SetRenderVSync(m_renderer, 1);
 
         m_lastSetColor = new Color(1.0f, 1.0f, 1.0f);
+        m_WINDOW_WIDTH = WINDOW_WIDTH;
+        m_WINDOW_HEIGHT = WINDOW_HEIGHT;
 
         return true;
     }
@@ -161,6 +163,7 @@ namespace STR_FALL
             {
                 SDL_RenderLine(m_renderer, points[index].m_x, points[index].m_y, points[index + 1].m_x, points[index + 1].m_y);
             }
+            SDL_RenderLine(m_renderer, points[points.size()-1].m_x, points[points.size()-1].m_y, points[0].m_x, points[0].m_y);
         }
     }
 
@@ -250,6 +253,7 @@ namespace STR_FALL
                 SDL_SetRenderDrawColorFloat(m_renderer, points[index].m_color.m_x, points[index].m_color.m_y, points[index].m_color.m_z, points[index].m_color.m_w);
                 SDL_RenderLine(m_renderer, points[index].m_x, points[index].m_y, points[index + 1].m_x, points[index + 1].m_y);
             }
+            SDL_RenderLine(m_renderer, points[points.size()-1].m_x, points[points.size()-1].m_y, points[0].m_x, points[0].m_y);
             SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
         }
     }

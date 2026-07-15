@@ -38,6 +38,9 @@
     <ClInclude Include="Object.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -56,6 +59,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="StarFallEngine.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

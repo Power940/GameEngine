@@ -16,6 +16,10 @@ namespace STR_FALL
 		SDL_Window* m_window = nullptr;
 		SDL_Renderer* m_renderer = nullptr;
 		Color* m_lastSetColor = nullptr;
+
+		int m_WINDOW_WIDTH;
+		int m_WINDOW_HEIGHT;
+
 	public:
         bool Initialize(const char* name, int WINDOW_WIDTH, int WINDOW_HEIGHT);
 		void SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
@@ -27,6 +31,9 @@ namespace STR_FALL
 		void ClearF(float r = 0, float g = 0, float b = 0, float a = 1.0f);
         void Present();
 		void ShutDown();
+
+		inline int GetSreenWidth() const { return m_WINDOW_WIDTH; }
+		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }
 
 		void RenderDebugText(const std::string& text, const Vector2& point) const;
 
