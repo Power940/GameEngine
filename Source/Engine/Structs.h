@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <cassert>
 #include "Constants.h"
+#include <ostream>
 
 namespace STR_FALL
 {
@@ -56,6 +57,8 @@ namespace STR_FALL
 
 		inline bool operator==(const Vector2& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y); }
 		inline bool operator!=(const Vector2& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y); }
+
+		friend std::ostream& operator<<(std::ostream& os, const Vector2& rhs) { os << "X: " << rhs.m_x << " | Y: " << rhs.m_y; return os; }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); }
 		inline void ClampMag(const float min, const float max)
@@ -128,6 +131,8 @@ namespace STR_FALL
 
 		inline bool operator==(const Vector3& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z); }
 		inline bool operator!=(const Vector3& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y) || (m_z != rhs.m_z); }
+
+		friend std::ostream& operator<<(std::ostream& os, const Vector3& rhs) { os << "X: " << rhs.m_x << " | Y: " << rhs.m_y << " | Z: " << rhs.m_z; return os; }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); m_z = std::clamp(m_z, min, max); }
 		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
@@ -202,6 +207,8 @@ namespace STR_FALL
 
 		inline bool operator==(const Vector4& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z) && (m_w == rhs.m_w); }
 		inline bool operator!=(const Vector4& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y) || (m_z != rhs.m_z) || (m_w != rhs.m_w); }
+
+		friend std::ostream& operator<<(std::ostream& os, const Vector4& rhs) { os << "X: " << rhs.m_x << " | Y: " << rhs.m_y << " | Z: " << rhs.m_z << " | W: " << rhs.m_w; return os; }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); m_z = std::clamp(m_z, min, max); m_w = std::clamp(m_w, min, max); }
 		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
