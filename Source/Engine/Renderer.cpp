@@ -130,7 +130,7 @@ namespace STR_FALL
             SDL_FPoint(0, 0)
         ));
 
-        SDL_RenderGeometry(m_renderer, NULL, vertices.data(), 3, NULL, 0);
+        SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), 3, nullptr, 0);
     }
     void Renderer::RenderOutlineTriangle(const Triangle2D& tri) const {
 
@@ -138,7 +138,7 @@ namespace STR_FALL
         SDL_RenderLine(m_renderer, tri[1].m_x, tri[1].m_y, tri[2].m_x, tri[2].m_y);
         SDL_RenderLine(m_renderer, tri[2].m_x, tri[2].m_y, tri[0].m_x, tri[0].m_y);
     }
-    void Renderer::RenderCustomFilled(const std::vector<Vector2>& points) const
+    void Renderer::RenderCustomFilled(const std::vector<Vector2>& points, const std::vector<int>& indices) const
     {
         if (points.size() > 1)
         {
@@ -152,18 +152,21 @@ namespace STR_FALL
                     SDL_FPoint(0, 0)
                 ));
             }
-            SDL_RenderGeometry(m_renderer, NULL, vertices.data(), static_cast<int>(vertices.size()), NULL, 0);
+            SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()));
         }
     }
     void Renderer::RenderCustomOutline(const std::vector<Vector2>& points) const
     {
-        if (points.size() > 1)
+        unsigned int size = static_cast<unsigned int>(points.size());
+        if (size > 1)
         {
-            for (unsigned int index = 0; index < static_cast<unsigned int>(points.size() - 1); index++)
+            for (unsigned int index = 0; index < size; index++)
             {
-                SDL_RenderLine(m_renderer, points[index].m_x, points[index].m_y, points[index + 1].m_x, points[index + 1].m_y);
+                SDL_RenderLine(m_renderer,
+                    points[index].m_x, points[index].m_y,
+                    points[(index + 1) % size].m_x, points[(index + 1) % size].m_y
+                );
             }
-            SDL_RenderLine(m_renderer, points[points.size()-1].m_x, points[points.size()-1].m_y, points[0].m_x, points[0].m_y);
         }
     }
 
@@ -227,7 +230,7 @@ namespace STR_FALL
         SDL_RenderLine(m_renderer, tri[2].m_x, tri[2].m_y, tri[0].m_x, tri[0].m_y);
         SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
     }
-    void Renderer::RenderCustomFilledColor(const std::vector<Vector2C>& points) const
+    void Renderer::RenderCustomFilledColor(const std::vector<Vector2C>& points, const std::vector<int>& indices) const
     {
         if (points.size() > 1)
         {
@@ -241,19 +244,24 @@ namespace STR_FALL
                     SDL_FPoint(0, 0)
                 ));
             }
-            SDL_RenderGeometry(m_renderer, NULL, vertices.data(), static_cast<int>(vertices.size()), NULL, 0);
+            SDL_RenderGeometry(m_renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), indices.data(), static_cast<int>(indices.size()));
         }
     }
     void Renderer::RenderCustomOutlineColor(const std::vector<Vector2C>& points) const
     {
-        if (points.size() > 1)
+        size_t size = points.size();
+        if (size > 1)
         {
-            for (unsigned int index = 0; index < static_cast<unsigned int>(points.size() - 1); index++)
+            for (size_t index = 0; index < size; index++)
             {
-                SDL_SetRenderDrawColorFloat(m_renderer, points[index].m_color.m_x, points[index].m_color.m_y, points[index].m_color.m_z, points[index].m_color.m_w);
-                SDL_RenderLine(m_renderer, points[index].m_x, points[index].m_y, points[index + 1].m_x, points[index + 1].m_y);
+                SDL_SetRenderDrawColorFloat(m_renderer,
+                    points[index].m_color.m_x, points[index].m_color.m_y, points[index].m_color.m_z, points[index].m_color.m_w
+                );
+                SDL_RenderLine(m_renderer,
+                    points[index].m_x, points[index].m_y,
+                    points[(index + 1) % size].m_x, points[(index + 1) % size].m_y
+                );
             }
-            SDL_RenderLine(m_renderer, points[points.size()-1].m_x, points[points.size()-1].m_y, points[0].m_x, points[0].m_y);
             SDL_SetRenderDrawColorFloat(m_renderer, m_lastSetColor->m_x, m_lastSetColor->m_y, m_lastSetColor->m_z, m_lastSetColor->m_w);
         }
     }

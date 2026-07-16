@@ -10,23 +10,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Test Render.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CubeTest.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="InputSystemPaint.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="SpaceShipGame.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Ship.cpp">
-      <Filter>Source</Filter>
+      <Filter>Include</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

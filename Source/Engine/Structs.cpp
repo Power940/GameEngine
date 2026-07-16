@@ -39,3 +39,5 @@ Vector3& Vector3::operator*=(const Matrix3& rhs) {
 }
 
 Vector2 Vector2::Rotate(const float rad) const { return *this * Matrix2::RotationXY(rad); }
+
+const Camera3D Camera3D::Empty{};

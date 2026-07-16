@@ -347,7 +347,4 @@ namespace STR_FALL
 		Vector3(-0.5f, -0.5f, 0.5f),
 		Vector3(-0.5f, -0.5f, -0.5f)
 		});
-	static Mesh2D SpaceShip = Mesh2D({
-		Vector2(-0.5f, 0.5f), Vector2(0.5f, 0.0f), Vector2(-0.5f,-0.5f), Vector2(-0.25f,0.0f)
-		});
 }

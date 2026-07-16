@@ -145,12 +145,8 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CubeTest.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="InputSystemPaint.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="SpaceShipGame.cpp" />
-    <ClCompile Include="Test Render.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.vcxproj">

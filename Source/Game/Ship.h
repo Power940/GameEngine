@@ -4,6 +4,10 @@
 
 using namespace STR_FALL;
 
+static Mesh2D SpaceShip = Mesh2D({
+	Vector2(-0.5f, 0.5f), Vector2(0.5f, 0.0f), Vector2(-0.5f,-0.5f), Vector2(-0.25f,0.0f)
+	});
+
 struct Ship : public Object<Transform2D, Mesh2D>
 {
 	Color m_color;
@@ -32,6 +36,8 @@ struct Ship : public Object<Transform2D, Mesh2D>
 		m_vel.ClampMag(0, m_maxVel);
 		IncrementTransformPos(m_vel * dt);
 		m_vel *= std::pow(0.95f, dt);
+		if (g_engine.m_input.GetKeyDown(SDL_SCANCODE_SPACE))
+			m_vel = Vector2();
 
 		#pragma region Wrap logic
 		if (g_engine.m_renderer.GetSreenWidth() < m_transform.m_pos.m_x)
@@ -53,7 +59,7 @@ struct Ship : public Object<Transform2D, Mesh2D>
 		#pragma endregion
 	}
 
-	void Draw(Renderer& r, const Camera3D& c) const override
+	void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override
 	{
 		r.SetColor(m_mesh.m_color);
 		r.RenderCustomOutline(m_mesh.m_points);

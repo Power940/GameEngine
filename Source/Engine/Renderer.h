@@ -17,8 +17,8 @@ namespace STR_FALL
 		SDL_Renderer* m_renderer = nullptr;
 		Color* m_lastSetColor = nullptr;
 
-		int m_WINDOW_WIDTH;
-		int m_WINDOW_HEIGHT;
+		int m_WINDOW_WIDTH = -1;
+		int m_WINDOW_HEIGHT = -1;
 
 	public:
         bool Initialize(const char* name, int WINDOW_WIDTH, int WINDOW_HEIGHT);
@@ -43,7 +43,7 @@ namespace STR_FALL
 		void RenderLines(const std::vector<Line2D>& lines) const;
 		void RenderFillTriangle(const Triangle2D& tri) const;
 		void RenderOutlineTriangle(const Triangle2D& tri) const;
-		void RenderCustomFilled(const std::vector<Vector2>& points) const;
+		void RenderCustomFilled(const std::vector<Vector2>& points, const std::vector<int>& indices) const;
 		void RenderCustomOutline(const std::vector<Vector2>& points) const;
 
 		void RenderPointColor(const Vector2C& point) const;
@@ -52,7 +52,7 @@ namespace STR_FALL
 		void RenderLinesColor(const std::vector<Line2DC>& lines) const;
 		void RenderFillTriangleColor(const Triangle2DC& tri) const;
 		void RenderOutlineTriangleColor(const Triangle2DC& tri) const;
-		void RenderCustomFilledColor(const std::vector<Vector2C>& points) const;
+		void RenderCustomFilledColor(const std::vector<Vector2C>& points, const std::vector<int>& indices) const;
 		void RenderCustomOutlineColor(const std::vector<Vector2C>& points) const;
 
 		void Render3DOutlineTriangles(const Camera3D& cam, const std::vector<Triangle3D>& tris) const;

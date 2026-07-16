@@ -35,7 +35,7 @@ namespace STR_FALL
 		Object(const T& transform, const M& mesh) : m_transform(transform), m_baseMesh(mesh), m_mesh(mesh) { UPDATE_MESH(); }
 
 		virtual void Update(float dt) { IncrementTransformPos(m_vel * dt); }
-		virtual void Draw(Renderer& r, const Camera3D& c = Camera3D()) const = 0;
+		virtual void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const = 0;
 
 		inline T GetTransform() const { return m_transform; }
 		void SetTransform(const T& transform)
@@ -47,15 +47,13 @@ namespace STR_FALL
 
 		void SetTransformPos(const decltype(std::declval<T>().m_pos)& pos)
 		{
+			m_mesh += (pos - m_transform.m_pos);
 			m_transform.m_pos = pos;
-			m_mesh = m_baseMesh;
-			UPDATE_MESH();
 		}
 		void IncrementTransformPos(const decltype(std::declval<T>().m_pos)& pos)
 		{
 			m_transform.m_pos += pos;
-			m_mesh = m_baseMesh;
-			UPDATE_MESH();
+			m_mesh += pos;
 		}
 		void SetTransformScale(const decltype(std::declval<T>().m_scale)& scale)
 		{
@@ -90,7 +88,7 @@ namespace STR_FALL
 		Rect2D(const Transform2D& t = Transform2D(), const Color& c = Color(1.0f, 1.0f, 1.0f)) :
 			Object(t, Rect2DMesh), m_color(c) {}
 
-		void Draw(Renderer& r, const Camera3D& c) const override
+		void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override
 		{
 			r.SetColor(m_mesh.m_color);
 			r.RenderCustomOutline(m_mesh.m_points);
@@ -104,7 +102,7 @@ namespace STR_FALL
 		Rect3D(const Transform3D& t, const Color& c = Color(1.0f, 1.0f, 1.0f)) :
 			Object(t, Rect3DMesh), m_color(c) {}
 
-		void Draw(Renderer& r, const Camera3D& c) const override
+		void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override
 		{
 			r.SetColor(m_color);
 			r.Render3DOutlineTriangles(c, {

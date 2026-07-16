@@ -58,7 +58,7 @@ namespace STR_FALL
 		inline bool operator==(const Vector2& rhs) const { return (m_x == rhs.m_x) && (m_y == rhs.m_y); }
 		inline bool operator!=(const Vector2& rhs) const { return (m_x != rhs.m_x) || (m_y != rhs.m_y); }
 
-		friend std::ostream& operator<<(std::ostream& os, const Vector2& rhs) { os << "X: " << rhs.m_x << " | Y: " << rhs.m_y; return os; }
+		inline friend std::ostream& operator<<(std::ostream& os, const Vector2& rhs) { os << "X: " << rhs.m_x << " | Y: " << rhs.m_y; return os; }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); }
 		inline void ClampMag(const float min, const float max)
@@ -574,15 +574,17 @@ namespace STR_FALL
 
 	struct Camera3D
 	{
+		static const Camera3D Empty;
 		Transform3D m_transform;
 		Matrix3 m_rotMat;
 		float m_fov;
 		Vector2 m_ScreenDim;
 		float m_aspect;
 
-		inline Camera3D(const Transform3D& t, const float fov, const Vector2& screenDim) :
-			m_transform(t), m_fov(fov), m_ScreenDim(screenDim), m_aspect(screenDim.m_x / screenDim.m_y), m_rotMat(Matrix3::RotationXYZ(t.m_rot)) {
-		}
+		inline Camera3D(const Transform3D& t = Transform3D(), const float fov = 90, const Vector2& screenDim = Vector2(256, 144)):
+			m_transform(t), m_fov(fov), m_ScreenDim(screenDim),
+			m_aspect(screenDim.m_x / screenDim.m_y),
+			m_rotMat(Matrix3::RotationXYZ(t.m_rot)) {}
 	};
 
 	struct Color : Vector4
