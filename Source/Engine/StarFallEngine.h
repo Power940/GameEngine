@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "StarTime.h"
 #include "Object.h"
+#include "Audio.h"
 
 namespace STR_FALL
 {
@@ -15,10 +16,11 @@ namespace STR_FALL
 		Renderer m_renderer;
 		Input m_input;
 		Time m_time;
+		Audio m_audio;
 
 		STR_Engine() = default;
 
-		bool Initialize(const char* windowName, const int WINDOW_WIDTH, const int WINDOW_HEIGHT);
+		int Initialize(const char* windowName, const int WINDOW_WIDTH, const int WINDOW_HEIGHT);
 		void Shutdown();
 		void Update();
 	};
