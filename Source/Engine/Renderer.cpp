@@ -268,8 +268,6 @@ namespace STR_FALL
 
     void Renderer::Render3DOutlineTriangles(const Camera3D& cam, const std::vector<Triangle3D>& tris) const
     {
-        float FOVScaling = 1 / std::tan((cam.m_fov / 2) * STR_FALL::F_DEG_RAD);
-
         std::vector<Triangle2D> drawTriangles;
 
         float x1 = 0.0f, x2 = 0.0f, x3 = 0.0f;
@@ -303,12 +301,12 @@ namespace STR_FALL
 
             if ((z1 + z2 + z3) / 3.0f < 0.0f) { continue; }
 
-            px1 = x1 / ((z1 < 0.001f) ? -0.01f : z1) * FOVScaling / cam.m_aspect;
-            px2 = x2 / ((z2 < 0.001f) ? -0.01f : z2) * FOVScaling / cam.m_aspect;
-            px3 = x3 / ((z3 < 0.001f) ? -0.01f : z3) * FOVScaling / cam.m_aspect;
-            py1 = y1 / ((z1 < 0.001f) ? -0.01f : z1) * FOVScaling;
-            py2 = y2 / ((z2 < 0.001f) ? -0.01f : z2) * FOVScaling;
-            py3 = y3 / ((z3 < 0.001f) ? -0.01f : z3) * FOVScaling;
+            px1 = x1 / ((z1 < 0.001f) ? -0.01f : z1) * cam.m_fovScaling / cam.m_aspect;
+            px2 = x2 / ((z2 < 0.001f) ? -0.01f : z2) * cam.m_fovScaling / cam.m_aspect;
+            px3 = x3 / ((z3 < 0.001f) ? -0.01f : z3) * cam.m_fovScaling / cam.m_aspect;
+            py1 = y1 / ((z1 < 0.001f) ? -0.01f : z1) * cam.m_fovScaling;
+            py2 = y2 / ((z2 < 0.001f) ? -0.01f : z2) * cam.m_fovScaling;
+            py3 = y3 / ((z3 < 0.001f) ? -0.01f : z3) * cam.m_fovScaling;
 
             screenPos1 = Vector2((px1 + 1) * 0.5f * cam.m_ScreenDim.m_x, (1 - py1) * 0.5f * cam.m_ScreenDim.m_y);
             screenPos2 = Vector2((px2 + 1) * 0.5f * cam.m_ScreenDim.m_x, (1 - py2) * 0.5f * cam.m_ScreenDim.m_y);
@@ -319,6 +317,62 @@ namespace STR_FALL
         for (const Triangle2D& tri : drawTriangles)
         {
             RenderOutlineTriangle(tri);
+        }
+    }
+    void Renderer::Render3DCustomOutline(const Camera3D& cam, const std::vector<Vector3>& points, const std::vector<int>& indices) const
+    {
+        std::vector<Vector2> drawPoints;
+        std::vector<int> drawIndices;
+        Vector3 pointVector;
+
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        float px = 0.0f, py = 0.0f;
+
+        std::vector<int> indicesConversion;
+        int validIndex = 0;
+
+        for (int index = 0; index < points.size(); index++)
+        {
+            pointVector = Vector3(cam.m_transform.m_pos, points[index]);
+            z = pointVector.Dot(cam.m_transform.GetRotationMatrix().Forward());
+            if (z < 0.00001f)
+            {
+                indicesConversion.push_back(-1);
+                continue;
+            }
+
+            x = pointVector.Dot(cam.m_transform.GetRotationMatrix().Right());
+            y = pointVector.Dot(cam.m_transform.GetRotationMatrix().Up());
+
+            px = x / z * cam.m_fovScaling / cam.m_aspect;
+            py = y / z * cam.m_fovScaling;
+
+            drawPoints.push_back(Vector2((px + 1) * 0.5f * cam.m_ScreenDim.m_x, (1 - py) * 0.5f * cam.m_ScreenDim.m_y));
+            indicesConversion.push_back(validIndex++);
+        }
+
+        for (int index = 0; index < indices.size(); index += 3)
+        {
+            if (std::any_of(indices.begin() + index, indices.begin() + index + 3, [&indicesConversion](int element) { return indicesConversion[element] == -1; }))
+            {
+                continue;
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                drawIndices.push_back(indicesConversion[indices[index + i]]);
+            }
+        }
+
+        for (int index = 0; index < drawIndices.size(); index += 3)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                int nextI = (i + 1) % 3;
+                SDL_RenderLine(m_renderer,
+                    drawPoints[drawIndices[index + i]].m_x, drawPoints[drawIndices[index + i]].m_y,
+                    drawPoints[drawIndices[index + nextI]].m_x, drawPoints[drawIndices[index + nextI]].m_y
+                );
+            }
         }
     }
 }

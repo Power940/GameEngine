@@ -5,6 +5,7 @@
 #include <ostream>
 #include <string>
 #include <vector>
+#include <map>
 #include "Constants.h"
 #include "Structs.h"
 
@@ -56,5 +57,6 @@ namespace STR_FALL
 		void RenderCustomOutlineColor(const std::vector<Vector2C>& points) const;
 
 		void Render3DOutlineTriangles(const Camera3D& cam, const std::vector<Triangle3D>& tris) const;
+		void Render3DCustomOutline(const Camera3D& cam, const std::vector<Vector3>& points, const std::vector<int>& indices) const;
 	};
 }

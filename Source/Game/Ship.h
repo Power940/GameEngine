@@ -4,11 +4,13 @@
 
 using namespace STR_FALL;
 
-static Mesh2D SpaceShip = Mesh2D({
-	Vector2(-0.5f, 0.5f), Vector2(0.5f, 0.0f), Vector2(-0.5f,-0.5f), Vector2(-0.25f,0.0f)
+static MultiMesh2D SpaceShip = MultiMesh2D({
+	Mesh2D({Vector2(-0.5f, 0.5f), Vector2(0.5f, 0.0f), Vector2(-0.5f,-0.5f), Vector2(-0.25f,0.0f)}), // body
+	Mesh2D({Vector2(0.0f, 0.2f), Vector2(0.0f, -0.2f), Vector2(0.4f, 0.0f)}, Color(0.0f, 0.0f, 1.0f)), // window
+	Mesh2D({Vector2(-1.0f, 0.0f), Vector2(-0.5f, 0.2f), Vector2(-0.35f, 0.0f), Vector2(-0.5f, -0.2f)}, Color(1.0f, 1.0f, 0.5f)) // flame
 	});
 
-struct Ship : public Object<Transform2D, Mesh2D>
+struct Ship : public Object<Transform2D, MultiMesh2D>
 {
 	Color m_color;
 	Vector2 m_dir = Vector2(1.0f, 0.0f);
@@ -61,7 +63,14 @@ struct Ship : public Object<Transform2D, Mesh2D>
 
 	void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override
 	{
-		r.SetColor(m_mesh.m_color);
-		r.RenderCustomOutline(m_mesh.m_points);
+		r.SetColor(m_mesh[0].m_color);
+		r.RenderCustomOutline(m_mesh[0].m_points);
+		r.SetColor(m_mesh[1].m_color);
+		r.RenderCustomOutline(m_mesh[1].m_points);
+		if (g_engine.m_input.GetKeyDown(SDL_SCANCODE_W))
+		{
+			r.SetColor(m_mesh[2].m_color);
+			r.RenderCustomOutline(m_mesh[2].m_points);
+		}
 	}
 };

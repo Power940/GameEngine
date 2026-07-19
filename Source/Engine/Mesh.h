@@ -7,9 +7,11 @@ namespace STR_FALL
 	struct Mesh2D
 	{
 		std::vector<Vector2> m_points;
+		std::vector<int> m_indices;
 		Color m_color;
 
-		inline Mesh2D(const std::vector<Vector2>& points = {}, const Color& color = Color()) : m_points(points), m_color(color) {}
+		inline Mesh2D(const std::vector<Vector2>& points = {}, const Color& color = Color(), const std::vector<int>& indices = {}):
+			m_points(points), m_color(color), m_indices(indices) {}
 
 		Mesh2D operator+(const Vector2& rhs) const
 		{
@@ -172,9 +174,11 @@ namespace STR_FALL
 	struct Mesh3D
 	{
 		std::vector<Vector3> m_points;
+		std::vector<int> m_indices;
 		Color m_color;
 
-		inline Mesh3D(const std::vector<Vector3>& points = {}, const Color& color = Color()) : m_points(points), m_color(color) {}
+		inline Mesh3D(const std::vector<Vector3>& points = {}, const Color& color = Color(), const std::vector<int>& indices = {}):
+			m_points(points), m_color(color), m_indices(indices) {}
 
 		Mesh3D operator+(const Vector3& rhs) const
 		{
@@ -334,17 +338,33 @@ namespace STR_FALL
 		Mesh3D& operator[](const unsigned int element) { assert(element < m_meshes.size()); return m_meshes[element]; }
 	};
 
-	static Mesh2D Rect2DMesh = Mesh2D({
-		Vector2(0.5f, -0.5f), Vector2(0.5f, 0.5f), Vector2(-0.5f, 0.5f), Vector2(-0.5f, -0.5f)
-		});
-	static Mesh3D Rect3DMesh = Mesh3D({
-		Vector3(0.5f, 0.5f, 0.5f),
+	static Mesh2D Rect2DMesh = Mesh2D(
+		{ Vector2(0.5f, -0.5f), Vector2(0.5f, 0.5f), Vector2(-0.5f, 0.5f), Vector2(-0.5f, -0.5f) },
+		Color(),
+		{ 0,1,2,
+		2,4,0 }
+	);
+	static Mesh3D Rect3DMesh = Mesh3D(
+		{ Vector3(0.5f, 0.5f, 0.5f),
 		Vector3(0.5f, 0.5f, -0.5f),
 		Vector3(0.5f, -0.5f, 0.5f),
 		Vector3(0.5f, -0.5f, -0.5f),
 		Vector3(-0.5f, 0.5f, 0.5f),
 		Vector3(-0.5f, 0.5f, -0.5f),
 		Vector3(-0.5f, -0.5f, 0.5f),
-		Vector3(-0.5f, -0.5f, -0.5f)
-		});
+		Vector3(-0.5f, -0.5f, -0.5f) },
+		Color(),
+		{ 2, 0, 1,
+		1, 3, 2,
+		6, 2, 3,
+		3, 7, 6,
+		4, 6, 7,
+		7, 5, 4,
+		0, 4, 5,
+		5, 1, 0,
+		4, 0, 2,
+		2, 6, 4,
+		5, 7, 3,
+		3, 1, 5 }
+	);
 }

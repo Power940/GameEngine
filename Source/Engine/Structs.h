@@ -135,6 +135,11 @@ namespace STR_FALL
 		friend std::ostream& operator<<(std::ostream& os, const Vector3& rhs) { os << "X: " << rhs.m_x << " | Y: " << rhs.m_y << " | Z: " << rhs.m_z; return os; }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); m_z = std::clamp(m_z, min, max); }
+		inline void ClampMag(const float min, const float max)
+		{
+			if (Magnitude() > max) { m_x = (Normalize() * max).m_x; m_y = (Normalize() * max).m_y; m_z = (Normalize() * max).m_z; }
+			if (Magnitude() < min) { m_x = (Normalize() * min).m_x; m_y = (Normalize() * min).m_y; m_z = (Normalize() * min).m_z; }
+		}
 		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
 		inline void ClampY(const float min, const float max) { m_y = std::clamp(m_y, min, max); }
 		inline void ClampZ(const float min, const float max) { m_z = std::clamp(m_z, min, max); }
@@ -211,6 +216,11 @@ namespace STR_FALL
 		friend std::ostream& operator<<(std::ostream& os, const Vector4& rhs) { os << "X: " << rhs.m_x << " | Y: " << rhs.m_y << " | Z: " << rhs.m_z << " | W: " << rhs.m_w; return os; }
 
 		inline void Clamp(const float min, const float max) { m_x = std::clamp(m_x, min, max); m_y = std::clamp(m_y, min, max); m_z = std::clamp(m_z, min, max); m_w = std::clamp(m_w, min, max); }
+		inline void ClampMag(const float min, const float max)
+		{
+			if (Magnitude() > max) { m_x = (Normalize() * max).m_x; m_y = (Normalize() * max).m_y; m_z = (Normalize() * max).m_z; m_w = (Normalize() * max).m_w; }
+			if (Magnitude() < min) { m_x = (Normalize() * min).m_x; m_y = (Normalize() * min).m_y; m_z = (Normalize() * min).m_z; m_w = (Normalize() * min).m_w; }
+		}
 		inline void ClampX(const float min, const float max) { m_x = std::clamp(m_x, min, max); }
 		inline void ClampY(const float min, const float max) { m_y = std::clamp(m_y, min, max); }
 		inline void ClampZ(const float min, const float max) { m_z = std::clamp(m_z, min, max); }
@@ -580,11 +590,13 @@ namespace STR_FALL
 		float m_fov;
 		Vector2 m_ScreenDim;
 		float m_aspect;
+		float m_fovScaling;
 
 		inline Camera3D(const Transform3D& t = Transform3D(), const float fov = 90, const Vector2& screenDim = Vector2(256, 144)):
 			m_transform(t), m_fov(fov), m_ScreenDim(screenDim),
 			m_aspect(screenDim.m_x / screenDim.m_y),
-			m_rotMat(Matrix3::RotationXYZ(t.m_rot)) {}
+			m_rotMat(Matrix3::RotationXYZ(t.m_rot)),
+			m_fovScaling(1 / std::tan((m_fov / 2) * F_DEG_RAD)) {}
 	};
 
 	struct Color : Vector4
