@@ -19,12 +19,18 @@
     <ClCompile Include="Ship3D.cpp">
       <Filter>Include</Filter>
     </ClCompile>
+    <ClCompile Include="Marker.cpp">
+      <Filter>Include</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ship.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="Ship3D.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Marker.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>

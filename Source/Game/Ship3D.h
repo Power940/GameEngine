@@ -4,7 +4,46 @@
 
 using namespace STR_FALL;
 
-struct Ship3D : public Object<Transform3D, Mesh3D>
+static MultiMesh3D SpaceShip3D = MultiMesh3D({
+	Mesh3D(
+		{Vector3(0.0f, 0.0f, 0.5f), Vector3(0.5f, 0.0f, -0.5f), Vector3(-0.5f, 0.0f, -0.5f), Vector3(0.0f, 0.0f, -0.25f), Vector3(0.0f, 0.1f, 0.0f), Vector3(0.0f, -0.1f, 0.0f)},
+		Color(),
+		{
+			0,1,5,
+			0,1,4,
+			0,2,4,
+			0,2,5,
+			3,2,5,
+			3,2,4,
+			3,1,4,
+			3,1,5
+		}
+	),
+	Mesh3D(
+		{Vector3(0.0f,-0.05f,0.25f), Vector3(0.0f,-0.08f,0.1f), Vector3(0.1f,-0.03f,0.15f), Vector3(-0.1f,-0.03f,0.15f)},
+		Color(0.0f, 0.0f, 1.0f),
+		{
+			0,2,1,
+			0,3,1
+		}
+	),
+	Mesh3D(
+		{Vector3(0.0f,0.0f,-0.4f), Vector3(0.0f,0.0f,-1.0f), Vector3(0.2f,0.0f,-0.6f), Vector3(-0.2f,0.0f,-0.6f), Vector3(0.0f,-0.2f,-0.6f), Vector3(0.0f,0.2f,-0.6f)},
+		Color(1.0f, 1.0f, 0.5f),
+		{
+			0,4,3,
+			0,5,3,
+			0,2,5,
+			0,2,4,
+			1,4,3,
+			1,5,3,
+			1,2,5,
+			1,2,4
+		}
+	)
+	});
+
+struct Ship3D : public Object<Transform3D, MultiMesh3D>
 {
 	Color m_color;
 	Vector3 m_dir = Vector3(0.0f, 0.0f, 1.0f);
@@ -16,13 +55,16 @@ struct Ship3D : public Object<Transform3D, Mesh3D>
 	float m_maxVel;
 
 	Ship3D(const Transform3D& t, const Camera3D& cam, const float fs, const float mv) :
-		Object(t, Rect3DMesh), m_cam(cam), m_forceStrength(fs), m_maxVel(mv) {
+		Object(t, SpaceShip3D), m_cam(cam), m_forceStrength(fs), m_maxVel(mv) {
 	}
 
 	virtual void Update(float dt)
 	{
 		IncrementTransformRotation(
-			Vector3(g_engine.m_input.GetKeyDown(SDL_SCANCODE_W) - g_engine.m_input.GetKeyDown(SDL_SCANCODE_S), 0.0f, g_engine.m_input.GetKeyDown(SDL_SCANCODE_A) - g_engine.m_input.GetKeyDown(SDL_SCANCODE_D)) * dt * 3.0f
+			Vector3(0.0f, 0.0f, g_engine.m_input.GetKeyDown(SDL_SCANCODE_D) - g_engine.m_input.GetKeyDown(SDL_SCANCODE_A)) * dt * 3.0f
+		);
+		IncrementTransformRotation(
+			Vector3(g_engine.m_input.GetKeyDown(SDL_SCANCODE_W) - g_engine.m_input.GetKeyDown(SDL_SCANCODE_S), 0.0f, 0.0f) * dt * 3.0f
 		);
 
 		m_force = g_engine.m_input.GetKeyDown(SDL_SCANCODE_UP) * m_forceStrength;
@@ -38,13 +80,20 @@ struct Ship3D : public Object<Transform3D, Mesh3D>
 			m_vel = Vector3();
 
 		m_cam.m_transform = m_transform;
-		m_cam.m_transform.m_pos += (m_transform.GetRotationMatrix().Up() * -10.0f) + (m_transform.GetRotationMatrix().Forward() * -10.0f);
+		m_cam.m_transform.m_pos += (m_transform.GetRotationMatrix().Up() * -20.0f) + (m_transform.GetRotationMatrix().Forward() * -30.0f);
 		m_cam.m_rotMat = m_transform.GetRotationMatrix();
 	}
 
 	void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override
 	{
-		r.SetColor(m_mesh.m_color);
-		g_engine.m_renderer.Render3DCustomOutline(m_cam, m_mesh.m_points, m_mesh.m_indices);
+		r.SetColor(m_mesh[0].m_color);
+		g_engine.m_renderer.Render3DCustomOutline(m_cam, m_mesh[0].m_points, m_mesh[0].m_indices);
+		r.SetColor(m_mesh[1].m_color);
+		g_engine.m_renderer.Render3DCustomOutline(m_cam, m_mesh[1].m_points, m_mesh[1].m_indices);
+		if (g_engine.m_input.GetKeyDown(SDL_SCANCODE_UP))
+		{
+			r.SetColor(m_mesh[2].m_color);
+			g_engine.m_renderer.Render3DCustomOutline(m_cam, m_mesh[2].m_points, m_mesh[2].m_indices);
+		}
 	}
 };

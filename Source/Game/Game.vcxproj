@@ -145,6 +145,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Marker.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Ship3D.cpp" />
     <ClCompile Include="SpaceShipGame.cpp" />
@@ -155,6 +156,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Marker.h" />
     <ClInclude Include="Ship.h" />
     <ClInclude Include="Ship3D.h" />
   </ItemGroup>
