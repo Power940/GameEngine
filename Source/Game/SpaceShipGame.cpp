@@ -1,3 +1,4 @@
+/*
 #include "StarFallEngine.h"
 #include "Ship.h"
 #include "Ship3D.h"
@@ -24,9 +25,6 @@ int main()
 
     SDL_Event SDLEvent;
     bool quit = false;
-
-    g_engine.m_audio.CreateSound("test.wav");
-    g_engine.m_audio.PlaySound(0);
 
     SeedRandom();
     for (int index = 0; index < 50; index++)
@@ -64,3 +62,4 @@ int main()
 
     return 0;
 }
+*/

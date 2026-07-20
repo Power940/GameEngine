@@ -147,6 +147,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioFMOD_Test.cpp" />
     <ClCompile Include="Marker.cpp" />
     <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Ship3D.cpp" />

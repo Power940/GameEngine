@@ -22,6 +22,9 @@
     <ClCompile Include="Marker.cpp">
       <Filter>Include</Filter>
     </ClCompile>
+    <ClCompile Include="AudioFMOD_Test.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ship.h">
