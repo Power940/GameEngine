@@ -58,7 +58,7 @@ struct Ship3D : public Object<Transform3D, MultiMesh3D>
 		Object(t, SpaceShip3D), m_cam(cam), m_forceStrength(fs), m_maxVel(mv) {
 	}
 
-	virtual void Update(float dt)
+	void Update(float dt) override
 	{
 		IncrementTransformRotation(
 			Vector3(0.0f, 0.0f, g_engine.m_input.GetKeyDown(SDL_SCANCODE_D) - g_engine.m_input.GetKeyDown(SDL_SCANCODE_A)) * dt * 3.0f
@@ -93,7 +93,10 @@ struct Ship3D : public Object<Transform3D, MultiMesh3D>
 		if (g_engine.m_input.GetKeyDown(SDL_SCANCODE_UP))
 		{
 			r.SetColor(m_mesh[2].m_color);
-			g_engine.m_renderer.Render3DCustomOutline(m_cam, m_mesh[2].m_points, m_mesh[2].m_indices);
+			Mesh3D flamme = m_mesh[2];
+			float flameDelta = RandomFloat(5.0f) - 2.5f;
+			flamme.m_points[1].m_z += flameDelta;
+			g_engine.m_renderer.Render3DCustomOutline(m_cam, flamme.m_points, flamme.m_indices);
 		}
 	}
 };

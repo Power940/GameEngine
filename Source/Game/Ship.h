@@ -23,7 +23,7 @@ struct Ship : public Object<Transform2D, MultiMesh2D>
 	Ship(const Transform2D& t, const Color& c, const float fs, const float mv) :
 		Object(t, SpaceShip), m_color(c), m_forceStrength(fs), m_maxVel(mv) {}
 
-	virtual void Update(float dt)
+	void Update(float dt) override 
 	{
 		IncrementTransformRotation(
 			(g_engine.m_input.GetKeyDown(SDL_SCANCODE_A) - g_engine.m_input.GetKeyDown(SDL_SCANCODE_D)) * dt * 3.0f

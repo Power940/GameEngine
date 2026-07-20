@@ -20,7 +20,7 @@ struct Marker : public Object<Transform3D, Mesh3D>
 	Marker(const Transform3D& t) :
 		Object(t, markerMesh) {}
 
-	virtual void Update(float dt)
+	void Update(float dt) override
 	{
 		return;
 	}

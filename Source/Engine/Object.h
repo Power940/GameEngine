@@ -8,13 +8,19 @@
 
 namespace STR_FALL
 {
+	struct BaseObject
+	{
+		virtual void Update(float dt) = 0;
+		virtual void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const = 0;
+	};
+
 	template<typename T, typename M>
 	concept CompatibleObject = (std::same_as<T, Transform2D> && (std::same_as<M, Mesh2D> || std::same_as<M, MultiMesh2D>))
 		|| (std::same_as<T, Transform3D> && (std::same_as<M, Mesh3D> || std::same_as<M, MultiMesh3D>));
 
 	template<typename T, typename M>
 	requires CompatibleObject<T, M>
-	struct Object
+	struct Object : BaseObject
 	{
 	protected:
 		T m_transform;
@@ -34,7 +40,7 @@ namespace STR_FALL
 		Object(const T& transform) : m_transform(transform), m_baseMesh(M()), m_mesh(M()) {}
 		Object(const T& transform, const M& mesh) : m_transform(transform), m_baseMesh(mesh), m_mesh(mesh) { UPDATE_MESH(); }
 
-		virtual void Update(float dt) { IncrementTransformPos(m_vel * dt); }
+		virtual void Update(float dt) = 0;
 		virtual void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const = 0;
 
 		inline T GetTransform() const { return m_transform; }
@@ -44,6 +50,8 @@ namespace STR_FALL
 			m_mesh = m_baseMesh;
 			UPDATE_MESH();
 		}
+		inline M GetBaseMesh() const { return m_baseMesh; }
+		void SetBaseMesh(const M& mesh) { m_baseMesh = mesh; UPDATE_MESH(); }
 
 		void SetTransformPos(const decltype(std::declval<T>().m_pos)& pos)
 		{
@@ -80,7 +88,7 @@ namespace STR_FALL
 			UPDATE_MESH();
 		}
 	};
-
+	
 	struct Rect2D : Object<Transform2D, Mesh2D>
 	{
 		Color m_color;

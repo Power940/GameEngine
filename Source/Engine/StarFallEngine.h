@@ -8,6 +8,7 @@
 #include "StarTime.h"
 #include "Object.h"
 #include "Audio.h"
+#include "Scene.h"
 
 namespace STR_FALL
 {
