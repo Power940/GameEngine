@@ -5,42 +5,42 @@
 
 using namespace STR_FALL;
 
-int const WINDOW_WIDTH = 1240;
+int const WINDOW_WIDTH = 1920;
 int const WINDOW_HEIGHT = 1080;
 
-//Ship player = Ship(Transform2D(Vector2(100, 100), Vector2(75, 75)), Color(), 500.0f, 1000.0f);
-Ship3D* player = new Ship3D(
-    Transform3D(Vector3(0, 0, 0), Vector3(20, 20, 20)),
-    Camera3D(Transform3D(), 90, Vector2(WINDOW_WIDTH, WINDOW_HEIGHT)),
-    500.0f,
-    1000.0f
-);
 Scene testingLevel;
 
 int main()
 {
     int initCode = g_engine.Initialize("Testing", WINDOW_WIDTH, WINDOW_HEIGHT);
     std::cout << "INIT_CODE: " << initCode << std::endl;
-    testingLevel.AddObject(player);
+
+    Ship3DDesc playerDesc;
+    playerDesc.m_transform = Transform3D(Vector3(0, 0, 0), Vector3(20, 20, 20));
+    playerDesc.m_baseMesh = SpaceShip3D;
+    playerDesc.m_name = "player";
+    playerDesc.m_cam = Camera3D(Transform3D(), 90, Vector2(WINDOW_WIDTH, WINDOW_HEIGHT));
+    playerDesc.m_forceStrength = 500.0f;
+    playerDesc.m_maxVel = 1000.f;
+    testingLevel.AddObject(new Ship3D(playerDesc));
 
     SDL_Event SDLEvent;
     bool quit = false;
 
     SeedRandom();
-    for (int index = 0; index < 50; index++)
+    for (int index = 0; index < 1000; index++)
     {
-        Marker* tempMarker = new Marker(Transform3D(
+        ObjectDesc<Transform3D, Mesh3D> markerDesc;
+        markerDesc.m_transform = Transform3D(
             Vector3(RandomInt(1000, -1000), RandomInt(1000, -1000), RandomInt(1000, -1000)),
             Vector3(10, 10, 10),
             Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2))
-        ));
+        );
+        Mesh3D temp = markerMesh;
+        temp.m_color = Color((markerDesc.m_transform.m_pos + 1000.0f) / 2000.0f);
+        markerDesc.m_baseMesh = temp;
 
-        Mesh3D tempMesh = tempMarker->GetBaseMesh();
-        Vector3 tempPosAsColor = (tempMarker->GetTransform().m_pos + 1000.0f) / 2000.0f;
-        tempMesh.m_color = Color(tempPosAsColor.m_x, tempPosAsColor.m_y, tempPosAsColor.m_z);
-        tempMarker->SetBaseMesh(tempMesh);
-
-        testingLevel.AddObject(tempMarker);
+        testingLevel.AddObject(new Marker(markerDesc));
     }
 
     while (!quit) {

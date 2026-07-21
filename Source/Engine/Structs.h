@@ -601,7 +601,8 @@ namespace STR_FALL
 
 	struct Color : Vector4
 	{
-		inline Color(const float r = 1.0f, const float g = 1.0f, const float b = 1.0f, const float a = 1.0f) : Vector4(r,g,b,a) {}
+		inline Color(const float r = 1.0f, const float g = 1.0f, const float b = 1.0f, const float a = 1.0f) : Vector4(r, g, b, a) {}
+		inline Color(const Vector4& rgba) : Vector4(rgba) {}
 	};
 
 	struct Vector2C : Vector2

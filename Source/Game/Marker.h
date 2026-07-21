@@ -1,5 +1,4 @@
 #pragma once
-#include <Object.h>
 #include <StarFallEngine.h>
 
 using namespace STR_FALL;
@@ -17,8 +16,8 @@ static Mesh3D markerMesh = Mesh3D(
 
 struct Marker : public Object<Transform3D, Mesh3D>
 {
-	Marker(const Transform3D& t) :
-		Object(t, markerMesh) {}
+	Marker(const ObjectDesc<Transform3D, Mesh3D>& desc) :
+		Object(desc) {}
 
 	void Update(float dt) override
 	{
@@ -27,7 +26,7 @@ struct Marker : public Object<Transform3D, Mesh3D>
 
 	void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override
 	{
-		r.SetColor(Color());
-		g_engine.m_renderer.Render3DCustomOutline(c, m_mesh.m_points, m_mesh.m_indices);
+		r.SetColor(m_mesh.m_color);
+		r.Render3DCustomOutline(c, m_mesh.m_points, m_mesh.m_indices);
 	}
 };

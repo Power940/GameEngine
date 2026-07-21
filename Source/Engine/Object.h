@@ -1,6 +1,7 @@
 #pragma once
 #include <concepts>
 #include <utility>
+#include <string>
 #include "Structs.h"
 #include "Renderer.h"
 #include "Mesh.h"
@@ -15,8 +16,19 @@ namespace STR_FALL
 	};
 
 	template<typename T, typename M>
-	concept CompatibleObject = (std::same_as<T, Transform2D> && (std::same_as<M, Mesh2D> || std::same_as<M, MultiMesh2D>))
-		|| (std::same_as<T, Transform3D> && (std::same_as<M, Mesh3D> || std::same_as<M, MultiMesh3D>));
+	concept CompatibleObject =
+		(std::same_as<T, Transform2D> && (std::same_as<M, Mesh2D> || std::same_as<M, MultiMesh2D>)) ||
+		(std::same_as<T, Transform3D> && (std::same_as<M, Mesh3D> || std::same_as<M, MultiMesh3D>));
+
+	template<typename T, typename M>
+	requires CompatibleObject<T, M>
+	struct ObjectDesc
+	{
+		T m_transform;
+		M m_baseMesh;
+		std::string m_name;
+		std::vector<std::string> m_tags;
+	};
 
 	template<typename T, typename M>
 	requires CompatibleObject<T, M>
@@ -26,6 +38,8 @@ namespace STR_FALL
 		T m_transform;
 		M m_baseMesh;
 		M m_mesh;
+		std::string m_name;
+		std::vector<std::string> m_tags;
 
 		inline void UPDATE_MESH()
 		{
@@ -37,8 +51,13 @@ namespace STR_FALL
 	public:
 		decltype(std::declval<T>().m_pos) m_vel = decltype(std::declval<T>().m_pos)();
 
-		Object(const T& transform) : m_transform(transform), m_baseMesh(M()), m_mesh(M()) {}
-		Object(const T& transform, const M& mesh) : m_transform(transform), m_baseMesh(mesh), m_mesh(mesh) { UPDATE_MESH(); }
+		inline Object(const ObjectDesc<T,M>& desc):
+			m_transform(desc.m_transform),
+			m_baseMesh(desc.m_baseMesh),
+			m_mesh(desc.m_baseMesh),
+			m_name(desc.m_name),
+			m_tags(desc.m_tags)
+		{ UPDATE_MESH(); }
 
 		virtual void Update(float dt) = 0;
 		virtual void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const = 0;
@@ -51,7 +70,8 @@ namespace STR_FALL
 			UPDATE_MESH();
 		}
 		inline M GetBaseMesh() const { return m_baseMesh; }
-		void SetBaseMesh(const M& mesh) { m_baseMesh = mesh; UPDATE_MESH(); }
+		inline M GetMesh() const { return m_mesh; }
+		void SetBaseMesh(const M& mesh) { m_baseMesh = mesh; m_mesh = mesh; UPDATE_MESH(); }
 
 		void SetTransformPos(const decltype(std::declval<T>().m_pos)& pos)
 		{
@@ -86,47 +106,6 @@ namespace STR_FALL
 			m_transform.SetRotation(m_transform.m_rot + rot);
 			m_mesh = m_baseMesh;
 			UPDATE_MESH();
-		}
-	};
-	
-	struct Rect2D : Object<Transform2D, Mesh2D>
-	{
-		Color m_color;
-
-		Rect2D(const Transform2D& t = Transform2D(), const Color& c = Color(1.0f, 1.0f, 1.0f)) :
-			Object(t, Rect2DMesh), m_color(c) {}
-
-		void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override
-		{
-			r.SetColor(m_mesh.m_color);
-			r.RenderCustomOutline(m_mesh.m_points);
-		}
-	};
-
-	struct Rect3D : Object<Transform3D, Mesh3D>
-	{
-		Color m_color;
-
-		Rect3D(const Transform3D& t, const Color& c = Color(1.0f, 1.0f, 1.0f)) :
-			Object(t, Rect3DMesh), m_color(c) {}
-
-		void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override
-		{
-			r.SetColor(m_color);
-			r.Render3DOutlineTriangles(c, {
-				Triangle3D(m_mesh[2], m_mesh[0], m_mesh[1]),
-				Triangle3D(m_mesh[1], m_mesh[3], m_mesh[2]),
-				Triangle3D(m_mesh[6], m_mesh[2], m_mesh[3]),
-				Triangle3D(m_mesh[3], m_mesh[7], m_mesh[6]),
-				Triangle3D(m_mesh[4], m_mesh[6], m_mesh[7]),
-				Triangle3D(m_mesh[7], m_mesh[5], m_mesh[4]),
-				Triangle3D(m_mesh[0], m_mesh[4], m_mesh[5]),
-				Triangle3D(m_mesh[5], m_mesh[1], m_mesh[0]),
-				Triangle3D(m_mesh[4], m_mesh[0], m_mesh[2]),
-				Triangle3D(m_mesh[2], m_mesh[6], m_mesh[4]),
-				Triangle3D(m_mesh[5], m_mesh[7], m_mesh[3]),
-				Triangle3D(m_mesh[3], m_mesh[1], m_mesh[5])
-			});
 		}
 	};
 }

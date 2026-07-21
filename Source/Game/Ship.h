@@ -1,18 +1,22 @@
 #pragma once
-#include <Object.h>
 #include <StarFallEngine.h>
 
 using namespace STR_FALL;
 
 static MultiMesh2D SpaceShip = MultiMesh2D({
-	Mesh2D({Vector2(-0.5f, 0.5f), Vector2(0.5f, 0.0f), Vector2(-0.5f,-0.5f), Vector2(-0.25f,0.0f)}), // body
+	Mesh2D({Vector2(-0.5f, 0.5f), Vector2(0.5f, 0.0f), Vector2(-0.5f,-0.5f), Vector2(-0.25f,0.0f)}, Color()), // body
 	Mesh2D({Vector2(0.0f, 0.2f), Vector2(0.0f, -0.2f), Vector2(0.4f, 0.0f)}, Color(0.0f, 0.0f, 1.0f)), // window
 	Mesh2D({Vector2(-1.0f, 0.0f), Vector2(-0.5f, 0.2f), Vector2(-0.35f, 0.0f), Vector2(-0.5f, -0.2f)}, Color(1.0f, 1.0f, 0.5f)) // flame
 	});
 
+struct ShipDesc : public ObjectDesc<Transform2D, MultiMesh2D>
+{
+	float m_forceStrength;
+	float m_maxVel;
+};
+
 struct Ship : public Object<Transform2D, MultiMesh2D>
 {
-	Color m_color;
 	Vector2 m_dir = Vector2(1.0f, 0.0f);
 	Vector2 m_accel = Vector2();
 
@@ -20,8 +24,8 @@ struct Ship : public Object<Transform2D, MultiMesh2D>
 	float m_force = 0.0f;
 	float m_maxVel;
 
-	Ship(const Transform2D& t, const Color& c, const float fs, const float mv) :
-		Object(t, SpaceShip), m_color(c), m_forceStrength(fs), m_maxVel(mv) {}
+	Ship(const ShipDesc& desc) :
+		Object(desc), m_forceStrength(desc.m_forceStrength), m_maxVel(desc.m_maxVel) {}
 
 	void Update(float dt) override 
 	{
