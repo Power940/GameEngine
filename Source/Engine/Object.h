@@ -9,37 +9,50 @@
 
 namespace STR_FALL
 {
-	struct BaseObject
-	{
-		virtual void Update(float dt) = 0;
-		virtual void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const = 0;
-	};
+	class Scene;
 
 	template<typename T, typename M>
 	concept CompatibleObject =
 		(std::same_as<T, Transform2D> && (std::same_as<M, Mesh2D> || std::same_as<M, MultiMesh2D>)) ||
 		(std::same_as<T, Transform3D> && (std::same_as<M, Mesh3D> || std::same_as<M, MultiMesh3D>));
 
-	template<typename T, typename M>
-	requires CompatibleObject<T, M>
-	struct ObjectDesc
+
+
+	struct BaseObjectDesc
 	{
-		T m_transform;
-		M m_baseMesh;
 		std::string m_name;
 		std::vector<std::string> m_tags;
 	};
 
-	template<typename T, typename M>
-	requires CompatibleObject<T, M>
-	struct Object : BaseObject
+	struct BaseObject
+	{
+	protected:
+		std::string m_name;
+		std::vector<std::string> m_tags;
+		Scene* m_scene = nullptr;
+
+		inline BaseObject(const BaseObjectDesc& desc) : m_name(desc.m_name), m_tags(desc.m_tags) {}
+
+	public:
+		friend Scene;
+		virtual void Update(float dt) = 0;
+		virtual void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const = 0;
+	};
+
+	template<typename T, typename M> requires CompatibleObject<T, M>
+	struct ObjectDesc : public BaseObjectDesc
+	{
+		T m_transform;
+		M m_baseMesh;
+	};
+
+	template<typename T, typename M> requires CompatibleObject<T, M>
+	struct Object : public BaseObject
 	{
 	protected:
 		T m_transform;
 		M m_baseMesh;
 		M m_mesh;
-		std::string m_name;
-		std::vector<std::string> m_tags;
 
 		inline void UPDATE_MESH()
 		{
@@ -55,8 +68,7 @@ namespace STR_FALL
 			m_transform(desc.m_transform),
 			m_baseMesh(desc.m_baseMesh),
 			m_mesh(desc.m_baseMesh),
-			m_name(desc.m_name),
-			m_tags(desc.m_tags)
+			BaseObject(desc)
 		{ UPDATE_MESH(); }
 
 		virtual void Update(float dt) = 0;

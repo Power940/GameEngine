@@ -1,5 +1,4 @@
 //#include "StarFallEngine.h"
-//#include "Ship.h"
 //#include "Ship3D.h"
 //#include "Marker.h"
 //
@@ -12,7 +11,7 @@
 //
 //int main()
 //{
-//    int initCode = g_engine.Initialize("Testing", WINDOW_WIDTH, WINDOW_HEIGHT);
+//    int initCode = STR_Engine::Get().Initialize("Testing", WINDOW_WIDTH, WINDOW_HEIGHT);
 //    std::cout << "INIT_CODE: " << initCode << std::endl;
 //
 //    Ship3DDesc playerDesc;
@@ -51,15 +50,19 @@
 //                break;
 //            }
 //        }
-//        g_engine.Update();
+//        STR_Engine::Get().Update();
 //
-//        testingLevel.Update(g_engine.m_time.GetDeltaTime());
+//        testingLevel.Update(STR_Engine::Get().m_time.GetDeltaTime());
 //
-//        g_engine.m_renderer.Clear();
+//        STR_Engine::Get().m_renderer.Clear();
 //
-//        testingLevel.Draw(g_engine.m_renderer, ((Ship3D*)(testingLevel.GetObject(0)))->m_cam);
+//        Ship3D* player = testingLevel.GetObjectName<Ship3D>("player");
+//        Camera3D cam;
+//        cam = player->m_cam;
 //
-//        g_engine.m_renderer.Present();
+//        testingLevel.Draw(STR_Engine::Get().m_renderer, cam);
+//
+//        STR_Engine::Get().m_renderer.Present();
 //    }
 //
 //    return 0;

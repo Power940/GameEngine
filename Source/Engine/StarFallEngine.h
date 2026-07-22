@@ -16,10 +16,7 @@ namespace STR_FALL
 	struct STR_Engine
 	{
 	public:
-		static STR_Engine& Get()
-		{
-			static STR_Engine engine; return engine;
-		}
+		static STR_Engine& Get() { static STR_Engine engine; return engine; }
 
 		Renderer m_renderer;
 		Input m_input;
