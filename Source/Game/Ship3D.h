@@ -66,13 +66,13 @@ struct Ship3D : public Object<Transform3D, MultiMesh3D>
 	void Update(float dt) override
 	{
 		IncrementTransformRotation(
-			Vector3(0.0f, 0.0f, g_engine.m_input.GetKeyDiff(Input::VK_D, Input::VK_A)) * dt * 3.0f
+			Vector3(0.0f, 0.0f, STR_Engine::Get().m_input.GetKeyDiff(Input::VK_D, Input::VK_A)) * dt * 3.0f
 		);
 		
 		IncrementTransformRotation(
-			Vector3(g_engine.m_input.GetKeyDiff(Input::VK_W, Input::VK_S), 0.0f, 0.0f) * dt * 3.0f
+			Vector3(STR_Engine::Get().m_input.GetKeyDiff(Input::VK_W, Input::VK_S), 0.0f, 0.0f) * dt * 3.0f
 		);
-		m_force = g_engine.m_input.GetKeyDown(Input::VK_UP) * m_forceStrength;
+		m_force = STR_Engine::Get().m_input.GetKeyDown(Input::VK_UP) * m_forceStrength;
 
 		m_dir = Vector3(0.0f, 0.0f, 1.0f) * m_transform.GetRotationMatrix();
 		m_accel = m_dir * m_force;
@@ -81,7 +81,7 @@ struct Ship3D : public Object<Transform3D, MultiMesh3D>
 		m_vel.ClampMag(0, m_maxVel);
 		IncrementTransformPos(m_vel * dt);
 		m_vel *= std::pow(0.95f, dt);
-		if (g_engine.m_input.GetKeyDown(Input::VK_SPACE))
+		if (STR_Engine::Get().m_input.GetKeyDown(Input::VK_SPACE))
 			m_vel = Vector3();
 
 		m_cam.m_transform = m_transform;
@@ -95,7 +95,7 @@ struct Ship3D : public Object<Transform3D, MultiMesh3D>
 		r.Render3DCustomOutline(m_cam, m_mesh[0].m_points, m_mesh[0].m_indices);
 		r.SetColor(m_mesh[1].m_color);
 		r.Render3DCustomOutline(m_cam, m_mesh[1].m_points, m_mesh[1].m_indices);
-		if (g_engine.m_input.GetKeyDown(SDL_SCANCODE_UP))
+		if (STR_Engine::Get().m_input.GetKeyDown(SDL_SCANCODE_UP))
 		{
 			r.SetColor(m_mesh[2].m_color);
 			Mesh3D flame = m_mesh[2];

@@ -47,6 +47,9 @@
     <ClInclude Include="Scene.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -71,6 +74,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="file.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

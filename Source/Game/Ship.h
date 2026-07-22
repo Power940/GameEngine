@@ -30,10 +30,10 @@ struct Ship : public Object<Transform2D, MultiMesh2D>
 	void Update(float dt) override 
 	{
 		IncrementTransformRotation(
-			(g_engine.m_input.GetKeyDown(SDL_SCANCODE_A) - g_engine.m_input.GetKeyDown(SDL_SCANCODE_D)) * dt * 3.0f
+			(STR_Engine::Get().m_input.GetKeyDown(SDL_SCANCODE_A) - STR_Engine::Get().m_input.GetKeyDown(SDL_SCANCODE_D)) * dt * 3.0f
 		);
 
-		m_force = g_engine.m_input.GetKeyDown(SDL_SCANCODE_W) * m_forceStrength;
+		m_force = STR_Engine::Get().m_input.GetKeyDown(SDL_SCANCODE_W) * m_forceStrength;
 
 		m_dir = Vector2(1.0f, 0.0f) * m_transform.GetRotationMatrix();
 		m_accel = m_dir * m_force;
@@ -42,25 +42,25 @@ struct Ship : public Object<Transform2D, MultiMesh2D>
 		m_vel.ClampMag(0, m_maxVel);
 		IncrementTransformPos(m_vel * dt);
 		m_vel *= std::pow(0.95f, dt);
-		if (g_engine.m_input.GetKeyDown(SDL_SCANCODE_SPACE))
+		if (STR_Engine::Get().m_input.GetKeyDown(SDL_SCANCODE_SPACE))
 			m_vel = Vector2();
 
 		#pragma region Wrap logic
-		if (g_engine.m_renderer.GetSreenWidth() < m_transform.m_pos.m_x)
+		if (STR_Engine::Get().m_renderer.GetSreenWidth() < m_transform.m_pos.m_x)
 		{
-			SetTransformPos(Vector2(m_transform.m_pos.m_x - g_engine.m_renderer.GetSreenWidth(), m_transform.m_pos.m_y));
+			SetTransformPos(Vector2(m_transform.m_pos.m_x - STR_Engine::Get().m_renderer.GetSreenWidth(), m_transform.m_pos.m_y));
 		}
 		if (m_transform.m_pos.m_x < 0)
 		{
-			SetTransformPos(Vector2(m_transform.m_pos.m_x + g_engine.m_renderer.GetSreenWidth(), m_transform.m_pos.m_y));
+			SetTransformPos(Vector2(m_transform.m_pos.m_x + STR_Engine::Get().m_renderer.GetSreenWidth(), m_transform.m_pos.m_y));
 		}
-		if (g_engine.m_renderer.GetSreenHeight() < m_transform.m_pos.m_y)
+		if (STR_Engine::Get().m_renderer.GetSreenHeight() < m_transform.m_pos.m_y)
 		{
-			SetTransformPos(Vector2(m_transform.m_pos.m_x, m_transform.m_pos.m_y - g_engine.m_renderer.GetSreenHeight()));
+			SetTransformPos(Vector2(m_transform.m_pos.m_x, m_transform.m_pos.m_y - STR_Engine::Get().m_renderer.GetSreenHeight()));
 		}
 		if (m_transform.m_pos.m_y < 0)
 		{
-			SetTransformPos(Vector2(m_transform.m_pos.m_x, m_transform.m_pos.m_y + g_engine.m_renderer.GetSreenHeight()));
+			SetTransformPos(Vector2(m_transform.m_pos.m_x, m_transform.m_pos.m_y + STR_Engine::Get().m_renderer.GetSreenHeight()));
 		}
 		#pragma endregion
 	}
@@ -71,7 +71,7 @@ struct Ship : public Object<Transform2D, MultiMesh2D>
 		r.RenderCustomOutline(m_mesh[0].m_points);
 		r.SetColor(m_mesh[1].m_color);
 		r.RenderCustomOutline(m_mesh[1].m_points);
-		if (g_engine.m_input.GetKeyDown(SDL_SCANCODE_W))
+		if (STR_Engine::Get().m_input.GetKeyDown(SDL_SCANCODE_W))
 		{
 			r.SetColor(m_mesh[2].m_color);
 			r.RenderCustomOutline(m_mesh[2].m_points);

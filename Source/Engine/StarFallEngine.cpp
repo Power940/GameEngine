@@ -2,8 +2,6 @@
 
 namespace STR_FALL
 {
-    STR_Engine g_engine;
-
     int STR_Engine::Initialize(const char* windowName, const int WINDOW_WIDTH, const int WINDOW_HEIGHT)
     {
         m_renderer = Renderer();

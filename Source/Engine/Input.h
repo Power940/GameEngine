@@ -19,7 +19,7 @@ namespace STR_FALL
 
 		Vector2 m_mousePos = Vector2();
 	public:
-		static enum MouseButton
+		enum MouseButton
 		{
 			LEFT = 0b0001,
 			MIDDLE = 0b0010,
@@ -44,7 +44,7 @@ namespace STR_FALL
         int GetKeyDiff(int pos, int neg) const { return m_keyStates.at(pos) - m_keyStates.at(neg); }
         Vector2 GetKeyDir(int posX, int negX, int posY, int negY) const { return Vector2(m_keyStates.at(posX) - m_keyStates.at(negX), m_keyStates.at(posY) - m_keyStates.at(negY)); }
 
-		static enum KeyCodes
+		enum KeyCodes
 		{
             // taken from SDL3\include\SDL3\SDL_scancode.h
             // if more are needed look though there and add them here, or use the SDL_SCANCODE_{key}

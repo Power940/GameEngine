@@ -9,22 +9,28 @@
 #include "Object.h"
 #include "Audio.h"
 #include "Scene.h"
+#include "file.h"
 
 namespace STR_FALL
 {
 	struct STR_Engine
 	{
+	public:
+		static STR_Engine& Get()
+		{
+			static STR_Engine engine; return engine;
+		}
+
 		Renderer m_renderer;
 		Input m_input;
 		Time m_time;
 		Audio m_audio;
 
-		STR_Engine() = default;
-
 		int Initialize(const char* windowName, const int WINDOW_WIDTH, const int WINDOW_HEIGHT);
 		void Shutdown();
 		void Update();
-	};
 
-	extern STR_Engine g_engine;
+	private:
+		STR_Engine() = default;
+	};
 };
