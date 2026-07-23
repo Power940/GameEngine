@@ -1,5 +1,6 @@
 #pragma once
 #include <StarFallEngine.h>
+#include "Ship3D.h"
 
 using namespace STR_FALL;
 
@@ -16,12 +17,20 @@ static Mesh3D markerMesh = Mesh3D(
 
 struct Marker : public Object<Transform3D, Mesh3D>
 {
+	const Ship3D* m_player;
+	bool m_canMove = false;
+
 	Marker(const ObjectDesc<Transform3D, Mesh3D>& desc) :
-		Object(desc) {}
+		Object(desc), m_player(m_scene->GetObjectName<Ship3D>("player")) { }
 
 	void Update(float dt) override
 	{
-		return;
+		if (m_canMove)
+		{
+			Vector3 dir = Vector3(m_transform.m_pos, m_player->GetTransform().m_pos);
+			dir.Normalize();
+			IncrementTransformPos(dir * dt);
+		}
 	}
 
 	void Draw(Renderer& r, const Camera3D& c = Camera3D::Empty) const override

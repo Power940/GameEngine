@@ -22,6 +22,7 @@ namespace STR_FALL
 	{
 		std::string m_name;
 		std::vector<std::string> m_tags;
+		Scene* m_scene = nullptr;
 	};
 
 	struct BaseObject
@@ -31,7 +32,7 @@ namespace STR_FALL
 		std::vector<std::string> m_tags;
 		Scene* m_scene = nullptr;
 
-		inline BaseObject(const BaseObjectDesc& desc) : m_name(desc.m_name), m_tags(desc.m_tags) {}
+		inline BaseObject(const BaseObjectDesc& desc) : m_name(desc.m_name), m_tags(desc.m_tags), m_scene(desc.m_scene) {}
 
 	public:
 		friend Scene;
