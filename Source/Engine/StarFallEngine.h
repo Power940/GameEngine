@@ -13,6 +13,7 @@
 #include "Text.h"
 #include "Game.h"
 #include "ParticleSystem.h"
+#include "Texture.h"
 
 namespace STR_FALL
 {

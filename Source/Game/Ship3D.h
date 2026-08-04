@@ -45,8 +45,8 @@ static MultiMesh3D SpaceShip3D = MultiMesh3D({
 
 struct Ship3DDesc : public ObjectDesc
 {
-	float m_forceStrength;
-	float m_maxVel;
+	float m_forceStrength = 0.0f;
+	float m_maxVel = 0.0f;
 	Camera3D m_cam;
 };
 

@@ -101,6 +101,18 @@ namespace STR_FALL
         SDL_SetRenderDrawColorFloat(m_renderer, 1.0f, 1.0f, 1.0f, 1.0f);
         SDL_RenderDebugText(m_renderer, point.m_x, point.m_y, text.c_str());
     }
+    void Renderer::DrawTexture(Texture* texture, float x, float y)
+    {
+        Vector2 size = texture->GetSize();
+
+        SDL_FRect destRect;
+        destRect.x = x;
+        destRect.y = y;
+        destRect.w = size.m_x;
+        destRect.h = size.m_y;
+
+        SDL_RenderTexture(m_renderer, texture->m_texture, NULL, &destRect);
+    }
 
     void Renderer::RenderPoint(const Vector2& point) const { SDL_RenderPoint(m_renderer, point.m_x, point.m_y); }
     void Renderer::RenderPoints(const std::vector<Vector2>& points) const

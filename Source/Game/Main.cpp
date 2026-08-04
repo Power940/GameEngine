@@ -11,6 +11,7 @@ SpaceGame3D game;
 int main()
 {
     SetWorkingDirectory("Assets");
+
     int initCode = STR_Engine::Get().Initialize("Space Game", WINDOW_WIDTH, WINDOW_HEIGHT);
     std::cout << "INIT_CODE: " << initCode << std::endl;
 

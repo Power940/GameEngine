@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_image/SDL_image.h>
 #include <cmath>
 #include <iostream>
 #include <ostream>
@@ -9,6 +10,7 @@
 #include <map>
 #include "Constants.h"
 #include "Structs.h"
+#include "Texture.h"
 
 namespace STR_FALL
 {
@@ -41,6 +43,7 @@ namespace STR_FALL
 		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }
 
 		void RenderDebugText(const std::string& text, const Vector2& point) const;
+		void DrawTexture(class Texture* texture, float x, float y);
 
 		void RenderPoint(const Vector2& point) const;
 		void RenderPoints(const std::vector<Vector2>& points) const;
@@ -64,5 +67,6 @@ namespace STR_FALL
 		void Render3DCustomOutline(const std::vector<Vector3>& points, const std::vector<int>& indices) const;
 
 		friend struct Text;
+		friend class Texture;
 	};
 }

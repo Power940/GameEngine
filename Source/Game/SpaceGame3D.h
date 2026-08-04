@@ -16,6 +16,7 @@ class SpaceGame3D : public Game
 public:
 	GameState currentState = GameState::MainMenu;
 	Text* menuText = nullptr;
+	std::shared_ptr<Texture> texture;
 
 
 	virtual bool Initialize()
@@ -82,6 +83,9 @@ public:
 		menuText = new Text(font);
 		menuText->Create(STR_Engine::m_renderer, "3D Ship Sim\nPress Space to Start", Color());
 
+		texture = std::make_shared<Texture>();
+		texture->Load("Textures/beast.png", STR_Engine::m_renderer);
+
 		return true;
 	}
 
@@ -113,6 +117,7 @@ public:
 		{
 			STR_Engine::m_renderer.Clear();
 			menuText->Draw(STR_Engine::m_renderer, 100.0f, 100.0f);
+			STR_Engine::m_renderer.DrawTexture(texture.get(), 30.0f, 30.0f);
 			STR_Engine::m_renderer.Present();
 		}
 		else if (currentState == GameState::Game)
