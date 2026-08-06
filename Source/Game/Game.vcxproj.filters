@@ -27,5 +27,8 @@
     <ClInclude Include="Bullet.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Assets.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

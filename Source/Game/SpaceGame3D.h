@@ -2,6 +2,7 @@
 #include "StarFallEngine.h"
 #include "Ship3D.h"
 #include "Marker.h"
+#include "Assets.h"
 
 using namespace STR_FALL;
 
@@ -15,18 +16,18 @@ class SpaceGame3D : public Game
 {
 public:
 	GameState currentState = GameState::MainMenu;
-	Text* menuText = nullptr;
-	std::shared_ptr<Texture> texture;
-
+	Text* menuText;
 
 	virtual bool Initialize()
 	{
 		m_scene = new Scene();
 		m_scene->m_game = this;
 
+#pragma region GameObjectSetup
+
 		Ship3DDesc playerDesc;
 		playerDesc.m_transform = Transform3D(Vector3(0, 0, 0), Vector3(20, 20, 20));
-		playerDesc.m_baseMesh = SpaceShip3D;
+		playerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(SpaceShip3D);
 		playerDesc.m_name = "player";
 		playerDesc.m_tags = { "player" };
 		playerDesc.m_cam = Camera3D(Transform3D(), 90, Vector2(static_cast<float>(STR_Engine::m_renderer.GetSreenWidth()), static_cast<float>(STR_Engine::m_renderer.GetSreenHeight())));
@@ -50,7 +51,7 @@ public:
 
 			Mesh3D temp = markerMesh;
 			temp.m_color = Color((markerDesc.m_transform.m_pos + 2000.0f) / 4000.0f);
-			markerDesc.m_baseMesh = temp;
+			markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(temp);
 
 			markerDesc.m_collisionLayer = BitMaskInt(2);
 
@@ -67,24 +68,23 @@ public:
 			);
 			markerDesc.m_name = "marker no color";
 			markerDesc.m_tags = { "marker" };
-			markerDesc.m_baseMesh = markerMesh;
+			markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(markerMesh);
 			markerDesc.m_scene = m_scene;
 
 			m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, false)));
 		}
+
+#pragma endregion
 
 		Camera3D* cam = &(m_scene->GetObjectName<Ship3D>("player")->m_cam);
 		STR_Engine::Get().m_renderer.SetCamera(cam);
 
 		STR_Engine::m_audio.AddSound("shoot", "Shoot.mp3");
 
-		Font* font = new Font();
-		font->Load("Fonts/VCR_OSD_MONO.ttf", 80);
-		menuText = new Text(font);
-		menuText->Create(STR_Engine::m_renderer, "3D Ship Sim\nPress Space to Start", Color());
+		menuText = new Text(ResourceManager::ResManager().GetWithID<Font>("title_font", "Fonts/VCR_OSD_MONO.ttf", 64.0f));
+		menuText->Create(STR_Engine::m_renderer, "3D Ship Sim - Press Space to Start", Color());
 
-		texture = std::make_shared<Texture>();
-		texture->Load("Textures/beast.png", STR_Engine::m_renderer);
+		ResourceManager::ResManager().GetWithID<Texture>("title_texture", "Textures/Player.png", STR_Engine::m_renderer);
 
 		return true;
 	}
@@ -117,7 +117,8 @@ public:
 		{
 			STR_Engine::m_renderer.Clear();
 			menuText->Draw(STR_Engine::m_renderer, 100.0f, 100.0f);
-			STR_Engine::m_renderer.DrawTexture(texture.get(), 30.0f, 30.0f);
+			STR_Engine::m_renderer.DrawTexture(
+				ResourceManager::ResManager().GetWithID<Texture>("title_texture", "Textures/Player.png", STR_Engine::m_renderer).get(), 30.0f, 30.0f);
 			STR_Engine::m_renderer.Present();
 		}
 		else if (currentState == GameState::Game)

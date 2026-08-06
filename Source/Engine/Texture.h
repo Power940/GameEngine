@@ -4,10 +4,11 @@
 #include <iostream>
 #include "Structs.h"
 #include "Renderer.h" 
+#include "Resource.h"
 
 namespace STR_FALL
 {
-	class Texture
+	class Texture : public Resource
 	{
 	friend class Renderer;
 
@@ -17,9 +18,8 @@ namespace STR_FALL
 
 		bool Load(const std::string& filename, Renderer& renderer);
 
-		Vector2 GetSize();
-
 	private:
 		SDL_Texture* m_texture = nullptr;
+		Vector2 m_size = Vector2();
 	};
 }

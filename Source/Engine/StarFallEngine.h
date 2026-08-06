@@ -14,6 +14,7 @@
 #include "Game.h"
 #include "ParticleSystem.h"
 #include "Texture.h"
+#include "ResourceManager.h"
 
 namespace STR_FALL
 {

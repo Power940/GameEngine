@@ -1,22 +1,75 @@
 #pragma once
 #include <ctime>
 #include <cstdlib>
+#include <random>
 
 namespace STR_FALL
 {
-	inline void SeedRandom() { std::srand(static_cast<unsigned int>(std::time(nullptr))); }
+	inline std::mt19937& Generator()
+	{
+		static std::random_device randomDevice;
+		static std::mt19937 gen(randomDevice());
+		return gen;
+	}
 
-	inline void SeedRandom(unsigned int seed) { std::srand(seed); }
+	inline static void SeedRandom()
+	{
+		Generator().seed(static_cast<unsigned int>(time(nullptr)));
+	}
 
-	inline int RandomInt() { return rand(); }
+	inline void SeedRandom(unsigned int seed)
+	{
+		Generator().seed(seed);
+	}
 
-	inline int RandomInt(int max) { return rand() % max; }
+	inline int RandomInt()
+	{
+		static std::uniform_int_distribution<> dist;
+		return dist(Generator());
+	}
 
-	inline int RandomInt(int max, int min) { return min + rand() % (max - min + 1); }
+	inline int RandomInt(int max)
+	{
+		std::uniform_int_distribution<> dist(0, max - 1);
+		return dist(Generator());
+	}
 
-	inline float RandomFloat() { return rand() / static_cast<float>(RAND_MAX); }
+	inline int RandomInt(int max, int min)
+	{
+		if (min > max) { std::swap(min, max); }
+		std::uniform_int_distribution<> dist(min, max - 1);
+		return dist(Generator());
+	}
 
-	inline float RandomFloat(float max) { return rand() / static_cast<float>(RAND_MAX) * max; }
+	inline float RandomFloat()
+	{
+		static std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+		return dist(Generator());
+	}
 
-	inline float RandomFloat(float max, float min) { return rand() / static_cast<float>(RAND_MAX) * (max - min) + min; }
+	inline float RandomFloat(float max)
+	{
+		std::uniform_real_distribution<float> dist(0.0f, max);
+		return dist(Generator());
+	}
+
+	inline float RandomFloat(float max, float min)
+	{
+		if (min > max) { std::swap(min, max); }
+		std::uniform_real_distribution<float> dist(min, max);
+		return dist(Generator());
+	}
+
+	inline bool RandomBool()
+	{
+		static std::bernoulli_distribution dist(0.5f);
+		return dist(Generator());
+	}
+
+	inline bool RandomBoolInfluence(float leaning)
+	{
+		if (leaning < 0.0f || 1.0f < leaning) { leaning = std::clamp(leaning, 0.0f, 1.0f); }
+		std::bernoulli_distribution dist(leaning);
+		return dist(Generator());
+	}
 }

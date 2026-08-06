@@ -101,17 +101,17 @@ namespace STR_FALL
         SDL_SetRenderDrawColorFloat(m_renderer, 1.0f, 1.0f, 1.0f, 1.0f);
         SDL_RenderDebugText(m_renderer, point.m_x, point.m_y, text.c_str());
     }
-    void Renderer::DrawTexture(Texture* texture, float x, float y)
+    void Renderer::DrawTexture(const Texture* texture, float x, float y, float angleDeg, float scale, bool flipH)
     {
-        Vector2 size = texture->GetSize();
+        Vector2 size = texture->m_size;
 
         SDL_FRect destRect;
-        destRect.x = x;
-        destRect.y = y;
-        destRect.w = size.m_x;
-        destRect.h = size.m_y;
+        destRect.w = size.m_x * scale;
+        destRect.h = size.m_y * scale;
+        destRect.x = x - (destRect.w * 0.5f);
+        destRect.y = y - (destRect.h * 0.5f);
 
-        SDL_RenderTexture(m_renderer, texture->m_texture, NULL, &destRect);
+        SDL_RenderTextureRotated(m_renderer, texture->m_texture, NULL, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 
     void Renderer::RenderPoint(const Vector2& point) const { SDL_RenderPoint(m_renderer, point.m_x, point.m_y); }

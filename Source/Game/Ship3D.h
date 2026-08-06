@@ -1,47 +1,9 @@
 #pragma once
 #include <StarFallEngine.h>
 #include "Bullet.h"
+#include "Assets.h"
 
 using namespace STR_FALL;
-
-static MultiMesh3D SpaceShip3D = MultiMesh3D({
-	Mesh3D(
-		{Vector3(0.0f, 0.0f, 0.5f), Vector3(0.5f, 0.0f, -0.5f), Vector3(-0.5f, 0.0f, -0.5f), Vector3(0.0f, 0.0f, -0.25f), Vector3(0.0f, 0.1f, 0.0f), Vector3(0.0f, -0.1f, 0.0f)},
-		Color(),
-		{
-			0,1,5,
-			0,1,4,
-			0,2,4,
-			0,2,5,
-			3,2,5,
-			3,2,4,
-			3,1,4,
-			3,1,5
-		}
-	),
-	Mesh3D(
-		{Vector3(0.0f,-0.05f,0.25f), Vector3(0.0f,-0.08f,0.1f), Vector3(0.1f,-0.03f,0.15f), Vector3(-0.1f,-0.03f,0.15f)},
-		Color(0.0f, 0.0f, 1.0f),
-		{
-			0,2,1,
-			0,3,1
-		}
-	),
-	Mesh3D(
-		{Vector3(0.0f,0.0f,-0.4f), Vector3(0.0f,0.0f,-1.0f), Vector3(0.2f,0.0f,-0.6f), Vector3(-0.2f,0.0f,-0.6f), Vector3(0.0f,-0.2f,-0.6f), Vector3(0.0f,0.2f,-0.6f)},
-		Color(1.0f, 1.0f, 0.5f),
-		{
-			0,4,3,
-			0,5,3,
-			0,2,5,
-			0,2,4,
-			1,4,3,
-			1,5,3,
-			1,2,5,
-			1,2,4
-		}
-	)
-});
 
 struct Ship3DDesc : public ObjectDesc
 {
@@ -70,7 +32,6 @@ struct Ship3D : public Object
 		float yaw = STR_Engine::Get().m_input.GetKeyDiff(Input::VK_Q, Input::VK_E) * dt * 3.0f;
 		SetTransformRotation(m_transform.m_rotMat * Matrix3::RotationX(pitch) * Matrix3::RotationZ(roll) * Matrix3::RotationY(yaw));
 
-		// normalize just in case, but I doubt I need it
 		m_dir = m_transform.m_rotMat.Forward().Normalize();
 		m_force = STR_Engine::Get().m_input.GetKeyDown(Input::VK_UP) * m_forceStrength;
 		m_accel = m_dir * m_force;
@@ -111,7 +72,7 @@ struct Ship3D : public Object
 	{
 		ObjectDesc bulletDesc;
 		bulletDesc.m_transform = m_transform;
-		bulletDesc.m_baseMesh = bulletMesh;
+		bulletDesc.m_baseMesh = std::make_shared<MultiMesh3D>(bulletMesh);
 		bulletDesc.m_name = "player bullet";
 		bulletDesc.m_tags = { "bullet" };
 		bulletDesc.m_scene = m_scene;

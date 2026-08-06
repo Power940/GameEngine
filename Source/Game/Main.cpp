@@ -16,7 +16,6 @@ int main()
     std::cout << "INIT_CODE: " << initCode << std::endl;
 
     game.Initialize();
-
     SDL_Event SDLEvent;
     bool quit = false;
 

@@ -43,7 +43,7 @@ namespace STR_FALL
 		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }
 
 		void RenderDebugText(const std::string& text, const Vector2& point) const;
-		void DrawTexture(class Texture* texture, float x, float y);
+		void DrawTexture(const class Texture* texture, float x, float y, float angleDeg = 0.0f, float scale = 1.0f, bool flipH = false);
 
 		void RenderPoint(const Vector2& point) const;
 		void RenderPoints(const std::vector<Vector2>& points) const;

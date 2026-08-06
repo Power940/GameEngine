@@ -2,10 +2,11 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 #include <iostream>
+#include "Resource.h"
 
 namespace STR_FALL
 {
-	struct Font
+	struct Font : Resource
 	{
 	public:
 		Font() = default;

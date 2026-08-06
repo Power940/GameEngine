@@ -65,6 +65,15 @@
     <ClInclude Include="Texture.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
@@ -104,6 +113,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

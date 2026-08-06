@@ -24,13 +24,12 @@ namespace STR_FALL
             return false;
         }
 
-        return true;
-    }
+        if (!SDL_GetTextureSize(m_texture, &(m_size.m_x), &(m_size.m_y)))
+        {
+            std::cerr << "Could not set texture size: " << filename << std::endl;
+            return false;
+        }
 
-    Vector2 Texture::GetSize()
-    {
-        Vector2 v;
-        SDL_GetTextureSize(m_texture, &(v.m_x), &(v.m_y));
-        return v;
+        return true;
     }
 }

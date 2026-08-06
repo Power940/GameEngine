@@ -3,12 +3,6 @@
 
 using namespace STR_FALL;
 
-static Mesh3D bulletMesh = Mesh3D(
-	{ Vector3(0.0f,0.0f,0.25f), Vector3(0.01f,0.0f,-0.25f), Vector3(-0.01f,0.0f,-0.25f) },
-	Color(),
-	{ 0,1,2 }
-);
-
 struct Bullet : public Object
 {
 	Vector3 m_dir;
