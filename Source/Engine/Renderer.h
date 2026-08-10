@@ -10,7 +10,6 @@
 #include <map>
 #include "Constants.h"
 #include "Structs.h"
-#include "Texture.h"
 
 namespace STR_FALL
 {
@@ -63,8 +62,10 @@ namespace STR_FALL
 		void RenderCustomFilledColor(const std::vector<Vector2C>& points, const std::vector<int>& indices) const;
 		void RenderCustomOutlineColor(const std::vector<Vector2C>& points) const;
 
-		void Render3DOutlineTriangles(const std::vector<Triangle3D>& tris) const;
+		void CameraProjection(const std::vector<Vector3>* points, const std::vector<int>* indices, const std::vector<Vector2>* indicesUVCords, std::vector<Vector2>* drawPoints, std::vector<int>* drawIndices, std::vector<Vector2>* drawIndicesUVCords) const;
+
 		void Render3DCustomOutline(const std::vector<Vector3>& points, const std::vector<int>& indices) const;
+		void Render3DCustomTexture(const std::vector<Vector3>& points, const std::vector<int>& indices, const std::vector<Vector2>& indicesUVCords, const class Texture* texture) const;
 
 		friend struct Text;
 		friend class Texture;

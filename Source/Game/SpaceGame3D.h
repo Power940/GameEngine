@@ -23,6 +23,8 @@ public:
 		m_scene = new Scene();
 		m_scene->m_game = this;
 
+		markerMesh.m_texture = ResourceManager::ResManager().GetWithID<Texture>("Asteroid", "Textures/Asteroid.png", STR_Engine::m_renderer);
+
 #pragma region GameObjectSetup
 
 		Ship3DDesc playerDesc;
@@ -37,7 +39,7 @@ public:
 		m_scene->AddObject(std::move(std::make_unique<Ship3D>(playerDesc)));
 
 		SeedRandom();
-		for (int index = 0; index < 500; index++)
+		for (int index = 0; index < 10; index++)
 		{
 			ObjectDesc markerDesc;
 			markerDesc.m_transform = Transform3D(
@@ -58,21 +60,21 @@ public:
 			m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, true)));
 		}
 
-		for (int index = 0; index < 500; index++)
-		{
-			ObjectDesc markerDesc;
-			markerDesc.m_transform = Transform3D(
-				Vector3(static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000))),
-				Vector3(10.0f, 10.0f, 10.0f),
-				Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)))
-			);
-			markerDesc.m_name = "marker no color";
-			markerDesc.m_tags = { "marker" };
-			markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(markerMesh);
-			markerDesc.m_scene = m_scene;
+		//for (int index = 0; index < 500; index++)
+		//{
+		//	ObjectDesc markerDesc;
+		//	markerDesc.m_transform = Transform3D(
+		//		Vector3(static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000))),
+		//		Vector3(10.0f, 10.0f, 10.0f),
+		//		Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)))
+		//	);
+		//	markerDesc.m_name = "marker no color";
+		//	markerDesc.m_tags = { "marker" };
+		//	markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(markerMesh);
+		//	markerDesc.m_scene = m_scene;
 
-			m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, false)));
-		}
+		//	m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, false)));
+		//}
 
 #pragma endregion
 
@@ -83,8 +85,6 @@ public:
 
 		menuText = new Text(ResourceManager::ResManager().GetWithID<Font>("title_font", "Fonts/VCR_OSD_MONO.ttf", 64.0f));
 		menuText->Create(STR_Engine::m_renderer, "3D Ship Sim - Press Space to Start", Color());
-
-		ResourceManager::ResManager().GetWithID<Texture>("title_texture", "Textures/Player.png", STR_Engine::m_renderer);
 
 		return true;
 	}
@@ -117,8 +117,6 @@ public:
 		{
 			STR_Engine::m_renderer.Clear();
 			menuText->Draw(STR_Engine::m_renderer, 100.0f, 100.0f);
-			STR_Engine::m_renderer.DrawTexture(
-				ResourceManager::ResManager().GetWithID<Texture>("title_texture", "Textures/Player.png", STR_Engine::m_renderer).get(), 30.0f, 30.0f);
 			STR_Engine::m_renderer.Present();
 		}
 		else if (currentState == GameState::Game)

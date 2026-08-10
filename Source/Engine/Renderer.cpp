@@ -1,4 +1,5 @@
 #include "Renderer.h"
+#include "Texture.h"
 
 namespace STR_FALL
 {
@@ -285,63 +286,8 @@ namespace STR_FALL
         }
     }
 
-    void Renderer::Render3DOutlineTriangles(const std::vector<Triangle3D>& tris) const
+    void Renderer::CameraProjection(const std::vector<Vector3>* points, const std::vector<int>* indices, const std::vector<Vector2>* pointsUVCords, std::vector<Vector2>* drawPoints, std::vector<int>* drawIndices, std::vector<Vector2>* drawPointsUVCords) const
     {
-        std::vector<Triangle2D> drawTriangles;
-
-        float x1 = 0.0f, x2 = 0.0f, x3 = 0.0f;
-        float y1 = 0.0f, y2 = 0.0f, y3 = 0.0f;
-        float z1 = 0.0f, z2 = 0.0f, z3 = 0.0f;
-
-        float px1 = 0.0f, py1 = 0.0f;
-        float px2 = 0.0f, py2 = 0.0f;
-        float px3 = 0.0f, py3 = 0.0f;
-
-        Vector2 screenPos1;
-        Vector2 screenPos2;
-        Vector2 screenPos3;
-
-        Vector3 pointVector;
-
-        for (const Triangle3D& tri : tris)
-        {
-            pointVector = Vector3(m_cam->m_transform.m_pos, tri[0]);
-            x1 = pointVector.Dot(m_cam->m_transform.m_rotMat.Right());
-            y1 = pointVector.Dot(m_cam->m_transform.m_rotMat.Up());
-            z1 = pointVector.Dot(m_cam->m_transform.m_rotMat.Forward());
-            pointVector = Vector3(m_cam->m_transform.m_pos, tri[1]);
-            x2 = pointVector.Dot(m_cam->m_transform.m_rotMat.Right());
-            y2 = pointVector.Dot(m_cam->m_transform.m_rotMat.Up());
-            z2 = pointVector.Dot(m_cam->m_transform.m_rotMat.Forward());
-            pointVector = Vector3(m_cam->m_transform.m_pos, tri[2]);
-            x3 = pointVector.Dot(m_cam->m_transform.m_rotMat.Right());
-            y3 = pointVector.Dot(m_cam->m_transform.m_rotMat.Up());
-            z3 = pointVector.Dot(m_cam->m_transform.m_rotMat.Forward());
-
-            if ((z1 + z2 + z3) / 3.0f < 0.0f) { continue; }
-
-            px1 = x1 / ((z1 < 0.001f) ? -0.01f : z1) * m_cam->m_fovScaling / m_cam->m_aspect;
-            px2 = x2 / ((z2 < 0.001f) ? -0.01f : z2) * m_cam->m_fovScaling / m_cam->m_aspect;
-            px3 = x3 / ((z3 < 0.001f) ? -0.01f : z3) * m_cam->m_fovScaling / m_cam->m_aspect;
-            py1 = y1 / ((z1 < 0.001f) ? -0.01f : z1) * m_cam->m_fovScaling;
-            py2 = y2 / ((z2 < 0.001f) ? -0.01f : z2) * m_cam->m_fovScaling;
-            py3 = y3 / ((z3 < 0.001f) ? -0.01f : z3) * m_cam->m_fovScaling;
-
-            screenPos1 = Vector2((px1 + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py1) * 0.5f * m_cam->m_ScreenDim.m_y);
-            screenPos2 = Vector2((px2 + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py2) * 0.5f * m_cam->m_ScreenDim.m_y);
-            screenPos3 = Vector2((px3 + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py3) * 0.5f * m_cam->m_ScreenDim.m_y);
-
-            drawTriangles.push_back(Triangle2D(screenPos1, screenPos2, screenPos3));
-        }
-        for (const Triangle2D& tri : drawTriangles)
-        {
-            RenderOutlineTriangle(tri);
-        }
-    }
-    void Renderer::Render3DCustomOutline(const std::vector<Vector3>& points, const std::vector<int>& indices) const
-    {
-        std::vector<Vector2> drawPoints;
-        std::vector<int> drawIndices;
         Vector3 pointVector;
 
         float x = 0.0f, y = 0.0f, z = 0.0f;
@@ -350,9 +296,9 @@ namespace STR_FALL
         std::vector<int> indicesConversion;
         int validIndex = 0;
 
-        for (int index = 0; index < points.size(); index++)
+        for (int index = 0; index < points->size(); index++)
         {
-            pointVector = Vector3(m_cam->m_transform.m_pos, points[index]);
+            pointVector = Vector3(m_cam->m_transform.m_pos, points->at(index));
             z = pointVector.Dot(m_cam->m_transform.m_rotMat.Forward());
             if (z < 0.00001f)
             {
@@ -366,21 +312,35 @@ namespace STR_FALL
             px = x / z * m_cam->m_fovScaling / m_cam->m_aspect;
             py = y / z * m_cam->m_fovScaling;
 
-            drawPoints.push_back(Vector2((px + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py) * 0.5f * m_cam->m_ScreenDim.m_y));
+            drawPoints->push_back(Vector2((px + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py) * 0.5f * m_cam->m_ScreenDim.m_y));
+
+            if (pointsUVCords && drawPointsUVCords)
+            {
+                drawPointsUVCords->push_back(pointsUVCords->at(index));
+            }
+
             indicesConversion.push_back(validIndex++);
         }
 
-        for (int index = 0; index < indices.size(); index += 3)
+        for (int index = 0; index < indices->size(); index += 3)
         {
-            if (std::any_of(indices.begin() + index, indices.begin() + index + 3, [&indicesConversion](int element) { return indicesConversion[element] == -1; }))
+            if (std::any_of(indices->begin() + index, indices->begin() + index + 3, [&indicesConversion](int element) { return indicesConversion[element] == -1; }))
             {
                 continue;
             }
             for (int i = 0; i < 3; i++)
             {
-                drawIndices.push_back(indicesConversion[indices[index + i]]);
+                drawIndices->push_back(indicesConversion[indices->at(index + i)]);
             }
         }
+    }
+
+    void Renderer::Render3DCustomOutline(const std::vector<Vector3>& points, const std::vector<int>& indices) const
+    {
+        std::vector<Vector2> drawPoints;
+        std::vector<int> drawIndices;
+
+        CameraProjection(&points, &indices, nullptr, &drawPoints, &drawIndices, nullptr);
 
         for (int index = 0; index < drawIndices.size(); index += 3)
         {
@@ -393,5 +353,30 @@ namespace STR_FALL
                 );
             }
         }
+    }
+    void Renderer::Render3DCustomTexture(const std::vector<Vector3>& points, const std::vector<int>& indices, const std::vector<Vector2>& pointsUVCords, const Texture* texture) const
+    {
+        std::vector<Vector2> drawPoints;
+        std::vector<int> drawIndices;
+        std::vector<Vector2> drawPointsUVCords;
+        
+        CameraProjection(&points, &indices, &pointsUVCords, &drawPoints, &drawIndices, &drawPointsUVCords);
+
+        std::vector<SDL_Vertex> vertices;
+
+        for (int index = 0; index < drawPoints.size(); index++)
+        {
+            vertices.push_back(SDL_Vertex(
+                SDL_FPoint(drawPoints[index].m_x, drawPoints[index].m_y),
+                SDL_FColor(1.0f, 1.0f, 1.0f, 1.0f),
+                SDL_FPoint(drawPointsUVCords[index].m_x, drawPointsUVCords[index].m_y)
+            ));
+        }
+
+        SDL_RenderGeometry(
+            m_renderer, texture->m_texture,
+            vertices.data(), vertices.size(),
+            drawIndices.data(), drawIndices.size()
+        );
     }
 }

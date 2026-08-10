@@ -1,5 +1,6 @@
 #pragma once
 #include "Structs.h"
+#include "Texture.h"
 #include <vector>
 #include <array>
 
@@ -201,9 +202,11 @@ namespace STR_FALL
 		std::vector<Vector3> m_points;
 		std::vector<int> m_indices;
 		Color m_color;
+		std::vector<Vector2> m_pointsUV;
+		res_t<Texture> m_texture;
 
-		inline Mesh3D(const std::vector<Vector3>& points = {}, const Color& color = Color(), const std::vector<int>& indices = {}):
-			m_points(points), m_color(color), m_indices(indices) {}
+		inline Mesh3D(const std::vector<Vector3>& points = {}, const Color& color = Color(), const std::vector<int>& indices = {}, const std::vector<Vector2>& pointsUV = {}, const res_t<Texture>& texture = nullptr) :
+			m_points(points), m_color(color), m_indices(indices), m_pointsUV(pointsUV), m_texture(texture) {}
 		inline Mesh3D(const MultiMesh3D& meshs);
 
 		Mesh3D operator+(const Vector3& rhs) const
@@ -389,45 +392,4 @@ namespace STR_FALL
 
 	inline Mesh2D::Mesh2D(const MultiMesh2D& meshs) : m_points(meshs[0].m_points), m_color(meshs[0].m_color), m_indices(meshs[0].m_indices) {}
 	inline Mesh3D::Mesh3D(const MultiMesh3D& meshs) : m_points(meshs[0].m_points), m_color(meshs[0].m_color), m_indices(meshs[0].m_indices) {}
-
-	static Mesh2D Rect2DMesh = Mesh2D(
-		{
-			Vector2(0.5f, -0.5f),
-			Vector2(0.5f, 0.5f),
-			Vector2(-0.5f, 0.5f),
-			Vector2(-0.5f, -0.5f)
-		},
-		Color(),
-		{
-			0,1,2,
-			2,4,0
-		}
-	);
-	static Mesh3D Rect3DMesh = Mesh3D(
-		{
-			Vector3(0.5f, 0.5f, 0.5f),
-			Vector3(0.5f, 0.5f, -0.5f),
-			Vector3(0.5f, -0.5f, 0.5f),
-			Vector3(0.5f, -0.5f, -0.5f),
-			Vector3(-0.5f, 0.5f, 0.5f),
-			Vector3(-0.5f, 0.5f, -0.5f),
-			Vector3(-0.5f, -0.5f, 0.5f),
-			Vector3(-0.5f, -0.5f, -0.5f)
-		},
-		Color(),
-		{
-			2, 0, 1,
-			1, 3, 2,
-			6, 2, 3,
-			3, 7, 6,
-			4, 6, 7,
-			7, 5, 4,
-			0, 4, 5,
-			5, 1, 0,
-			4, 0, 2,
-			2, 6, 4,
-			5, 7, 3,
-			3, 1, 5
-		}
-	);
 }
