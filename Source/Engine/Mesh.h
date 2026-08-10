@@ -17,33 +17,35 @@ namespace STR_FALL
 		Color m_color;
 		res_t<Texture> m_texture;
 
-		inline Mesh3D(const std::vector<VertexUV3D>& points = {}, const Color& color = Color(), const std::vector<int>& indices = {}, const res_t<Texture>& texture = nullptr) :
-			m_points(points), m_color(color), m_indices(indices), m_texture(texture) {}
+		inline Mesh3D(const std::vector<VertexUV3D>& points = {}, const std::vector<int>& indices = {}, const Color& color = Color(), const res_t<Texture>& texture = nullptr) :
+			m_points(points), m_indices(indices), m_color(color), m_texture(texture) {}
+		inline Mesh3D(const std::vector<VertexUV3D>& newPoints, const Mesh3D& mesh) :
+			m_points(newPoints), m_indices(mesh.m_indices), m_color(mesh.m_color), m_texture(mesh.m_texture) {}
 		inline Mesh3D(const MultiMesh3D& meshs);
 
 		Mesh3D operator+(const Vector3& rhs) const
 		{
 			std::vector<VertexUV3D> newPoints;
 			for (const VertexUV3D& point : m_points) { newPoints.push_back(VertexUV3D(point.m_pos + rhs, point.m_uv)); }
-			return Mesh3D(newPoints, m_color);
+			return Mesh3D(newPoints, *this);
 		}
 		Mesh3D operator-(const Vector3& rhs) const
 		{
 			std::vector<VertexUV3D> newPoints;
 			for (const VertexUV3D& point : m_points) { newPoints.push_back(VertexUV3D(point.m_pos - rhs, point.m_uv)); }
-			return Mesh3D(newPoints, m_color);
+			return Mesh3D(newPoints, *this);
 		}
 		Mesh3D operator*(const Vector3& rhs) const
 		{
 			std::vector<VertexUV3D> newPoints;
 			for (const VertexUV3D& point : m_points) { newPoints.push_back(VertexUV3D(point.m_pos * rhs, point.m_uv)); }
-			return Mesh3D(newPoints, m_color);
+			return Mesh3D(newPoints, *this);
 		}
 		Mesh3D operator/(const Vector3& rhs) const
 		{
 			std::vector<VertexUV3D> newPoints;
 			for (const VertexUV3D& point : m_points) { newPoints.push_back(VertexUV3D(point.m_pos / rhs, point.m_uv)); }
-			return Mesh3D(newPoints, m_color);
+			return Mesh3D(newPoints, *this);
 		}
 		Mesh3D operator+=(const Vector3& rhs)
 		{
@@ -70,7 +72,7 @@ namespace STR_FALL
 		{
 			std::vector<VertexUV3D> newPoints;
 			for (const VertexUV3D& point : m_points) { newPoints.push_back(VertexUV3D(point.m_pos * rhs, point.m_uv)); }
-			return Mesh3D(newPoints, m_color);
+			return Mesh3D(newPoints, *this);
 		}
 		Mesh3D operator*=(const Matrix3& rhs)
 		{
@@ -91,6 +93,18 @@ namespace STR_FALL
 			}
 			return dist;
 		}
+		std::vector<Vector3> GetPoints()
+		{
+			std::vector<Vector3> temp;
+			for (VertexUV3D& point : m_points) { temp.push_back(point.m_pos); }
+			return temp;
+		}
+		std::vector<Vector2> GetUVs()
+		{
+			std::vector<Vector2> temp;
+			for (VertexUV3D& point : m_points) { temp.push_back(point.m_uv); }
+			return temp;
+		}
 	};
 
 	struct MultiMesh3D
@@ -107,7 +121,7 @@ namespace STR_FALL
 			for (const Mesh3D& mesh : m_meshes)
 			{
 				for (const VertexUV3D& point : mesh.m_points) { newPoints.push_back(VertexUV3D(point.m_pos + rhs, point.m_uv)); }
-				newMeshes.push_back(Mesh3D(newPoints, mesh.m_color));
+				newMeshes.push_back(Mesh3D(newPoints, mesh));
 				newPoints.clear();
 			}
 			return MultiMesh3D(newMeshes);
@@ -119,7 +133,7 @@ namespace STR_FALL
 			for (const Mesh3D& mesh : m_meshes)
 			{
 				for (const VertexUV3D& point : mesh.m_points) { newPoints.push_back(VertexUV3D(point.m_pos - rhs, point.m_uv)); }
-				newMeshes.push_back(Mesh3D(newPoints, mesh.m_color));
+				newMeshes.push_back(Mesh3D(newPoints, mesh));
 				newPoints.clear();
 			}
 			return MultiMesh3D(newMeshes);
@@ -131,7 +145,7 @@ namespace STR_FALL
 			for (const Mesh3D& mesh : m_meshes)
 			{
 				for (const VertexUV3D& point : mesh.m_points) { newPoints.push_back(VertexUV3D(point.m_pos * rhs, point.m_uv)); }
-				newMeshes.push_back(Mesh3D(newPoints, mesh.m_color));
+				newMeshes.push_back(Mesh3D(newPoints, mesh));
 				newPoints.clear();
 			}
 			return MultiMesh3D(newMeshes);
@@ -143,7 +157,7 @@ namespace STR_FALL
 			for (const Mesh3D& mesh : m_meshes)
 			{
 				for (const VertexUV3D& point : mesh.m_points) { newPoints.push_back(VertexUV3D(point.m_pos / rhs, point.m_uv)); }
-				newMeshes.push_back(Mesh3D(newPoints, mesh.m_color));
+				newMeshes.push_back(Mesh3D(newPoints, mesh));
 				newPoints.clear();
 			}
 			return MultiMesh3D(newMeshes);
@@ -176,7 +190,7 @@ namespace STR_FALL
 			for (const Mesh3D& mesh : m_meshes)
 			{
 				for (const VertexUV3D& point : mesh.m_points) { newPoints.push_back(VertexUV3D(point.m_pos * rhs, point.m_uv)); }
-				newMeshes.push_back(Mesh3D(newPoints, mesh.m_color));
+				newMeshes.push_back(Mesh3D(newPoints, mesh));
 				newPoints.clear();
 			}
 			return MultiMesh3D(newMeshes);
@@ -202,5 +216,5 @@ namespace STR_FALL
 		}
 	};
 
-	inline Mesh3D::Mesh3D(const MultiMesh3D& meshs) : m_points(meshs[0].m_points), m_color(meshs[0].m_color), m_indices(meshs[0].m_indices) {}
+	inline Mesh3D::Mesh3D(const MultiMesh3D& meshs) : m_points(meshs[0].m_points), m_indices(meshs[0].m_indices), m_color(meshs[0].m_color), m_texture(meshs[0].m_texture) {}
 }

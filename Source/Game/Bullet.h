@@ -28,6 +28,6 @@ struct Bullet : public Object
 	void Draw(Renderer& r) const override
 	{
 		r.SetColor(m_mesh[0].m_color);
-		r.Render3DCustomOutline(m_mesh[0].m_points, m_mesh[0].m_indices);
+		r.Render3DCustomOutline(m_mesh[0].GetPoints(), m_mesh[0].m_indices);
 	}
 };

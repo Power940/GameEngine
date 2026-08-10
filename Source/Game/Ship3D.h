@@ -56,15 +56,15 @@ struct Ship3D : public Object
 	void Draw(Renderer& r) const override
 	{
 		r.SetColor(m_mesh[0].m_color);
-		r.Render3DCustomOutline(m_mesh[0].m_points, m_mesh[0].m_indices);
+		r.Render3DCustomOutline(m_mesh[0].GetPoints(), m_mesh[0].m_indices);
 		r.SetColor(m_mesh[1].m_color);
-		r.Render3DCustomOutline(m_mesh[1].m_points, m_mesh[1].m_indices);
+		r.Render3DCustomOutline(m_mesh[1].GetPoints(), m_mesh[1].m_indices);
 		if (STR_Engine::Get().m_input.GetKeyDown(SDL_SCANCODE_UP))
 		{
 			r.SetColor(m_mesh[2].m_color);
 			Mesh3D flame = m_mesh[2];
-			flame.m_points[1].m_z += RandomFloat(2.5f, -2.5f);
-			r.Render3DCustomOutline(flame.m_points, flame.m_indices);
+			flame.GetPoints()[1].m_z += RandomFloat(2.5f, -2.5f);
+			r.Render3DCustomOutline(flame.GetPoints(), flame.m_indices);
 		}
 	}
 

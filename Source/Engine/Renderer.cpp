@@ -359,7 +359,7 @@ namespace STR_FALL
         std::vector<Vector2> drawPoints;
         std::vector<int> drawIndices;
         std::vector<Vector2> drawPointsUVCords;
-        
+
         CameraProjection(&points, &indices, &pointsUVCords, &drawPoints, &drawIndices, &drawPointsUVCords);
 
         std::vector<SDL_Vertex> vertices;
