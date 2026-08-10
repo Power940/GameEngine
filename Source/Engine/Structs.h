@@ -14,6 +14,7 @@ namespace STR_FALL
 	struct Matrix2;
 	struct Matrix3;
 	struct Matrix4;
+	struct VertexUV3D;
 
 	struct Vector2
 	{
@@ -98,6 +99,7 @@ namespace STR_FALL
 		inline Vector3(const Vector3& ip, const Vector3& fp) : m_x(fp.m_x - ip.m_x), m_y(fp.m_y - ip.m_y), m_z(fp.m_z - ip.m_z) {}
 		Vector3(const Vector2& vect);
 		Vector3(const Vector4& vect);
+		Vector3(const VertexUV3D& vect);
 
 		float operator[](const unsigned int element) const { assert(element < 3); return (&m_x)[element]; }
 		float& operator[](const unsigned int element) { assert(element < 3); return (&m_x)[element]; }
@@ -628,5 +630,14 @@ namespace STR_FALL
 				<< (int)(rhs[7]) << (int)(rhs[6]) << (int)(rhs[5]) << (int)(rhs[4]) << (int)(rhs[3]) << (int)(rhs[2]) << (int)(rhs[1]) << (int)(rhs[0]);
 			return os;
 		}
+	};
+
+	struct VertexUV3D
+	{
+		Vector3 m_pos;
+		Vector2 m_uv;
+
+		inline VertexUV3D(const Vector3& pos) : m_pos(pos), m_uv(Vector2()) {}
+		inline VertexUV3D(const Vector3& pos, const Vector2& uv) : m_pos(pos), m_uv(uv) {}
 	};
 }

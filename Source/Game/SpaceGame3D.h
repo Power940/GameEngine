@@ -39,7 +39,7 @@ public:
 		m_scene->AddObject(std::move(std::make_unique<Ship3D>(playerDesc)));
 
 		SeedRandom();
-		for (int index = 0; index < 10; index++)
+		for (int index = 0; index < 500; index++)
 		{
 			ObjectDesc markerDesc;
 			markerDesc.m_transform = Transform3D(
@@ -60,21 +60,21 @@ public:
 			m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, true)));
 		}
 
-		//for (int index = 0; index < 500; index++)
-		//{
-		//	ObjectDesc markerDesc;
-		//	markerDesc.m_transform = Transform3D(
-		//		Vector3(static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000))),
-		//		Vector3(10.0f, 10.0f, 10.0f),
-		//		Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)))
-		//	);
-		//	markerDesc.m_name = "marker no color";
-		//	markerDesc.m_tags = { "marker" };
-		//	markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(markerMesh);
-		//	markerDesc.m_scene = m_scene;
+		for (int index = 0; index < 500; index++)
+		{
+			ObjectDesc markerDesc;
+			markerDesc.m_transform = Transform3D(
+				Vector3(static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000))),
+				Vector3(10.0f, 10.0f, 10.0f),
+				Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)))
+			);
+			markerDesc.m_name = "marker no color";
+			markerDesc.m_tags = { "marker" };
+			markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(markerMesh);
+			markerDesc.m_scene = m_scene;
 
-		//	m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, false)));
-		//}
+			m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, false)));
+		}
 
 #pragma endregion
 

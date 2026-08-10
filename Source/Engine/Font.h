@@ -6,7 +6,7 @@
 
 namespace STR_FALL
 {
-	struct Font : Resource
+	struct Font : public Resource
 	{
 	public:
 		Font() = default;

@@ -9,6 +9,8 @@ Vector3::Vector3(const Vector4& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(vect.m
 Vector4::Vector4(const Vector2& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(0.0f), m_w(0.0f) {}
 Vector4::Vector4(const Vector3& vect) : m_x(vect.m_x), m_y(vect.m_y), m_z(vect.m_z), m_w(0.0f) {}
 
+Vector3::Vector3(const VertexUV3D& vect) : m_x(vect.m_pos.m_x), m_y(vect.m_pos.m_y), m_z(vect.m_pos.m_z) {}
+
 Vector2 Vector2::operator*(const Matrix2& rhs) const {
 	return Vector2(
 		rhs.m_m[0][0] * m_x + rhs.m_m[0][1] * m_y,
