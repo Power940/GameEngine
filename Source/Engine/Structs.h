@@ -641,4 +641,14 @@ namespace STR_FALL
 		inline VertexUV3D(const Vector3& pos, const Vector2& uv) : m_pos(pos), m_uv(uv) {}
 		inline VertexUV3D(const float x, const float y, const float z, const float u, const float v) : m_pos(x, y, z), m_uv(u, v) {}
 	};
+
+	struct VertexUV2D
+	{
+		Vector2 m_pos;
+		Vector2 m_uv;
+
+		inline VertexUV2D(const Vector2& pos) : m_pos(pos), m_uv(Vector2()) {}
+		inline VertexUV2D(const Vector2& pos, const Vector2& uv) : m_pos(pos), m_uv(uv) {}
+		inline VertexUV2D(const float x, const float y, const float u, const float v) : m_pos(x, y), m_uv(u, v) {}
+	};
 }

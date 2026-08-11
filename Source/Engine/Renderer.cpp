@@ -286,61 +286,61 @@ namespace STR_FALL
         }
     }
 
-    void Renderer::CameraProjection(const std::vector<Vector3>* points, const std::vector<int>* indices, const std::vector<Vector2>* pointsUVCords, std::vector<Vector2>* drawPoints, std::vector<int>* drawIndices, std::vector<Vector2>* drawPointsUVCords) const
+    void Renderer::CameraProjection(const std::vector<VertexUV3D>* vertices, const std::vector<int>* indices, std::vector<VertexUV2D>* drawVertices, std::vector<int>* drawIndices) const
     {
-        Vector3 pointVector;
-
-        float x = 0.0f, y = 0.0f, z = 0.0f;
-        float px = 0.0f, py = 0.0f;
-
         std::vector<int> indicesConversion;
         int validIndex = 0;
 
-        for (int index = 0; index < points->size(); index++)
+        for (int index = 0; index < vertices->size(); index++)
         {
-            pointVector = Vector3(m_cam->m_transform.m_pos, points->at(index));
-            z = pointVector.Dot(m_cam->m_transform.m_rotMat.Forward());
+            const VertexUV3D& vertex = vertices->at(index);
+
+            Vector3 pointVector = Vector3(m_cam->m_transform.m_pos, vertex.m_pos);
+
+            float z = pointVector.Dot(m_cam->m_transform.m_rotMat.Forward());
+
             if (z < 0.00001f)
             {
                 indicesConversion.push_back(-1);
                 continue;
             }
 
-            x = pointVector.Dot(m_cam->m_transform.m_rotMat.Right());
-            y = pointVector.Dot(m_cam->m_transform.m_rotMat.Up());
+            float x = pointVector.Dot(m_cam->m_transform.m_rotMat.Right());
+            float y = pointVector.Dot(m_cam->m_transform.m_rotMat.Up());
 
-            px = x / z * m_cam->m_fovScaling / m_cam->m_aspect;
-            py = y / z * m_cam->m_fovScaling;
+            float px = x / z * m_cam->m_fovScaling / m_cam->m_aspect;
+            float py = y / z * m_cam->m_fovScaling;
 
-            drawPoints->push_back(Vector2((px + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py) * 0.5f * m_cam->m_ScreenDim.m_y));
+            Vector2 screenPos((px + 1) * 0.5f * m_cam->m_ScreenDim.m_x, (1 - py) * 0.5f * m_cam->m_ScreenDim.m_y);
 
-            if (pointsUVCords && drawPointsUVCords)
-            {
-                drawPointsUVCords->push_back(pointsUVCords->at(index));
-            }
+            drawVertices->push_back(VertexUV2D(
+                    screenPos.m_x, screenPos.m_y,
+                    vertex.m_uv.m_x, vertex.m_uv.m_y
+                ));
 
             indicesConversion.push_back(validIndex++);
         }
 
         for (int index = 0; index < indices->size(); index += 3)
         {
-            if (std::any_of(indices->begin() + index, indices->begin() + index + 3, [&indicesConversion](int element) { return indicesConversion[element] == -1; }))
-            {
-                continue;
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                drawIndices->push_back(indicesConversion[indices->at(index + i)]);
-            }
+            int i0 = indices->at(index);
+            int i1 = indices->at(index + 1);
+            int i2 = indices->at(index + 2);
+
+            if (indicesConversion[i0] == -1 || indicesConversion[i1] == -1 || indicesConversion[i2] == -1) { continue; }
+
+            drawIndices->push_back(indicesConversion[i0]);
+            drawIndices->push_back(indicesConversion[i1]);
+            drawIndices->push_back(indicesConversion[i2]);
         }
     }
 
-    void Renderer::Render3DCustomOutline(const std::vector<Vector3>& points, const std::vector<int>& indices) const
+    void Renderer::Render3DCustomOutline(const std::vector<VertexUV3D>& points, const std::vector<int>& indices) const
     {
-        std::vector<Vector2> drawPoints;
+        std::vector<VertexUV2D> drawPoints;
         std::vector<int> drawIndices;
 
-        CameraProjection(&points, &indices, nullptr, &drawPoints, &drawIndices, nullptr);
+        CameraProjection(&points, &indices, &drawPoints, &drawIndices);
 
         for (int index = 0; index < drawIndices.size(); index += 3)
         {
@@ -348,28 +348,27 @@ namespace STR_FALL
             {
                 int nextI = (i + 1) % 3;
                 SDL_RenderLine(m_renderer,
-                    drawPoints[drawIndices[index + i]].m_x, drawPoints[drawIndices[index + i]].m_y,
-                    drawPoints[drawIndices[index + nextI]].m_x, drawPoints[drawIndices[index + nextI]].m_y
+                    drawPoints[drawIndices[index + i]].m_pos.m_x, drawPoints[drawIndices[index + i]].m_pos.m_y,
+                    drawPoints[drawIndices[index + nextI]].m_pos.m_x, drawPoints[drawIndices[index + nextI]].m_pos.m_y
                 );
             }
         }
     }
-    void Renderer::Render3DCustomTexture(const std::vector<Vector3>& points, const std::vector<int>& indices, const std::vector<Vector2>& pointsUVCords, const Texture* texture) const
+    void Renderer::Render3DCustomTexture(const std::vector<VertexUV3D>& points, const std::vector<int>& indices, const Texture* texture) const
     {
-        std::vector<Vector2> drawPoints;
+        std::vector<VertexUV2D> drawPoints;
         std::vector<int> drawIndices;
-        std::vector<Vector2> drawPointsUVCords;
 
-        CameraProjection(&points, &indices, &pointsUVCords, &drawPoints, &drawIndices, &drawPointsUVCords);
+        CameraProjection(&points, &indices, &drawPoints, &drawIndices);
 
         std::vector<SDL_Vertex> vertices;
 
         for (int index = 0; index < drawPoints.size(); index++)
         {
             vertices.push_back(SDL_Vertex(
-                SDL_FPoint(drawPoints[index].m_x, drawPoints[index].m_y),
+                SDL_FPoint(drawPoints[index].m_pos.m_x, drawPoints[index].m_pos.m_y),
                 SDL_FColor(1.0f, 1.0f, 1.0f, 1.0f),
-                SDL_FPoint(drawPointsUVCords[index].m_x, drawPointsUVCords[index].m_y)
+                SDL_FPoint(drawPoints[index].m_uv.m_x, drawPoints[index].m_uv.m_y)
             ));
         }
 

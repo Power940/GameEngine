@@ -22,8 +22,10 @@ public:
 	{
 		m_scene = new Scene();
 		m_scene->m_game = this;
-
-		markerMesh.m_texture = ResourceManager::ResManager().GetWithID<Texture>("Asteroid", "Textures/Asteroid.png", STR_Engine::m_renderer);
+		
+		markerMesh.m_texture = ResourceManager::ResManager().GetWithID<Texture>("AsteroidTexture", "Textures/Asteroid.png", STR_Engine::m_renderer);
+		SpaceShip3D[0].m_texture = ResourceManager::ResManager().GetWithID<Texture>("ShipTexture", "Textures/ShipTexture.png", STR_Engine::m_renderer);
+		SpaceShip3D[1].m_texture = ResourceManager::ResManager().GetWithID<Texture>("ShipTexture", "Textures/ShipTexture.png", STR_Engine::m_renderer);
 
 #pragma region GameObjectSetup
 

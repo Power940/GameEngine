@@ -17,6 +17,6 @@ struct Marker : public Object
 
 	void Draw(Renderer& r) const override
 	{
-		r.Render3DCustomTexture(m_mesh[0].GetPoints(), m_mesh[0].m_indices, m_mesh[0].GetUVs(), m_mesh[0].m_texture.get());
+		r.Render3DCustomTexture(m_mesh[0].m_points, m_mesh[0].m_indices, m_mesh[0].m_texture.get());
 	}
 };
