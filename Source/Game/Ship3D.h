@@ -5,14 +5,14 @@
 
 using namespace STR_FALL;
 
-struct Ship3DDesc : public ObjectDesc
+struct Ship3DDesc : public GameObjectDesc
 {
 	float m_forceStrength = 0.0f;
 	float m_maxVel = 0.0f;
 	Camera3D m_cam;
 };
 
-struct Ship3D : public Object
+struct Ship3D : public GameObject
 {
 	Vector3 m_dir = Vector3(0.0f, 0.0f, 1.0f);
 	Vector3 m_accel = Vector3();
@@ -23,7 +23,7 @@ struct Ship3D : public Object
 	float m_maxVel;
 
 
-	Ship3D(const Ship3DDesc& desc) : Object(desc), m_cam(desc.m_cam), m_forceStrength(desc.m_forceStrength), m_maxVel(desc.m_maxVel) {}
+	Ship3D(const Ship3DDesc& desc) : GameObject(desc), m_cam(desc.m_cam), m_forceStrength(desc.m_forceStrength), m_maxVel(desc.m_maxVel) {}
 
 	void Update(float dt) override
 	{
@@ -66,7 +66,7 @@ struct Ship3D : public Object
 
 	void Shoot()
 	{
-		ObjectDesc bulletDesc;
+		GameObjectDesc bulletDesc;
 		bulletDesc.m_transform = m_transform;
 		bulletDesc.m_baseMesh = std::make_shared<MultiMesh3D>(bulletMesh);
 		bulletDesc.m_name = "player bullet";

@@ -35,7 +35,7 @@
     <ClInclude Include="StarTime.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
+    <ClInclude Include="GameObject.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
@@ -72,6 +72,18 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="Singleton.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Json.h">
       <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -119,6 +131,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Json.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

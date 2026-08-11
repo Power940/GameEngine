@@ -4,14 +4,14 @@
 
 using namespace STR_FALL;
 
-struct Marker : public Object
+struct Marker : public GameObject
 {
 	const Ship3D* m_player;
 	const bool m_canBeHit;
 
 
-	Marker(const ObjectDesc& desc, bool canBeHit) :
-		Object(desc), m_player(m_scene->GetObjectName<Ship3D>("player")), m_canBeHit(canBeHit) { }
+	Marker(const GameObjectDesc& desc, bool canBeHit) :
+		GameObject(desc), m_player(m_scene->GetObjectName<Ship3D>("player")), m_canBeHit(canBeHit) { }
 
 	void Update(float dt) override { }
 

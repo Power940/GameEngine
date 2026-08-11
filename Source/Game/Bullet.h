@@ -3,20 +3,20 @@
 
 using namespace STR_FALL;
 
-struct Bullet : public Object
+struct Bullet : public GameObject
 {
 	Vector3 m_dir;
 
 
-	Bullet(const ObjectDesc& desc, const Vector3& dir) :
-		Object(desc), m_dir(dir) { }
+	Bullet(const GameObjectDesc& desc, const Vector3& dir) :
+		GameObject(desc), m_dir(dir) { }
 
 	void Update(float dt) override
 	{
 		IncrementTransformPos(m_dir * dt * 500);
 	}
 
-	void OnCollision(Object* other) override
+	void OnCollision(GameObject* other) override
 	{
 		if (other->m_tags.contains("marker"))
 		{

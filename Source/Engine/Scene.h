@@ -1,21 +1,21 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "Object.h"
+#include "GameObject.h"
 
 namespace STR_FALL
 {
 	class Scene
 	{
 	private:
-		std::vector<std::unique_ptr<Object>> m_objects;
-		std::vector<std::unique_ptr<Object>> m_pendingObjects;
+		std::vector<std::unique_ptr<GameObject>> m_objects;
+		std::vector<std::unique_ptr<GameObject>> m_pendingObjects;
 		bool m_safeToAddObject = true;
 
 	public:
 		class Game* m_game = nullptr;
 
-		inline void AddObject(std::unique_ptr<Object> object)
+		inline void AddObject(std::unique_ptr<GameObject> object)
 		{
 			if (object->m_scene == nullptr) { object->m_scene = this; }
 

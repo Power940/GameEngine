@@ -43,7 +43,7 @@ public:
 		SeedRandom();
 		for (int index = 0; index < 500; index++)
 		{
-			ObjectDesc markerDesc;
+			GameObjectDesc markerDesc;
 			markerDesc.m_transform = Transform3D(
 				Vector3(static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000))),
 				Vector3(10.0f, 10.0f, 10.0f),
@@ -64,7 +64,7 @@ public:
 
 		for (int index = 0; index < 500; index++)
 		{
-			ObjectDesc markerDesc;
+			GameObjectDesc markerDesc;
 			markerDesc.m_transform = Transform3D(
 				Vector3(static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000))),
 				Vector3(10.0f, 10.0f, 10.0f),

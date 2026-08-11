@@ -6,7 +6,7 @@
 #include "Renderer.h"
 #include "Input.h"
 #include "StarTime.h"
-#include "Object.h"
+#include "GameObject.h"
 #include "Audio.h"
 #include "Scene.h"
 #include "file.h"
@@ -15,6 +15,9 @@
 #include "ParticleSystem.h"
 #include "Texture.h"
 #include "ResourceManager.h"
+#include "Utils.h"
+#include "Factory.h"
+#include "Json.h"
 
 namespace STR_FALL
 {

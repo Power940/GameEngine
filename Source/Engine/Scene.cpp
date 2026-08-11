@@ -29,8 +29,8 @@ namespace STR_FALL
 	void Scene::UpdateCollisions()
 	{
 		float dist = -1.0f;
-		Object* ObjectA;
-		Object* ObjectB;
+		GameObject* ObjectA;
+		GameObject* ObjectB;
 
 		for (int indexA = 0; indexA < m_objects.size(); indexA++)
 		{

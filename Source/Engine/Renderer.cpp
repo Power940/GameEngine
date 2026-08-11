@@ -374,8 +374,8 @@ namespace STR_FALL
 
         SDL_RenderGeometry(
             m_renderer, texture->m_texture,
-            vertices.data(), vertices.size(),
-            drawIndices.data(), drawIndices.size()
+            vertices.data(), static_cast<int>(vertices.size()),
+            drawIndices.data(), static_cast<int>(drawIndices.size())
         );
     }
 }
