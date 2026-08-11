@@ -27,7 +27,7 @@ namespace STR_FALL
 		{
 			if (particle.m_active)
 			{
-				r.RenderPointColor(Vector2C(particle.m_position, particle.m_color));
+				r.RenderTexture(particle.m_texture.get(), particle.m_position.m_x, particle.m_position.m_y);
 			}
 		}
 	}

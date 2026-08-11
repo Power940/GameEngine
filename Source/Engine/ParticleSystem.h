@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
+#include "Resource.h"
 #include "Structs.h"
+#include "Texture.h"
 #include "Renderer.h"
 
 namespace STR_FALL
@@ -12,7 +14,7 @@ namespace STR_FALL
 
 		Vector2 m_position;
 		Vector2 m_velocity;
-		Color m_color;
+		res_t<Texture> m_texture;
 	};
 
 
