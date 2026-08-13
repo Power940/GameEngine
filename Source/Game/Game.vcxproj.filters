@@ -8,6 +8,9 @@
     <Filter Include="Include">
       <UniqueIdentifier>{2e2233e9-ee94-4d8b-9eac-b01feb55e7d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{e8ba7754-47d2-4092-bb4b-917959162b99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -30,5 +33,10 @@
     <ClInclude Include="Assets.h">
       <Filter>Include</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Build\Assets\Data\Scene.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

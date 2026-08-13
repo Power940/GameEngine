@@ -32,7 +32,6 @@ public:
 		Ship3DDesc playerDesc;
 		playerDesc.m_transform = Transform3D(Vector3(0, 0, 0), Vector3(20, 20, 20));
 		playerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(SpaceShip3D);
-		playerDesc.m_name = "player";
 		playerDesc.m_tags = { "player" };
 		playerDesc.m_cam = Camera3D(Transform3D(), 90, Vector2(static_cast<float>(STR_Engine::m_renderer.GetSreenWidth()), static_cast<float>(STR_Engine::m_renderer.GetSreenHeight())));
 		playerDesc.m_forceStrength = 100.0f;
@@ -49,7 +48,6 @@ public:
 				Vector3(10.0f, 10.0f, 10.0f),
 				Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)))
 			);
-			markerDesc.m_name = "marker color";
 			markerDesc.m_tags = { "marker" };
 			markerDesc.m_scene = m_scene;
 
@@ -70,7 +68,6 @@ public:
 				Vector3(10.0f, 10.0f, 10.0f),
 				Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)))
 			);
-			markerDesc.m_name = "marker no color";
 			markerDesc.m_tags = { "marker" };
 			markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(markerMesh);
 			markerDesc.m_scene = m_scene;

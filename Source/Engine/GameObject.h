@@ -12,7 +12,6 @@ namespace STR_FALL
 
 	struct GameObjectDesc
 	{
-		std::string m_name = "";
 		std::unordered_set<std::string> m_tags = {};
 		Scene* m_scene = nullptr;
 		Transform3D m_transform = Transform3D();
@@ -54,7 +53,8 @@ namespace STR_FALL
 		Vector3 m_vel = Vector3();
 
 
-		inline GameObject(const GameObjectDesc& desc) : m_name(desc.m_name), m_tags(desc.m_tags), m_scene(desc.m_scene), m_transform(desc.m_transform), m_baseMesh(desc.m_baseMesh), m_mesh(MultiMesh3D()), m_collisionLayer(desc.m_collisionLayer), m_collisionMask(desc.m_collisionMask) { m_mesh = *desc.m_baseMesh; UPDATE_MESH(m_mesh); }
+		inline GameObject() = default;
+		inline GameObject(const GameObjectDesc& desc) :m_tags(desc.m_tags), m_scene(desc.m_scene), m_transform(desc.m_transform), m_baseMesh(desc.m_baseMesh), m_mesh(MultiMesh3D()), m_collisionLayer(desc.m_collisionLayer), m_collisionMask(desc.m_collisionMask) { m_mesh = *desc.m_baseMesh; UPDATE_MESH(m_mesh); }
 
 		virtual void Update(float dt) {}
 		virtual void Draw(Renderer& r) const {}
@@ -96,6 +96,11 @@ namespace STR_FALL
 			m_transform.m_rotMat = rot;
 			m_mesh = *m_baseMesh;
 			UPDATE_MESH(m_mesh);
+		}
+
+		virtual void Read(const rapidjson::Value& value) override
+		{
+			Object::Read(value);
 		}
 	};
 }

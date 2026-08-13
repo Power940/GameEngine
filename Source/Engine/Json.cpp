@@ -62,7 +62,7 @@ namespace STR_FALL::Json
     }
     bool Read(const rapidjson::Value& value, const std::string& name, float& data)
     {
-        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsFloat())
+        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsNumber())
         {
             std::cerr << "Could not read JSON value (float): " << name << std::endl;
             return false;

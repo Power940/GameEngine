@@ -23,6 +23,7 @@ struct Ship3D : public GameObject
 	float m_maxVel;
 
 
+	Ship3D() = default;
 	Ship3D(const Ship3DDesc& desc) : GameObject(desc), m_cam(desc.m_cam), m_forceStrength(desc.m_forceStrength), m_maxVel(desc.m_maxVel) {}
 
 	void Update(float dt) override
@@ -69,7 +70,6 @@ struct Ship3D : public GameObject
 		GameObjectDesc bulletDesc;
 		bulletDesc.m_transform = m_transform;
 		bulletDesc.m_baseMesh = std::make_shared<MultiMesh3D>(bulletMesh);
-		bulletDesc.m_name = "player bullet";
 		bulletDesc.m_tags = { "bullet" };
 		bulletDesc.m_scene = m_scene;
 		bulletDesc.m_collisionLayer = BitMaskInt(1);

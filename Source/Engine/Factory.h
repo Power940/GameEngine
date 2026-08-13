@@ -11,7 +11,7 @@ namespace STR_FALL
 	{
 	public:
 		virtual ~ICreator() = default;
-		virtual std::unique_ptr<Object> Creator() = 0;
+		virtual std::unique_ptr<Object> Create() = 0;
 	};
 
 	template <typename T>
@@ -46,7 +46,6 @@ namespace STR_FALL
 		requires std::derived_from<T, Object>
 		std::unique_ptr<T> Create(const std::string& name)
 		{
-
 			std::string lowerName = ToLower(name);
 
 			if (!m_registry.contains(lowerName))
@@ -55,7 +54,7 @@ namespace STR_FALL
 				return std::unique_ptr<T>();
 			}
 
-			auto object = m_registry[lowerName]->Creator();
+			auto object = m_registry[lowerName]->Create();
 
 			T* derived = dynamic_cast<T*>(object.get());
 			if (derived)

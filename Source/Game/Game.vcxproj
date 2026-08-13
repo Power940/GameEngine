@@ -179,7 +179,15 @@
     <ClInclude Include="Marker.h" />
     <ClInclude Include="Ship3D.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Build\Assets\Data\Scene.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties _1_1_4_1_1_4Build_4Assets_4Data_4Scene_1json__JsonSchema="json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

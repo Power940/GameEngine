@@ -7,9 +7,10 @@ using namespace STR_FALL;
 struct Marker : public GameObject
 {
 	const Ship3D* m_player;
-	const bool m_canBeHit;
+	const bool m_canBeHit = false;
 
 
+	Marker() = default;
 	Marker(const GameObjectDesc& desc, bool canBeHit) :
 		GameObject(desc), m_player(m_scene->GetObjectName<Ship3D>("player")), m_canBeHit(canBeHit) { }
 

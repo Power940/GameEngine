@@ -4,6 +4,7 @@
 #include "Structs.h"
 
 #define JSON_READ(value, data) STR_FALL::Json::Read(value, #data, data)
+#define JSON_READ_NAME(value, name, data) STR_FALL::Json::Read(value, name, data)
 
 namespace STR_FALL::Json
 {
