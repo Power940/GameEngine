@@ -21,3 +21,5 @@ struct Marker : public GameObject
 		r.Render3DCustomTexture(m_mesh[0].m_points, m_mesh[0].m_indices, m_mesh[0].m_texture.get());
 	}
 };
+
+FACTORY_REG(Marker);

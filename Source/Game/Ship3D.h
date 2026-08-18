@@ -79,3 +79,5 @@ struct Ship3D : public GameObject
 		STR_Engine::m_audio.PlaySound("shoot");
 	}
 };
+
+FACTORY_REG(Ship3D);

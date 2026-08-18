@@ -4,6 +4,20 @@
 
 namespace STR_FALL
 {
+	bool Scene::Load(std::string filePath)
+	{
+		rapidjson::Document doc;
+		if (Json::Load(filePath, doc))
+		{
+			for (auto& element : doc.GetArray())
+			{
+
+			}
+		}
+
+		return true;
+	}
+
 	void Scene::Update(float dt)
 	{
 		m_safeToAddObject = false;

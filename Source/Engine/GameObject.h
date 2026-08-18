@@ -5,6 +5,8 @@
 #include "Renderer.h"
 #include "Mesh.h"
 #include <unordered_set>
+#include "Component.h"
+#include "RendererComponent.h"
 
 namespace STR_FALL
 {
@@ -49,6 +51,7 @@ namespace STR_FALL
 		res_t<Texture> m_texture;
 		BitMaskInt m_collisionLayer;
 		BitMaskInt m_collisionMask;
+		std::vector<Component*> m_components;
 
 		Vector3 m_vel = Vector3();
 
@@ -56,8 +59,24 @@ namespace STR_FALL
 		inline GameObject() = default;
 		inline GameObject(const GameObjectDesc& desc) :m_tags(desc.m_tags), m_scene(desc.m_scene), m_transform(desc.m_transform), m_baseMesh(desc.m_baseMesh), m_mesh(MultiMesh3D()), m_collisionLayer(desc.m_collisionLayer), m_collisionMask(desc.m_collisionMask) { m_mesh = *desc.m_baseMesh; UPDATE_MESH(m_mesh); }
 
-		virtual void Update(float dt) {}
-		virtual void Draw(Renderer& r) const {}
+		virtual void Update(float dt)
+		{
+			for (auto component : m_components)
+			{
+				component->Update(dt);
+			}
+		}
+		virtual void Draw(Renderer& r) const
+		{
+			for (auto component : m_components)
+			{
+				RendererComponent* rend = dynamic_cast<RendererComponent*>(component);
+				if (rend)
+				{
+					component->Draw(r);
+				}
+			}
+		}
 		virtual void OnCollision(GameObject* other) {}
 
 		inline Transform3D GetTransform() const { return m_transform; }

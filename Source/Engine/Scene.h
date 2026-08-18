@@ -23,9 +23,7 @@ namespace STR_FALL
 			else { m_pendingObjects.push_back(std::move(object)); }
 		}
 		inline Object* GetObjectIndex(const int element) const { return m_objects[element].get(); }
-
-		template<typename T>
-		inline T* GetObjectName(const std::string& name)
+		template<typename T> inline T* GetObjectName(const std::string& name)
 		{
 			for (auto& object : m_objects)
 			{
@@ -34,6 +32,8 @@ namespace STR_FALL
 			}
 			return nullptr;
 		}
+
+		bool Load(std::string filePath);
 
 		void Update(float dt);
 		void Draw(Renderer& r);

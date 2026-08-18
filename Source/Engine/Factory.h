@@ -5,6 +5,14 @@
 #include "Singleton.h"
 #include <map>
 
+#define FACTORY_REG(classname)																		\
+	class Register##classname																		\
+	{																								\
+	public:																							\
+		Register##classname() { STR_FALL::Factory::Instance().Register<classname>(#classname); }	\
+	};																								\
+	static Register##classname regInst;
+
 namespace STR_FALL
 {
 	class ICreator
@@ -14,13 +22,26 @@ namespace STR_FALL
 		virtual std::unique_ptr<Object> Create() = 0;
 	};
 
-	template <typename T>
-	requires std::derived_from<T, Object>
+
+	template <typename T> requires std::derived_from<T, Object>
 	class Creator : public ICreator
 	{
 	public:
 		std::unique_ptr<Object> Create() override { return std::make_unique<T>(); }
 	};
+
+
+	template <typename T> requires std::derived_from<T, Object>
+	class PrototypeCreator : public ICreator
+	{
+	public:
+		PrototypeCreator(std::unique_ptr<Object> prototype) : m_prototype(std::move(prototype)) {}
+		std::unique_ptr<Object> Create() override { return m_prototype->Clone(); }
+
+	private:
+		std::unique_ptr<Object> m_prototype;
+	};
+
 
 	class Factory : public Singleton<Factory>
 	{
@@ -28,8 +49,7 @@ namespace STR_FALL
 		std::map<std::string, std::unique_ptr<ICreator>> m_registry;
 
 	public:
-		template <typename T>
-		requires std::derived_from<T, Object>
+		template <typename T> requires std::derived_from<T, Object>
 		void Register(const std::string& name)
 		{
 			std::string lowerName = ToLower(name);
@@ -42,8 +62,20 @@ namespace STR_FALL
 			m_registry[lowerName] = std::make_unique<Creator<T>>();
 		}
 
-		template <typename T = Object>
-		requires std::derived_from<T, Object>
+		template <typename T> requires std::derived_from<T, Object>
+		void PrototypeRegister(const std::string& name, std::unique_ptr<Object> prototype)
+		{
+			std::string lowerName = ToLower(name);
+
+			if (m_registry.contains(lowerName))
+			{
+				std::cerr << "Object already registered: " << name << std::endl;
+				return;
+			}
+			m_registry[lowerName] = std::make_unique<PrototypeCreator<T>>(std::move(prototype));
+		}
+
+		template <typename T = Object> requires std::derived_from<T, Object>
 		std::unique_ptr<T> Create(const std::string& name)
 		{
 			std::string lowerName = ToLower(name);

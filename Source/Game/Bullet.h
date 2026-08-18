@@ -31,3 +31,5 @@ struct Bullet : public GameObject
 		r.Render3DCustomOutline(m_mesh[0].m_points, m_mesh[0].m_indices);
 	}
 };
+
+FACTORY_REG(Bullet);

@@ -191,6 +191,7 @@
   <ItemGroup>
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="file.h" />
@@ -202,10 +203,12 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="RendererComponent.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SpriteRendererComponent.h" />
     <ClInclude Include="StarFallEngine.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
@@ -226,6 +229,7 @@
     </ClCompile>
     <ClCompile Include="file.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Input.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

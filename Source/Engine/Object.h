@@ -2,6 +2,8 @@
 #include <string>
 #include "Json.h"
 
+#define CLASS_PROTOTYPE(classname) virtual std::unique_ptr<Object> Clone() const { return std::make_unique<classname>(*this); }
+
 namespace STR_FALL
 {
 	struct Object
@@ -9,14 +11,15 @@ namespace STR_FALL
 	public:
 		Object() = default;
 		virtual ~Object() = default;
+		CLASS_PROTOTYPE(Object)
 
 		bool m_active = true;
 		std::string m_name;
 
 		virtual void Read(const rapidjson::Value& value)
 		{
-			JSON_READ_NAME(value, "name", m_name);
-			JSON_READ_NAME(value, "active", m_active);
+			JSON_READ(value, m_name);
+			JSON_READ(value, m_active);
 		}
 	};
 }
