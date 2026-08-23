@@ -4,6 +4,7 @@
 #include "Utils.h"
 #include "Singleton.h"
 #include <map>
+#include <iostream>
 
 #define FACTORY_REG(classname)																		\
 	class Register##classname																		\
@@ -11,7 +12,7 @@
 	public:																							\
 		Register##classname() { STR_FALL::Factory::Instance().Register<classname>(#classname); }	\
 	};																								\
-	static Register##classname regInst;
+	static Register##classname regInst##classname;
 
 namespace STR_FALL
 {

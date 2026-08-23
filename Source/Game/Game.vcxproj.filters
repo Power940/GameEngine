@@ -16,6 +16,15 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Include</Filter>
+    </ClCompile>
+    <ClCompile Include="Marker.cpp">
+      <Filter>Include</Filter>
+    </ClCompile>
+    <ClCompile Include="Ship3D.cpp">
+      <Filter>Include</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ship3D.h">

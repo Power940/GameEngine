@@ -190,7 +190,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Audio.h" />
-    <ClInclude Include="Collision.h" />
+    <ClInclude Include="CircleColliderComponent.h" />
+    <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Factory.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Json.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="MeshRenderer3DComponent.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="RendererComponent.h" />
@@ -208,7 +210,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Singleton.h" />
-    <ClInclude Include="SpriteRendererComponent.h" />
+    <ClInclude Include="SpriteRenderer2DComponent.h" />
     <ClInclude Include="StarFallEngine.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Renderer.h" />
@@ -223,10 +225,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="CircleColliderComponent.cpp" />
     <ClCompile Include="file.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -235,6 +234,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Json.cpp" />
+    <ClCompile Include="MeshRenderer3DComponent.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Renderer.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

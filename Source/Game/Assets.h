@@ -1,10 +1,10 @@
 #pragma once
-#include <StarFallEngine.h>
+#include <Mesh.h>
 
 using namespace STR_FALL;
 
-
-static Mesh3D markerMesh = Mesh3D(
+std::vector<MultiMesh3D> assetMeshes = {
+Mesh3D( // marker
 	{
 		VertexUV3D(0.0f,0.0f,0.82f,0.0f,0.0f),
 		VertexUV3D(0.58f,0.0f,0.0f,0.0f,1.0f),
@@ -17,14 +17,14 @@ static Mesh3D markerMesh = Mesh3D(
 		0,1,3,
 		0,2,3
 	}
-);
+),
 
-static Mesh3D bulletMesh = Mesh3D(
+Mesh3D( // bullet
 	{ Vector3(0.0f,0.0f,0.25f), Vector3(0.01f,0.0f,-0.25f), Vector3(-0.01f,0.0f,-0.25f) },
 	{ 0,1,2 }
-);
+),
 
-static MultiMesh3D SpaceShip3D = MultiMesh3D({
+MultiMesh3D({ // ship
 	Mesh3D(
 		{
 			VertexUV3D(-0.5f, 0.0f, -0.5f,  0.048725f,1 - 0.429799f), // 2/1     0
@@ -73,4 +73,5 @@ static MultiMesh3D SpaceShip3D = MultiMesh3D({
 			9, 2, 1
 		}
 	),
-	});
+	})
+};

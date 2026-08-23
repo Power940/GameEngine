@@ -3,77 +3,56 @@
 #include "Structs.h"
 #include "Object.h"
 #include "Renderer.h"
-#include "Mesh.h"
 #include <unordered_set>
 #include "Component.h"
 #include "RendererComponent.h"
+#include "Json.h"
+#include "Factory.h"
 
 namespace STR_FALL
 {
 	class Scene;
 
-	struct GameObjectDesc
-	{
-		std::unordered_set<std::string> m_tags = {};
-		Scene* m_scene = nullptr;
-		Transform3D m_transform = Transform3D();
-		res_t<MultiMesh3D> m_baseMesh;
-		res_t<Texture> m_texture;
-		BitMaskInt m_collisionLayer;
-		BitMaskInt m_collisionMask;
-	};
-
 	struct GameObject : public Object
 	{ friend Scene;
 
 	public:
-		float m_radius = 0.0f;
-
-	protected:
-		inline void UPDATE_MESH(MultiMesh3D& toUpdate)
-		{
-			toUpdate *= m_transform.m_scale;
-			toUpdate *= m_transform.m_rotMat;
-			toUpdate += m_transform.m_pos;
-
-			m_radius = toUpdate.GetRadius(m_transform.m_pos);
-		}
-
-	public:
-		std::string m_name;
 		std::unordered_set<std::string> m_tags;
+		Transform3D m_transform = Transform3D();
+		Vector3 m_vel = Vector3();
+		std::vector<std::unique_ptr<Component>> m_components;
 		Scene* m_scene = nullptr;
 		bool m_toBeFreed = false;
 
-		Transform3D m_transform;
-		res_t<MultiMesh3D> m_baseMesh;
-		MultiMesh3D m_mesh;
-		res_t<Texture> m_texture;
-		BitMaskInt m_collisionLayer;
-		BitMaskInt m_collisionMask;
-		std::vector<Component*> m_components;
-
-		Vector3 m_vel = Vector3();
-
 
 		inline GameObject() = default;
-		inline GameObject(const GameObjectDesc& desc) :m_tags(desc.m_tags), m_scene(desc.m_scene), m_transform(desc.m_transform), m_baseMesh(desc.m_baseMesh), m_mesh(MultiMesh3D()), m_collisionLayer(desc.m_collisionLayer), m_collisionMask(desc.m_collisionMask) { m_mesh = *desc.m_baseMesh; UPDATE_MESH(m_mesh); }
+		inline GameObject(const GameObject& other): Object(other), m_tags(other.m_tags), m_transform(other.m_transform), m_vel(other.m_vel), m_scene(other.m_scene)
+		{
+			for (const std::unique_ptr<Component>& component : other.m_components)
+			{
+				auto clone = std::unique_ptr<Component>(dynamic_cast<Component*>(component->Clone().release()));
+				clone->m_owner = this;
+				m_components.push_back(std::move(clone));
+			}
+		}
+
+		CLASS_PROTOTYPE(GameObject)
 
 		virtual void Update(float dt)
 		{
-			for (auto component : m_components)
+			for (std::unique_ptr<Component>& component : m_components)
 			{
 				component->Update(dt);
 			}
 		}
-		virtual void Draw(Renderer& r) const
+		virtual void Draw(Renderer& r)
 		{
-			for (auto component : m_components)
+			for (std::unique_ptr<Component>& component : m_components)
 			{
-				RendererComponent* rend = dynamic_cast<RendererComponent*>(component);
+				RendererComponent* rend = dynamic_cast<RendererComponent*>(component.get());
 				if (rend)
 				{
-					component->Draw(r);
+					rend->Draw(r);
 				}
 			}
 		}
@@ -83,43 +62,70 @@ namespace STR_FALL
 		void SetTransform(const Transform3D& transform)
 		{
 			m_transform = transform;
-			m_mesh = *m_baseMesh;
-			UPDATE_MESH(m_mesh);
 		}
-		void SetBaseMesh(const res_t<MultiMesh3D>& mesh) { m_baseMesh = mesh; m_mesh = *mesh; UPDATE_MESH(m_mesh); }
 
 		void SetTransformPos(const Vector3& pos)
 		{
-			m_mesh += (pos - m_transform.m_pos);
 			m_transform.m_pos = pos;
 		}
 		void IncrementTransformPos(const Vector3& pos)
 		{
 			m_transform.m_pos += pos;
-			m_mesh += pos;
 		}
 		void SetTransformScale(const Vector3& scale)
 		{
 			m_transform.m_scale = scale;
-			m_mesh = *m_baseMesh;
-			UPDATE_MESH(m_mesh);
 		}
 		void IncrementTransformScale(const Vector3& scale)
 		{
 			m_transform.m_scale += scale;
-			m_mesh = *m_baseMesh;
-			UPDATE_MESH(m_mesh);
 		}
 		void SetTransformRotation(const Matrix3& rot)
 		{
 			m_transform.m_rotMat = rot;
-			m_mesh = *m_baseMesh;
-			UPDATE_MESH(m_mesh);
+		}
+
+		template<std::derived_from<Component> T>
+		T* GetComponent()
+		{
+			T* result;
+			for (std::unique_ptr<Component>& component : m_components)
+			{
+				result = dynamic_cast<T*>(component.get());
+				if (result) { return result; }
+			}
+
+			return nullptr;
+		}
+		void AddComponent(std::unique_ptr<Component> component)
+		{
+			component->m_owner = this;
+			m_components.push_back(std::move(component));
 		}
 
 		virtual void Read(const rapidjson::Value& value) override
 		{
 			Object::Read(value);
+
+			JSON_READ(value, m_tags);
+			JSON_READ(value, m_transform);
+			JSON_READ(value, m_vel);
+
+			if (JSON_HAS(value, "m_components"))
+			{
+ 				for (auto& componentValue : JSON_GET(value, "m_components").GetArray())
+				{
+					std::string m_typeName;
+					JSON_READ(componentValue, m_typeName);
+
+					auto component = Factory::Instance().Create<Component>(m_typeName);
+					if (component)
+					{
+						component->Read(componentValue);
+						AddComponent(std::move(component));
+					}
+				}
+			}
 		}
 	};
 }

@@ -9,12 +9,13 @@ namespace STR_FALL
 	struct Object
 	{
 	public:
+		bool m_active = true;
+		std::string m_name;
+
+
 		Object() = default;
 		virtual ~Object() = default;
 		CLASS_PROTOTYPE(Object)
-
-		bool m_active = true;
-		std::string m_name;
 
 		virtual void Read(const rapidjson::Value& value)
 		{

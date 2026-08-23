@@ -3,8 +3,12 @@
 #include <string>
 #include <vector>
 #include "Structs.h"
+#include "Mesh.h"
+#include <unordered_set>
 
 #define JSON_READ(value, data) STR_FALL::Json::Read(value, #data, data)
+#define JSON_HAS(value, name) value.HasMember(name)
+#define JSON_GET(value, name) value[name]
 
 namespace STR_FALL::Json
 {
@@ -14,6 +18,7 @@ namespace STR_FALL::Json
 	bool Read(const rapidjson::Value& value, const std::string& name, float& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, std::string& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, std::vector<std::string>& data);
+	bool Read(const rapidjson::Value& value, const std::string& name, std::unordered_set<std::string>& data);
 
 	bool Read(const rapidjson::Value& value, const std::string& name, Vector2& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, Vector3& data);
@@ -48,4 +53,6 @@ namespace STR_FALL::Json
 	/// <para>32 ones and zeros -> raw underlying 32 int | Left to Right -> Big to Small</para>
 	/// </summary>
 	bool Read(const rapidjson::Value& value, const std::string& name, BitMaskInt& data);
+
+	bool Read(const rapidjson::Value& value, const std::string& name, Mesh3D& data);
 }

@@ -1,25 +1,24 @@
 #pragma once
 #include <StarFallEngine.h>
-#include "Ship3D.h"
+#include <Factory.h>
 
 using namespace STR_FALL;
 
 struct Marker : public GameObject
 {
-	const Ship3D* m_player;
-	const bool m_canBeHit = false;
-
+	bool m_canBeHit = false;
 
 	Marker() = default;
-	Marker(const GameObjectDesc& desc, bool canBeHit) :
-		GameObject(desc), m_player(m_scene->GetObjectName<Ship3D>("player")), m_canBeHit(canBeHit) { }
+	CLASS_PROTOTYPE(Marker)
 
 	void Update(float dt) override { }
 
-	void Draw(Renderer& r) const override
+	virtual void Read(const rapidjson::Value& value) override
 	{
-		r.Render3DCustomTexture(m_mesh[0].m_points, m_mesh[0].m_indices, m_mesh[0].m_texture.get());
+		GameObject::Read(value);
+
+		JSON_READ(value, m_canBeHit);
 	}
 };
 
-FACTORY_REG(Marker);
+FACTORY_REG(Marker)

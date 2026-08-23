@@ -1,34 +1,33 @@
 #pragma once
-#include <StarFallEngine.h>
+#include "StarFallEngine.h"
+#include "MeshRenderer3DComponent.h"
+#include <Factory.h>
+#include <Object.h>
+#include "Marker.h"
 
 using namespace STR_FALL;
 
 struct Bullet : public GameObject
 {
-	Vector3 m_dir;
+	Vector3 m_dir = Vector3();
 
-
-	Bullet(const GameObjectDesc& desc, const Vector3& dir) :
-		GameObject(desc), m_dir(dir) { }
+	Bullet() = default;
+	CLASS_PROTOTYPE(Bullet)
 
 	void Update(float dt) override
 	{
 		IncrementTransformPos(m_dir * dt * 500);
+
+		GetComponent<MeshRenderer3DComponent>()->UpdateMesh(m_transform);
 	}
 
 	void OnCollision(GameObject* other) override
 	{
-		if (other->m_tags.contains("marker"))
+		if (other->m_tags.contains("marker") && dynamic_cast<Marker*>(other)->m_canBeHit)
 		{
 			other->m_toBeFreed = true;
 			m_toBeFreed = true;
 		}
-	}
-
-	void Draw(Renderer& r) const override
-	{
-		r.SetColor(m_mesh[0].m_color);
-		r.Render3DCustomOutline(m_mesh[0].m_points, m_mesh[0].m_indices);
 	}
 };
 

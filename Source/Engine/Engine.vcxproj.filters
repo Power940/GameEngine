@@ -29,9 +29,6 @@
     <ClInclude Include="Random.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -95,15 +92,21 @@
     <ClInclude Include="RendererComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteRendererComponent.h">
+    <ClInclude Include="SpriteRenderer2DComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CircleColliderComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer3DComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
@@ -150,6 +153,12 @@
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="CircleColliderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer3DComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

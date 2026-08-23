@@ -1,6 +1,8 @@
 #include <iterator>
 #include "Scene.h"
 #include "Object.h"
+#include "Factory.h"
+#include "ColliderComponent.h"
 
 namespace STR_FALL
 {
@@ -9,9 +11,30 @@ namespace STR_FALL
 		rapidjson::Document doc;
 		if (Json::Load(filePath, doc))
 		{
-			for (auto& element : doc.GetArray())
+			if (JSON_HAS(doc, "GameObjects"))
 			{
+				for (auto& gameObjectValue : JSON_GET(doc, "GameObjects").GetArray())
+				{
+					std::string m_typeName;
+					JSON_READ(gameObjectValue, m_typeName);
 
+					auto gameObject = Factory::Instance().Create<GameObject>(m_typeName);
+					gameObject->Read(gameObjectValue);
+
+					bool m_prototype = false;
+					JSON_READ(gameObjectValue, m_prototype);
+
+					if (m_prototype)
+					{
+						std::string m_name;
+						JSON_READ(gameObjectValue, m_name);
+						Factory::Instance().PrototypeRegister<GameObject>(m_name, std::move(gameObject));
+					}
+					else
+					{
+						AddObject(std::move(gameObject));
+					}
+				}
 			}
 		}
 
@@ -45,41 +68,56 @@ namespace STR_FALL
 		float dist = -1.0f;
 		GameObject* ObjectA;
 		GameObject* ObjectB;
+		ColliderComponent* colliderA;
+		ColliderComponent* colliderB;
 
 		for (int indexA = 0; indexA < m_objects.size(); indexA++)
 		{
 			ObjectA = m_objects[indexA].get();
 			if (ObjectA->m_toBeFreed) { continue; }
+			colliderA = ObjectA->GetComponent<ColliderComponent>();
+			if (!colliderA) { continue; }
 
 			for (int indexB = indexA + 1; indexB < m_objects.size(); indexB++)
 			{
 				ObjectB = m_objects[indexB].get();
 				if (ObjectB->m_toBeFreed) { continue; }
+				colliderB = ObjectB->GetComponent<ColliderComponent>();
+				if (!colliderB) { continue; }
 
-				if (ObjectA->m_collisionMask.AnyMatch(ObjectB->m_collisionLayer))
+
+				if (colliderA->m_collisionMask.AnyMatch(colliderB->m_collisionLayer) && colliderA->CheckCollision(*colliderB))
 				{
-					dist = (ObjectA->m_transform.m_pos - ObjectB->m_transform.m_pos).Magnitude();
-
-					if (dist <= ObjectA->m_radius + ObjectB->m_radius)
-					{
-						ObjectA->OnCollision(ObjectB);
-						std::cout << ObjectA->m_name + " a -> b " + ObjectB->m_name << std::endl;
-					}
-
-					// add SAT later if you feel like it (in an else case)
+					ObjectA->OnCollision(ObjectB);
+				}
+				if (colliderA->m_collisionLayer.AnyMatch(colliderB->m_collisionMask) && colliderB->CheckCollision(*colliderA))
+				{
+					ObjectB->OnCollision(ObjectA);
 				}
 
-				if (ObjectB->m_collisionMask.AnyMatch(ObjectA->m_collisionLayer))
-				{
-					dist = (ObjectA->m_transform.m_pos - ObjectB->m_transform.m_pos).Magnitude();
+				//if (ObjectA->m_collisionMask.AnyMatch(ObjectB->m_collisionLayer))
+				//{
+				//	dist = (ObjectA->m_transform.m_pos - ObjectB->m_transform.m_pos).Magnitude();
 
-					if (dist <= ObjectA->m_radius + ObjectB->m_radius)
-					{
-						ObjectB->OnCollision(ObjectA);
-					}
+				//	if (dist <= ObjectA->m_radius + ObjectB->m_radius)
+				//	{
+				//		ObjectA->OnCollision(ObjectB);
+				//	}
 
-					// add SAT later if you feel like it (in an else case)
-				}
+				//	// add SAT later if you feel like it (in an else case)
+				//}
+
+				//if (ObjectB->m_collisionMask.AnyMatch(ObjectA->m_collisionLayer))
+				//{
+				//	dist = (ObjectA->m_transform.m_pos - ObjectB->m_transform.m_pos).Magnitude();
+
+				//	if (dist <= ObjectA->m_radius + ObjectB->m_radius)
+				//	{
+				//		ObjectB->OnCollision(ObjectA);
+				//	}
+
+				//	// add SAT later if you feel like it (in an else case)
+				//}
 			}
 		}
 	}

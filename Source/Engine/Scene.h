@@ -15,7 +15,7 @@ namespace STR_FALL
 	public:
 		class Game* m_game = nullptr;
 
-		inline void AddObject(std::unique_ptr<GameObject> object)
+		void AddObject(std::unique_ptr<GameObject> object)
 		{
 			if (object->m_scene == nullptr) { object->m_scene = this; }
 

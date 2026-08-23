@@ -22,62 +22,36 @@ public:
 	{
 		m_scene = new Scene();
 		m_scene->m_game = this;
-		
-		markerMesh.m_texture = ResourceManager::ResManager().GetWithID<Texture>("AsteroidTexture", "Textures/Asteroid.png", STR_Engine::m_renderer);
-		SpaceShip3D[0].m_texture = ResourceManager::ResManager().GetWithID<Texture>("ShipTexture", "Textures/ShipTexture.png", STR_Engine::m_renderer);
-		SpaceShip3D[1].m_texture = ResourceManager::ResManager().GetWithID<Texture>("ShipTexture", "Textures/ShipTexture.png", STR_Engine::m_renderer);
 
 #pragma region GameObjectSetup
 
-		Ship3DDesc playerDesc;
-		playerDesc.m_transform = Transform3D(Vector3(0, 0, 0), Vector3(20, 20, 20));
-		playerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(SpaceShip3D);
-		playerDesc.m_tags = { "player" };
-		playerDesc.m_cam = Camera3D(Transform3D(), 90, Vector2(static_cast<float>(STR_Engine::m_renderer.GetSreenWidth()), static_cast<float>(STR_Engine::m_renderer.GetSreenHeight())));
-		playerDesc.m_forceStrength = 100.0f;
-		playerDesc.m_maxVel = 1000.f;
-		playerDesc.m_scene = m_scene;
-		m_scene->AddObject(std::move(std::make_unique<Ship3D>(playerDesc)));
+		m_scene->Load("Data/Scene.json");
 
 		SeedRandom();
 		for (int index = 0; index < 500; index++)
 		{
-			GameObjectDesc markerDesc;
-			markerDesc.m_transform = Transform3D(
-				Vector3(static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000))),
-				Vector3(10.0f, 10.0f, 10.0f),
-				Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)))
-			);
-			markerDesc.m_tags = { "marker" };
-			markerDesc.m_scene = m_scene;
+			std::unique_ptr<Marker> marker = Factory::Instance().Create<Marker>("MarkerPrototype");
+			marker->m_transform.m_pos = Vector3(static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000)));
+			marker->m_transform.m_rotMat = Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)));
+			marker->GetComponent<MeshRenderer3DComponent>()->UpdateMesh(marker->m_transform);
 
-			Mesh3D temp = markerMesh;
-			temp.m_color = Color((markerDesc.m_transform.m_pos + 2000.0f) / 4000.0f);
-			markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(temp);
-
-			markerDesc.m_collisionLayer = BitMaskInt(2);
-
-			m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, true)));
+			m_scene->AddObject(std::move(marker));
 		}
 
-		for (int index = 0; index < 500; index++)
+		for (int index = 0; index < 100; index++)
 		{
-			GameObjectDesc markerDesc;
-			markerDesc.m_transform = Transform3D(
-				Vector3(static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000))),
-				Vector3(10.0f, 10.0f, 10.0f),
-				Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)))
-			);
-			markerDesc.m_tags = { "marker" };
-			markerDesc.m_baseMesh = std::make_shared<MultiMesh3D>(markerMesh);
-			markerDesc.m_scene = m_scene;
+			std::unique_ptr<Marker> marker = Factory::Instance().Create<Marker>("MarkerPrototype");
+			marker->m_transform.m_pos = Vector3(static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)));
+			marker->m_transform.m_rotMat = Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)));
+			marker->GetComponent<MeshRenderer3DComponent>()->UpdateMesh(marker->m_transform);
+			marker->m_canBeHit = false;
 
-			m_scene->AddObject(std::move(std::make_unique<Marker>(markerDesc, false)));
+			m_scene->AddObject(std::move(marker));
 		}
 
 #pragma endregion
 
-		Camera3D* cam = &(m_scene->GetObjectName<Ship3D>("player")->m_cam);
+		Camera3D* cam = &(m_scene->GetObjectName<Ship3D>("PlayerShip")->m_cam);
 		STR_Engine::Get().m_renderer.SetCamera(cam);
 
 		STR_Engine::m_audio.AddSound("shoot", "Shoot.mp3");

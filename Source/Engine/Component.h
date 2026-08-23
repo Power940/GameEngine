@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "Factory.h"
 
 namespace STR_FALL
 {
@@ -13,8 +14,15 @@ namespace STR_FALL
 		Component() = default;
 		virtual ~Component() = default;
 
+		CLASS_PROTOTYPE(Component)
+
 		virtual void Start() {}
 		virtual void Destroyed() {}
 		virtual void Update(float dt) {}
+
+		virtual void Read(const rapidjson::Value& value) override
+		{
+			Object::Read(value);
+		}
 	};
 }

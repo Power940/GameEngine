@@ -1,30 +1,26 @@
 #pragma once
 #include <StarFallEngine.h>
+#include <MeshRenderer3DComponent.h>
+#include <utility>
+#include <memory>
+#include <Factory.h>
 #include "Bullet.h"
-#include "Assets.h"
 
 using namespace STR_FALL;
 
-struct Ship3DDesc : public GameObjectDesc
-{
-	float m_forceStrength = 0.0f;
-	float m_maxVel = 0.0f;
-	Camera3D m_cam;
-};
-
 struct Ship3D : public GameObject
 {
+	Camera3D m_cam = Camera3D::Empty;
+	float m_forceStrength = 0.0f;
+	float m_maxVel = 0.0f;
+
+	float m_force = 0.0f;
 	Vector3 m_dir = Vector3(0.0f, 0.0f, 1.0f);
 	Vector3 m_accel = Vector3();
-	Camera3D m_cam;
-
-	float m_forceStrength;
-	float m_force = 0.0f;
-	float m_maxVel;
 
 
 	Ship3D() = default;
-	Ship3D(const Ship3DDesc& desc) : GameObject(desc), m_cam(desc.m_cam), m_forceStrength(desc.m_forceStrength), m_maxVel(desc.m_maxVel) {}
+	CLASS_PROTOTYPE(Ship3D)
 
 	void Update(float dt) override
 	{
@@ -46,7 +42,8 @@ struct Ship3D : public GameObject
 
 		m_cam.m_transform = m_transform;
 		m_cam.m_transform.m_pos += (m_transform.m_rotMat.Up() * -20.0f) + (m_transform.m_rotMat.Forward() * -30.0f);
-		m_cam.m_transform.m_rotMat = m_transform.m_rotMat;
+
+		GetComponent<MeshRenderer3DComponent>()->UpdateMesh(m_transform);
 
 		if (STR_Engine::m_input.GetKeyPressed(Input::VK_SPACE))
 		{
@@ -54,29 +51,24 @@ struct Ship3D : public GameObject
 		}
 	}
 
-	void Draw(Renderer& r) const override
-	{
-		r.Render3DCustomTexture(m_mesh[0].m_points, m_mesh[0].m_indices, m_mesh[0].m_texture.get());
-		if (STR_Engine::Get().m_input.GetKeyDown(SDL_SCANCODE_UP))
-		{
-			Mesh3D flame = m_mesh[1];
-			flame.GetPoints()[1].m_z += RandomFloat(2.5f, -2.5f);
-			r.Render3DCustomTexture(flame.m_points, flame.m_indices, flame.m_texture.get());
-		}
-	}
-
 	void Shoot()
 	{
-		GameObjectDesc bulletDesc;
-		bulletDesc.m_transform = m_transform;
-		bulletDesc.m_baseMesh = std::make_shared<MultiMesh3D>(bulletMesh);
-		bulletDesc.m_tags = { "bullet" };
-		bulletDesc.m_scene = m_scene;
-		bulletDesc.m_collisionLayer = BitMaskInt(1);
-		bulletDesc.m_collisionMask = BitMaskInt(2);
-		m_scene->AddObject(std::move(std::make_unique<Bullet>(bulletDesc, m_dir)));
+		std::unique_ptr<Bullet> bullet = Factory::Instance().Create<Bullet>("BulletPrototype");
+		bullet->m_transform = m_transform;
+		bullet->m_dir = m_dir;
+		m_scene->AddObject(std::move(bullet));
 
 		STR_Engine::m_audio.PlaySound("shoot");
+	}
+
+
+	virtual void Read(const rapidjson::Value& value) override
+	{
+		GameObject::Read(value);
+
+		JSON_READ(value, m_cam);
+		JSON_READ(value, m_forceStrength);
+		JSON_READ(value, m_maxVel);
 	}
 };
 
