@@ -18,6 +18,61 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Components\CircleColliderComponent.cpp" />
+    <ClCompile Include="Components\MeshRenderer3DComponent.cpp" />
+    <ClCompile Include="Components\SpriteRenderer2DComponent.cpp" />
+    <ClCompile Include="File\file.cpp" />
+    <ClCompile Include="File\Json.cpp" />
+    <ClCompile Include="GameContainers\Scene.cpp" />
+    <ClCompile Include="Systems\Audio.cpp" />
+    <ClCompile Include="Systems\Input.cpp" />
+    <ClCompile Include="Systems\ParticleSystem.cpp" />
+    <ClCompile Include="Systems\Physics.cpp" />
+    <ClCompile Include="Systems\Renderer.cpp" />
+    <ClCompile Include="Systems\Resource.cpp" />
+    <ClCompile Include="Systems\ResourceManager.cpp" />
+    <ClCompile Include="Systems\StarFallEngine.cpp" />
+    <ClCompile Include="Systems\StarTime.cpp" />
+    <ClCompile Include="Types\Font.cpp" />
+    <ClCompile Include="Types\GameObject.cpp" />
+    <ClCompile Include="Types\Structs.cpp" />
+    <ClCompile Include="Types\Text.cpp" />
+    <ClCompile Include="Types\Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Components\CircleColliderComponent.h" />
+    <ClInclude Include="Components\ColliderComponent.h" />
+    <ClInclude Include="Components\Component.h" />
+    <ClInclude Include="Components\MeshRenderer3DComponent.h" />
+    <ClInclude Include="Components\RendererComponent.h" />
+    <ClInclude Include="Components\SpriteRenderer2DComponent.h" />
+    <ClInclude Include="File\file.h" />
+    <ClInclude Include="File\Json.h" />
+    <ClInclude Include="GameContainers\Game.h" />
+    <ClInclude Include="GameContainers\Scene.h" />
+    <ClInclude Include="Systems\Audio.h" />
+    <ClInclude Include="Systems\Factory.h" />
+    <ClInclude Include="Systems\Input.h" />
+    <ClInclude Include="Systems\ParticleSystem.h" />
+    <ClInclude Include="Systems\Physics.h" />
+    <ClInclude Include="Systems\Random.h" />
+    <ClInclude Include="Systems\Renderer.h" />
+    <ClInclude Include="Systems\Resource.h" />
+    <ClInclude Include="Systems\ResourceManager.h" />
+    <ClInclude Include="Systems\Singleton.h" />
+    <ClInclude Include="Systems\StarFallEngine.h" />
+    <ClInclude Include="Systems\StarTime.h" />
+    <ClInclude Include="Types\Font.h" />
+    <ClInclude Include="Types\GameObject.h" />
+    <ClInclude Include="Types\Mesh.h" />
+    <ClInclude Include="Types\Object.h" />
+    <ClInclude Include="Types\Structs.h" />
+    <ClInclude Include="Types\Text.h" />
+    <ClInclude Include="Types\Texture.h" />
+    <ClInclude Include="Utils\Constants.h" />
+    <ClInclude Include="Utils\Utils.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -95,7 +150,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -121,7 +176,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -146,7 +201,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -173,7 +228,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ThirdParty\FMOD\core\inc;$(SolutionDir)ThirdParty\SDL3\include;$(SolutionDir)ThirdParty\RapidJSON\include;$(SolutionDir)ThirdParty\Box2D\include;$(SolutionDir)Source\Engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -188,82 +243,6 @@
       <AdditionalDependencies>fmod_vc.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Audio.h" />
-    <ClInclude Include="CircleColliderComponent.h" />
-    <ClInclude Include="ColliderComponent.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="Constants.h" />
-    <ClInclude Include="Factory.h" />
-    <ClInclude Include="file.h" />
-    <ClInclude Include="Font.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="Json.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="MeshRenderer3DComponent.h" />
-    <ClInclude Include="Object.h" />
-    <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="RendererComponent.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="ResourceManager.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Singleton.h" />
-    <ClInclude Include="SpriteRenderer2DComponent.h" />
-    <ClInclude Include="StarFallEngine.h" />
-    <ClInclude Include="Random.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="StarTime.h" />
-    <ClInclude Include="Structs.h" />
-    <ClInclude Include="Text.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Utils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Audio.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="CircleColliderComponent.cpp" />
-    <ClCompile Include="file.cpp" />
-    <ClCompile Include="Font.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Input.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Json.cpp" />
-    <ClCompile Include="MeshRenderer3DComponent.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Renderer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="StarFallEngine.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="StarTime.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Structs.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="Text.cpp" />
-    <ClCompile Include="Texture.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

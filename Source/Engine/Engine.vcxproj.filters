@@ -1,164 +1,180 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Include">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{0cb8deda-1a1b-47ca-95cb-4cc0e4ee42b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{ce4da232-65a4-4da4-aa21-76179096e3c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameContainers">
+      <UniqueIdentifier>{ec7528f1-80ef-4948-ac72-f6b4b8513fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{0d67aa30-51e9-4b30-80a9-166bc5c9d771}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types">
+      <UniqueIdentifier>{53588237-fa76-47be-ba30-40f7c8c96988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ffb9edf0-bd3e-4ff1-b087-af076b93b2df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StarFallEngine.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Structs.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Random.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="StarTime.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="file.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Factory.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Json.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
+    <ClCompile Include="Components\CircleColliderComponent.cpp">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="RendererComponent.h">
+    </ClCompile>
+    <ClCompile Include="Components\MeshRenderer3DComponent.cpp">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteRenderer2DComponent.h">
+    </ClCompile>
+    <ClCompile Include="File\Json.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="File\file.cpp">
+      <Filter>File</Filter>
+    </ClCompile>
+    <ClCompile Include="GameContainers\Scene.cpp">
+      <Filter>GameContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Audio.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Input.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\ParticleSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Physics.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Renderer.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\Resource.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\ResourceManager.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\StarFallEngine.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\StarTime.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\Texture.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\Font.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\GameObject.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\Structs.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Types\Text.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\SpriteRenderer2DComponent.cpp">
       <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="ColliderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="CircleColliderComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshRenderer3DComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="StarTime.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Structs.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="StarFallEngine.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="file.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Json.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CircleColliderComponent.cpp">
+    <ClInclude Include="Components\CircleColliderComponent.h">
       <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshRenderer3DComponent.cpp">
+    </ClInclude>
+    <ClInclude Include="Components\ColliderComponent.h">
       <Filter>Components</Filter>
-    </ClCompile>
+    </ClInclude>
+    <ClInclude Include="Components\Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\MeshRenderer3DComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RendererComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\SpriteRenderer2DComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="File\Json.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="File\file.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="GameContainers\Game.h">
+      <Filter>GameContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameContainers\Scene.h">
+      <Filter>GameContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Audio.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Factory.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Input.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\ParticleSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Physics.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Random.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Renderer.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Resource.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\ResourceManager.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\Singleton.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\StarFallEngine.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\StarTime.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Texture.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Font.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\GameObject.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Mesh.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Object.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Structs.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Types\Text.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Constants.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

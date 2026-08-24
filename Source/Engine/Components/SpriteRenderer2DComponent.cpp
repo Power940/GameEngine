@@ -1,0 +1,1 @@
+#include "SpriteRenderer2DComponent.h"
