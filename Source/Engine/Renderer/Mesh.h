@@ -1,5 +1,5 @@
 #pragma once
-#include "Structs.h"
+#include "Math/Structs.h"
 #include "Texture.h"
 #include <vector>
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
-#include "Types/GameObject.h"
+#include "GameObject.h"
 
 namespace STR_FALL
 {

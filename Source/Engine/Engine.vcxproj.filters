@@ -1,88 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Components">
-      <UniqueIdentifier>{0cb8deda-1a1b-47ca-95cb-4cc0e4ee42b1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="File">
-      <UniqueIdentifier>{ce4da232-65a4-4da4-aa21-76179096e3c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameContainers">
-      <UniqueIdentifier>{ec7528f1-80ef-4948-ac72-f6b4b8513fc6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems">
-      <UniqueIdentifier>{0d67aa30-51e9-4b30-80a9-166bc5c9d771}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Types">
-      <UniqueIdentifier>{53588237-fa76-47be-ba30-40f7c8c96988}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{ffb9edf0-bd3e-4ff1-b087-af076b93b2df}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Audio\Audio.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
     <ClCompile Include="Components\CircleColliderComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Components\MeshRenderer3DComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="File\Json.cpp">
-      <Filter>File</Filter>
-    </ClCompile>
-    <ClCompile Include="File\file.cpp">
-      <Filter>File</Filter>
-    </ClCompile>
-    <ClCompile Include="GameContainers\Scene.cpp">
-      <Filter>GameContainers</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\Audio.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\Input.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\ParticleSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\Physics.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\Renderer.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\Resource.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\ResourceManager.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\StarFallEngine.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Systems\StarTime.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="Types\Texture.cpp">
-      <Filter>Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Types\Font.cpp">
-      <Filter>Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Types\GameObject.cpp">
-      <Filter>Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Types\Structs.cpp">
-      <Filter>Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Types\Text.cpp">
-      <Filter>Types</Filter>
-    </ClCompile>
     <ClCompile Include="Components\SpriteRenderer2DComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Core\file.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\StarTime.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameObject.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Scene.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Structs.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\Physics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Font.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\ParticleSystem.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Renderer.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Text.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Texture.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\TextureFrames.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\Resource.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources\ResourceManager.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Serialization\Json.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="StarFallEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Audio\Audio.h">
+      <Filter>Audio</Filter>
+    </ClInclude>
     <ClInclude Include="Components\CircleColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -101,80 +87,110 @@
     <ClInclude Include="Components\SpriteRenderer2DComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="File\Json.h">
-      <Filter>File</Filter>
+    <ClInclude Include="Core\Factory.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="File\file.h">
-      <Filter>File</Filter>
+    <ClInclude Include="Core\file.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="GameContainers\Game.h">
-      <Filter>GameContainers</Filter>
+    <ClInclude Include="Core\Random.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="GameContainers\Scene.h">
-      <Filter>GameContainers</Filter>
+    <ClInclude Include="Core\Singleton.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Audio.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Core\StarTime.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Factory.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Core\StringUtils.h">
+      <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Input.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Framework\Scene.h">
+      <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\ParticleSystem.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Framework\Game.h">
+      <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Physics.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Framework\GameObject.h">
+      <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Random.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Framework\Object.h">
+      <Filter>Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Renderer.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Input\Input.h">
+      <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Resource.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Math\Structs.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\ResourceManager.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Math\Constants.h">
+      <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\Singleton.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Physics\Physics.h">
+      <Filter>Physics</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\StarFallEngine.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Renderer\TextureFrames.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Systems\StarTime.h">
-      <Filter>Systems</Filter>
+    <ClInclude Include="Renderer\Font.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Types\Texture.h">
-      <Filter>Types</Filter>
+    <ClInclude Include="Renderer\Mesh.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Types\Font.h">
-      <Filter>Types</Filter>
+    <ClInclude Include="Renderer\ParticleSystem.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Types\GameObject.h">
-      <Filter>Types</Filter>
+    <ClInclude Include="Renderer\Renderer.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Types\Mesh.h">
-      <Filter>Types</Filter>
+    <ClInclude Include="Renderer\Text.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Types\Object.h">
-      <Filter>Types</Filter>
+    <ClInclude Include="Renderer\Texture.h">
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Types\Structs.h">
-      <Filter>Types</Filter>
+    <ClInclude Include="Resources\ResourceManager.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Types\Text.h">
-      <Filter>Types</Filter>
+    <ClInclude Include="Resources\Resource.h">
+      <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Constants.h">
-      <Filter>Utils</Filter>
+    <ClInclude Include="Serialization\Json.h">
+      <Filter>Serialization</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Utils.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
+    <ClInclude Include="StarFallEngine.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{7288074c-9e1f-4370-8fbd-9217f0c6eb0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{e5b1fba4-ed24-4369-8c7b-7f5d1c1e0ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{188d42f3-70af-41d7-8739-29a036a6603e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{34f3b150-52c0-4119-91bb-15feaa8127e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{10fee895-9bd1-4a2f-9f3e-c2d0d9c63515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{14f1e1af-0dbd-4663-951d-b82e2964f6e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{431d9ee8-852e-40ff-829a-ee8b7c11a896}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{1911c279-1a69-447e-a641-501f2e9ddd34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{700d5752-0d3e-4e28-becd-da96f712642a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{fa941673-0004-4eae-a070-7b3be62bdf9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

@@ -8,8 +8,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "Utils/Constants.h"
-#include "Types/Structs.h"
+#include "Math/Constants.h"
+#include "Math/Structs.h"
 
 namespace STR_FALL
 {
@@ -43,6 +43,7 @@ namespace STR_FALL
 
 		void RenderDebugText(const std::string& text, const Vector2& point) const;
 		void RenderTexture(const class Texture* texture, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false);
+		void RenderTexture(const class Texture* texture, const struct Rect2D& source, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false);
 
 		void RenderPoint(const Vector2& point) const;
 		void RenderPoints(const std::vector<Vector2>& points) const;

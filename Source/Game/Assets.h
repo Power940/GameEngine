@@ -1,5 +1,5 @@
 #pragma once
-#include <Types/Mesh.h>
+#include <Renderer/Mesh.h>
 
 using namespace STR_FALL;
 

@@ -1,5 +1,5 @@
 #include "GameObject.h"
-#include "Systems/Factory.h"
+#include "Core/Factory.h"
 
 namespace STR_FALL
 {

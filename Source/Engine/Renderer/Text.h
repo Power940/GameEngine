@@ -1,7 +1,7 @@
 #pragma once
 #include "Font.h"
-#include "Structs.h"
-#include "Systems/Renderer.h"
+#include "Math/Structs.h"
+#include "Renderer.h"
 
 namespace STR_FALL
 {

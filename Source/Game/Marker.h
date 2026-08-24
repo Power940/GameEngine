@@ -1,6 +1,6 @@
 #pragma once
-#include <Systems/StarFallEngine.h>
-#include <Systems/Factory.h>
+#include <StarFallEngine.h>
+#include <Core/Factory.h>
 
 using namespace STR_FALL;
 

@@ -2,9 +2,9 @@
 #include <SDL3_image/SDL_image.h>
 #include <string>
 #include <iostream>
-#include "Structs.h"
-#include "Systems/Renderer.h" 
-#include "Systems/Resource.h"
+#include "Math/Structs.h"
+#include "Renderer.h" 
+#include "Resources/Resource.h"
 
 namespace STR_FALL
 {
@@ -18,7 +18,6 @@ namespace STR_FALL
 
 		bool Load(const std::string& filename, Renderer& renderer);
 
-	private:
 		SDL_Texture* m_texture = nullptr;
 		Vector2 m_size = Vector2();
 	};

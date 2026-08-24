@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cassert>
-#include "Utils/Constants.h"
+#include "Constants.h"
 #include <ostream>
 
 namespace STR_FALL
@@ -650,5 +650,12 @@ namespace STR_FALL
 		inline VertexUV2D(const Vector2& pos) : m_pos(pos), m_uv(Vector2()) {}
 		inline VertexUV2D(const Vector2& pos, const Vector2& uv) : m_pos(pos), m_uv(uv) {}
 		inline VertexUV2D(const float x, const float y, const float u, const float v) : m_pos(x, y), m_uv(u, v) {}
+	};
+
+	struct Rect2D
+	{
+		float m_x = 0.0f, m_y = 0.0f, m_w = 0.0f, m_h = 0.0f;
+
+		Rect2D(float x = 0.0f, float y = 0.0f, float w = 0.0f, float h = 0.0f) : m_x(x), m_y(y), m_w(w), m_h(h) {}
 	};
 }

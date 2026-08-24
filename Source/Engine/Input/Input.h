@@ -2,7 +2,7 @@
 #include <SDL3/SDL.h>
 #include <cstdint>
 #include <vector>
-#include "Types/Structs.h"
+#include "Math/Structs.h"
 
 namespace STR_FALL
 {

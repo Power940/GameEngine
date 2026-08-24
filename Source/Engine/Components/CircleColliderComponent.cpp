@@ -1,5 +1,5 @@
 #include "CircleColliderComponent.h"
-#include "Types/GameObject.h"
+#include "Framework/GameObject.h"
 
 namespace STR_FALL
 {

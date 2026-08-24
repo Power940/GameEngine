@@ -1,9 +1,9 @@
 #pragma once
-#include <Systems/StarFallEngine.h>
+#include <StarFallEngine.h>
 #include <Components/MeshRenderer3DComponent.h>
 #include <utility>
 #include <memory>
-#include <Systems/Factory.h>
+#include <Core/Factory.h>
 #include "Bullet.h"
 
 using namespace STR_FALL;

@@ -1,6 +1,44 @@
 {
   "GameObjects": [
     {
+      "m_typeName": "GameObject",
+      "m_prototype": false,
+
+      "m_name": "Coin",
+      "m_active": true,
+
+      "m_tags": [
+        "pickup"
+      ],
+      "m_transform": [
+        500,
+        100,
+        0,
+        2,
+        2,
+        2,
+        0,
+        0,
+        0
+      ],
+      "m_vel": [
+        0,
+        0,
+        0
+      ],
+      "m_components": [
+        {
+          "m_typeName": "SpriteRenderer2DComponent",
+          "m_prototype": false,
+
+          "m_name": "SpriteRenderer",
+          "m_active": true,
+
+          "m_textureFilePath": "Textures/Coin.png"
+        }
+      ]
+    },
+    {
       "m_typeName": "Ship3D",
       "m_prototype": false,
 

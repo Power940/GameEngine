@@ -5,11 +5,14 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Include">
-      <UniqueIdentifier>{2e2233e9-ee94-4d8b-9eac-b01feb55e7d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{e8ba7754-47d2-4092-bb4b-917959162b99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Animations">
+      <UniqueIdentifier>{13ec6471-c188-4578-8b31-a0dd61cc3b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Scenes">
+      <UniqueIdentifier>{909d1515-893a-442d-bc26-d2add59078c5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -17,35 +20,38 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
-      <Filter>Include</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Marker.cpp">
-      <Filter>Include</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Ship3D.cpp">
-      <Filter>Include</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Ship3D.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Marker.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame3D.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="Assets.h">
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
-      <Filter>Include</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Assets.h">
-      <Filter>Include</Filter>
+    <ClInclude Include="Marker.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Ship3D.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame3D.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Build\Assets\Data\Scene.json">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Scenes</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\Animations\Coin.json">
+      <Filter>Resource Files\Animations</Filter>
     </None>
   </ItemGroup>
 </Project>

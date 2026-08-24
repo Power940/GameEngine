@@ -1,5 +1,5 @@
 #include "Renderer.h"
-#include "Types/Texture.h"
+#include "Texture.h"
 
 namespace STR_FALL
 {
@@ -113,6 +113,25 @@ namespace STR_FALL
         destRect.y = y - (destRect.h * 0.5f);
 
         SDL_RenderTextureRotated(m_renderer, texture->m_texture, NULL, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
+    }
+
+    void Renderer::RenderTexture(const Texture* texture, const Rect2D& source, float x, float y, float angleDeg, float xScale, float yScale, bool flipH)
+    {
+        Vector2 size = texture->m_size;
+
+        SDL_FRect destRect;
+        destRect.w = size.m_x * xScale;
+        destRect.h = size.m_y * yScale;
+        destRect.x = x - (destRect.w * 0.5f);
+        destRect.y = y - (destRect.h * 0.5f);
+
+        SDL_FRect srcRect;
+        srcRect.x = source.m_x;
+        srcRect.y = source.m_y;
+        srcRect.w = source.m_w;
+        srcRect.h = source.m_h;
+
+        SDL_RenderTextureRotated(m_renderer, texture->m_texture, &srcRect, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 
     void Renderer::RenderPoint(const Vector2& point) const { SDL_RenderPoint(m_renderer, point.m_x, point.m_y); }

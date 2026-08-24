@@ -1,8 +1,8 @@
 #pragma once
-#include "Systems/StarFallEngine.h"
+#include "StarFallEngine.h"
 #include "Components/MeshRenderer3DComponent.h"
-#include <Systems/Factory.h>
-#include <Types/Object.h>
+#include <Core/Factory.h>
+#include <Framework/Object.h>
 #include "Marker.h"
 
 using namespace STR_FALL;

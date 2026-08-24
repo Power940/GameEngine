@@ -1,7 +1,7 @@
 #pragma once
 #include "ColliderComponent.h"
-#include "File/Json.h"
-#include "Types/Object.h"
+#include "Serialization/Json.h"
+#include "Framework/Object.h"
 
 namespace STR_FALL
 {

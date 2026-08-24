@@ -2,7 +2,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 #include <iostream>
-#include "Systems/Resource.h"
+#include "Resources/Resource.h"
 
 namespace STR_FALL
 {

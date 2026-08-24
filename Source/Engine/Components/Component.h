@@ -1,6 +1,6 @@
 #pragma once
-#include "Types/Object.h"
-#include "Systems/Factory.h"
+#include "Framework/Object.h"
+#include "Core/Factory.h"
 
 namespace STR_FALL
 {

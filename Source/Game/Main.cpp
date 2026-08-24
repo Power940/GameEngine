@@ -1,4 +1,4 @@
-#include "Systems/StarFallEngine.h"
+#include "StarFallEngine.h"
 #include "SpaceGame3D.h"
 
 using namespace STR_FALL;

@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
-#include "Structs.h"
+#include "Math/Structs.h"
 #include "Object.h"
-#include "Systems/Renderer.h"
+#include "Renderer/Renderer.h"
 #include <unordered_set>
 #include "Components/Component.h"
 #include "Components/RendererComponent.h"
-#include "File/Json.h"
-#include "Systems/Factory.h"
+#include "Serialization/Json.h"
+#include "Core/Factory.h"
 
 namespace STR_FALL
 {

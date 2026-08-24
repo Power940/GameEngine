@@ -2,8 +2,8 @@
 #include <rapidjson/document.h>
 #include <string>
 #include <vector>
-#include "Types/Structs.h"
-#include "Types/Mesh.h"
+#include "Math/Structs.h"
+#include "Renderer/Mesh.h"
 #include <unordered_set>
 
 #define JSON_READ(value, data) STR_FALL::Json::Read(value, #data, data)
