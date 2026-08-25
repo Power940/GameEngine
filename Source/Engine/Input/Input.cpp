@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "Input.h"
+
 
 using namespace STR_FALL;
 

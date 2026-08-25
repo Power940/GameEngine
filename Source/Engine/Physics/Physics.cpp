@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "Physics.h"
+
 
 namespace STR_FALL
 {

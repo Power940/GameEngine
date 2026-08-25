@@ -1,5 +1,6 @@
+#include "pch.h"
 #include "CircleColliderComponent.h"
-#include "Framework/GameObject.h"
+#include "Component.h"
 
 namespace STR_FALL
 {

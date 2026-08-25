@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <cctype>
+
 
 namespace STR_FALL
 {

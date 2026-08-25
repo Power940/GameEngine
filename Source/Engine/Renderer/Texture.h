@@ -1,10 +1,9 @@
 #pragma once
-#include <SDL3_image/SDL_image.h>
+#include <Math/Structs.h>
+#include <Resources/Resource.h>
+#include <SDL3/SDL_render.h>
 #include <string>
-#include <iostream>
-#include "Math/Structs.h"
-#include "Renderer.h" 
-#include "Resources/Resource.h"
+
 
 namespace STR_FALL
 {

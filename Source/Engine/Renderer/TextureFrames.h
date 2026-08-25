@@ -1,8 +1,10 @@
 #pragma once
-#include "Resources/ResourceManager.h"
-#include <string>
 #include <Math/Structs.h>
+#include "Renderer.h"
 #include "Texture.h"
+#include <Resources/Resource.h>
+#include <string>
+
 
 namespace STR_FALL
 {

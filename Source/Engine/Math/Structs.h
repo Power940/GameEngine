@@ -1,10 +1,11 @@
 #pragma once
+#include "Constants.h"
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cstdlib>
-#include <cassert>
-#include "Constants.h"
 #include <ostream>
+
 
 namespace STR_FALL
 {

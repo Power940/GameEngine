@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 
+
 namespace STR_FALL
 {
 	class Resource

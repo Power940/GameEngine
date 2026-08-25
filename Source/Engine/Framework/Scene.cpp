@@ -1,8 +1,7 @@
-#include <iterator>
+#include "pch.h"
 #include "Scene.h"
-#include "Object.h"
-#include "Core/Factory.h"
-#include "Components/ColliderComponent.h"
+#include <Components/ColliderComponent.h>
+
 
 namespace STR_FALL
 {

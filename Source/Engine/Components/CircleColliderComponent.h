@@ -1,7 +1,10 @@
 #pragma once
+#include <Core/Factory.h>
+#include <Framework/Object.h>
+#include <Serialization/Json.h>
+#include <rapidjson/document.h>
 #include "ColliderComponent.h"
-#include "Serialization/Json.h"
-#include "Framework/Object.h"
+
 
 namespace STR_FALL
 {

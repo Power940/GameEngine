@@ -1,10 +1,16 @@
 #pragma once
-#include <memory>
-#include "Framework/Object.h"
-#include "Core/StringUtils.h"
 #include "Singleton.h"
-#include <map>
+#include "StringUtils.h"
+#include <Framework/Object.h>
+#include <algorithm>
+#include <concepts>
 #include <iostream>
+#include <map>
+#include <memory>
+#include <ostream>
+#include <string>
+#include <utility>
+
 
 #define FACTORY_REG(classname)																		\
 	class Register##classname																		\
@@ -13,6 +19,7 @@
 		Register##classname() { STR_FALL::Factory::Instance().Register<classname>(#classname); }	\
 	};																								\
 	static Register##classname regInst##classname;
+
 
 namespace STR_FALL
 {

@@ -1,7 +1,11 @@
 #pragma once
+#include <Math/Structs.h>
 #include "Font.h"
-#include "Math/Structs.h"
 #include "Renderer.h"
+#include <Resources/Resource.h>
+#include <SDL3/SDL_render.h>
+#include <string>
+
 
 namespace STR_FALL
 {

@@ -1,7 +1,12 @@
 #pragma once
-#include <vector>
-#include <memory>
+#include "Game.h"
 #include "GameObject.h"
+#include "Object.h"
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
 
 namespace STR_FALL
 {

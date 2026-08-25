@@ -1,7 +1,8 @@
 #pragma once
-#include <ctime>
-#include <cstdlib>
 #include <random>
+#include <algorithm>
+#include <utility>
+
 
 namespace STR_FALL
 {

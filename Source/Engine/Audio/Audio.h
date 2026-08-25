@@ -1,9 +1,11 @@
 #pragma once
 #include <fmod.hpp>
-#include "fmod_errors.h"
-#include <string>
-#include <map>
+#include <fmod_common.h>
+#include <fmod_errors.h>
 #include <iostream>
+#include <map>
+#include <ostream>
+#include <string>
 
 namespace STR_FALL
 {

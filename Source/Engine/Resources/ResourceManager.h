@@ -1,10 +1,14 @@
 #pragma once
+#include <Core/Singleton.h>
 #include "Resource.h"
-#include "Core/Singleton.h"
-#include <map>
-#include <string>
+#include <concepts>
 #include <iostream>
+#include <map>
+#include <memory>
+#include <ostream>
+#include <string>
 #include <utility>
+
 
 namespace STR_FALL
 {

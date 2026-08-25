@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "Text.h"
+
 
 namespace STR_FALL
 {

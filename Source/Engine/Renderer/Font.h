@@ -1,8 +1,8 @@
 #pragma once
+#include "Resources/Resource.h"
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
-#include <iostream>
-#include "Resources/Resource.h"
+
 
 namespace STR_FALL
 {

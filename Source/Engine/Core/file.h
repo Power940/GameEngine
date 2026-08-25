@@ -1,11 +1,7 @@
 #pragma once
-#include <filesystem>
 #include <string>
 #include <vector>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <string>
+
 
 namespace STR_FALL
 {

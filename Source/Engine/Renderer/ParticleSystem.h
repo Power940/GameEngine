@@ -1,9 +1,10 @@
 #pragma once
-#include <vector>
-#include "Resources/Resource.h"
-#include "Math/Structs.h"
-#include "Texture.h"
+#include <Math/Structs.h>
 #include "Renderer.h"
+#include "Texture.h"
+#include <Resources/Resource.h>
+#include <vector>
+
 
 namespace STR_FALL
 {

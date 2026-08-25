@@ -1,9 +1,10 @@
 #pragma once
-#include "Scene.h"
-#include "Renderer/Renderer.h"
+
 
 namespace STR_FALL
 {
+	class Scene;
+
 	class Game
 	{
 	protected:

@@ -1,10 +1,17 @@
 #pragma once
 #include "RendererComponent.h"
-#include "Resources/Resource.h"
-#include "Renderer/Texture.h"
-#include "Renderer/Renderer.h"
-#include "Resources/ResourceManager.h"
-#include "StarFallEngine.h"
+#include <Core/Factory.h>
+#include <Framework/Object.h>
+#include <Math/Structs.h>
+#include <Renderer/Renderer.h>
+#include <Renderer/Texture.h>
+#include <Resources/Resource.h>
+#include <Resources/ResourceManager.h>
+#include <Serialization/Json.h>
+#include <rapidjson/document.h>
+#include <string>
+#include <StarFallEngine.h>
+
 
 namespace STR_FALL
 {

@@ -1,5 +1,9 @@
 #pragma once
 #include "Component.h"
+#include <Math/Structs.h>
+#include <Serialization/Json.h>
+#include <rapidjson/document.h>
+
 
 namespace STR_FALL
 {

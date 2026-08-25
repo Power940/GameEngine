@@ -1,7 +1,10 @@
 #pragma once
 #include "Math/Structs.h"
 #include "Texture.h"
+#include "Resources/Resource.h"
+#include <cassert>
 #include <vector>
+
 
 namespace STR_FALL
 {

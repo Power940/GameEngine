@@ -1,4 +1,6 @@
+#include "pch.h"
 #include "StarTime.h"
+
 
 using namespace STR_FALL;
 

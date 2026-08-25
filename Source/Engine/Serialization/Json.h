@@ -1,10 +1,11 @@
 #pragma once
+#include <Math/Structs.h>
 #include <rapidjson/document.h>
 #include <string>
-#include <vector>
-#include "Math/Structs.h"
-#include "Renderer/Mesh.h"
 #include <unordered_set>
+#include <vector>
+#include <Renderer/Mesh.h>
+
 
 #define JSON_READ(value, data) STR_FALL::Json::Read(value, #data, data)
 #define JSON_HAS(value, name) value.HasMember(name)
