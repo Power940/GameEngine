@@ -28,13 +28,15 @@
       ],
       "m_components": [
         {
-          "m_typeName": "SpriteRenderer2DComponent",
+          "m_typeName": "SpriteAnimationRenderer2DComponent",
           "m_prototype": false,
 
-          "m_name": "SpriteRenderer",
+          "m_name": "SpriteAnimationRenderer",
           "m_active": true,
 
-          "m_textureFilePath": "Textures/Coin.png"
+          "m_textureFrameName": "Animations/Coin.json",
+          "m_framesPerSecond": 20,
+          "m_loop": true
         }
       ]
     },

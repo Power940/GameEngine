@@ -63,6 +63,15 @@
       <Filter>Serialization</Filter>
     </ClCompile>
     <ClCompile Include="StarFallEngine.cpp" />
+    <ClCompile Include="Components\SpriteAnimationRenderer2DComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PhysicsComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\RidgidBodyPhysicsComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -160,6 +169,15 @@
       <Filter>Serialization</Filter>
     </ClInclude>
     <ClInclude Include="StarFallEngine.h" />
+    <ClInclude Include="Components\SpriteAnimationRenderer2DComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PhysicsComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\RidgidBodyPhysicsComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Audio">

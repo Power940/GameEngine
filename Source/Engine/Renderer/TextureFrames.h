@@ -14,11 +14,14 @@ namespace STR_FALL
 		bool Load(const std::string& filename, class Renderer& r);
 		Rect2D GetFrameRect(unsigned int frame);
 
+		unsigned int GetTotalFrames() const { return m_totalFrames; }
+		res_t<Texture> GetTexture() const { return m_texture; }
+
 	private:
-		int m_columns = 0;
-		int m_rows = 0;
-		int m_startFrame = 0;
-		int m_totalFrames = 0;
+		unsigned int m_columns = 0;
+		unsigned int m_rows = 0;
+		unsigned int m_startFrame = 0;
+		unsigned int m_totalFrames = 0;
 
 		Vector2 m_cellSize = Vector2();
 		res_t<Texture> m_texture;

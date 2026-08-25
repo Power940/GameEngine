@@ -41,14 +41,14 @@ namespace STR_FALL
             return false;
         }
 
-        m_cellSize = m_texture->m_size / Vector2(m_columns, m_rows);
+        m_cellSize = m_texture->m_size / Vector2(static_cast<float>(m_columns), static_cast<float>(m_rows));
 
         return true;
     }
 
     Rect2D TextureFrames::GetFrameRect(unsigned int frame)
     {
-        if (frame >= m_startFrame)
+        if (frame >= m_totalFrames)
         {
             std::cerr << "TextureFrames frame: " << frame << " is out of bounds" << std::endl;
             frame = 0;

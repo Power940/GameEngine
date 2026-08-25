@@ -22,6 +22,9 @@
     <ClCompile Include="Audio\Audio.cpp" />
     <ClCompile Include="Components\CircleColliderComponent.cpp" />
     <ClCompile Include="Components\MeshRenderer3DComponent.cpp" />
+    <ClCompile Include="Components\PhysicsComponent.cpp" />
+    <ClCompile Include="Components\RidgidBodyPhysicsComponent.cpp" />
+    <ClCompile Include="Components\SpriteAnimationRenderer2DComponent.cpp" />
     <ClCompile Include="Components\SpriteRenderer2DComponent.cpp" />
     <ClCompile Include="Core\file.cpp" />
     <ClCompile Include="Core\StarTime.cpp" />
@@ -60,7 +63,10 @@
     <ClInclude Include="Components\ColliderComponent.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\MeshRenderer3DComponent.h" />
+    <ClInclude Include="Components\PhysicsComponent.h" />
     <ClInclude Include="Components\RendererComponent.h" />
+    <ClInclude Include="Components\RidgidBodyPhysicsComponent.h" />
+    <ClInclude Include="Components\SpriteAnimationRenderer2DComponent.h" />
     <ClInclude Include="Components\SpriteRenderer2DComponent.h" />
     <ClInclude Include="Core\Factory.h" />
     <ClInclude Include="Core\file.h" />

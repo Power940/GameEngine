@@ -120,18 +120,17 @@ namespace STR_FALL
     {
         Vector2 size = texture->m_size;
 
-        SDL_FRect destRect;
-        destRect.w = size.m_x * xScale;
-        destRect.h = size.m_y * yScale;
-        destRect.x = x - (destRect.w * 0.5f);
-        destRect.y = y - (destRect.h * 0.5f);
-
         SDL_FRect srcRect;
         srcRect.x = source.m_x;
         srcRect.y = source.m_y;
         srcRect.w = source.m_w;
         srcRect.h = source.m_h;
 
+        SDL_FRect destRect;
+        destRect.w = source.m_w * xScale;
+        destRect.h = source.m_h * yScale;
+        destRect.x = x - (destRect.w * 0.5f);
+        destRect.y = y - (destRect.h * 0.5f);
         SDL_RenderTextureRotated(m_renderer, texture->m_texture, &srcRect, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 

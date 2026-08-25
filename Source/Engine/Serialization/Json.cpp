@@ -59,6 +59,18 @@ namespace STR_FALL::Json
 
         return true;
     }
+    bool Read(const rapidjson::Value& value, const std::string& name, unsigned int& data)
+    {
+        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsUint())
+        {
+            std::cerr << "Could not read JSON value (unsigned int): " << name << std::endl;
+            return false;
+        }
+
+        data = value[name.c_str()].GetUint();
+
+        return true;
+    }
     bool Read(const rapidjson::Value& value, const std::string& name, float& data)
     {
         if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsNumber())
