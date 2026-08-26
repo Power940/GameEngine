@@ -48,13 +48,14 @@ namespace STR_FALL
 
 		UpdateCollisions();
 
-		std::erase_if(m_objects, [](auto& object) { return object->m_toBeFreed; });
+		std::erase_if(m_objects, [](auto& object) { object->OnDestroy(); return object->m_toBeFreed; });
 
-		if (m_pendingObjects.size() != 0)
+		for (std::unique_ptr<GameObject>& gameObject : m_pendingObjects)
 		{
-			m_objects.insert(m_objects.end(), std::make_move_iterator(m_pendingObjects.begin()), std::make_move_iterator(m_pendingObjects.end()));
-			m_pendingObjects.clear();
+			m_objects.push_back(std::move(gameObject));
+			m_objects.back()->Start();
 		}
+		m_pendingObjects.clear();
 	}
 
 	void Scene::Draw(Renderer& r)

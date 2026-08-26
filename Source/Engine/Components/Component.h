@@ -17,8 +17,8 @@ namespace STR_FALL
 		CLASS_PROTOTYPE(Component)
 
 		virtual void Start() {}
-		virtual void Destroyed() {}
 		virtual void Update(float dt) {}
+		virtual void OnDestroy() {}
 
 		virtual void Read(const rapidjson::Value& value) override
 		{

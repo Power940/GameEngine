@@ -1,70 +1,20 @@
 {
   "GameObjects": [
     {
-      "m_typeName": "GameObject",
-      "m_prototype": false,
-
-      "m_name": "Coin",
       "m_active": true,
-
-      "m_tags": [
-        "pickup"
-      ],
-      "m_transform": [
-        500,
-        100,
-        0,
-        2,
-        2,
-        2,
-        0,
-        0,
-        0
-      ],
-      "m_vel": [
-        0,
-        0,
-        0
-      ],
-      "m_components": [
-        {
-          "m_typeName": "SpriteAnimationRenderer2DComponent",
-          "m_prototype": false,
-
-          "m_name": "SpriteAnimationRenderer",
-          "m_active": true,
-
-          "m_textureFrameName": "Animations/Coin.json",
-          "m_framesPerSecond": 20,
-          "m_loop": true
-        }
-      ]
-    },
-    {
-      "m_typeName": "Ship3D",
-      "m_prototype": false,
-
-      "m_name": "PlayerShip",
-      "m_active": true,
-
-      "m_tags": [
-        "player"
-      ],
-      "m_transform": [
+      "m_cam": [
         0,
         0,
         0,
-        20,
-        20,
-        20,
+        1,
+        1,
+        1,
         0,
         0,
-        0
-      ],
-      "m_vel": [
         0,
-        0,
-        0
+        90,
+        1920,
+        1080
       ],
       "m_components": [
         {
@@ -104,25 +54,39 @@
           "m_collisionLayer": 0,
 
           "m_radius": 10
+        },
+        {
+          "m_typeName": "RidgidBodyPhysicsComponent",
+          "m_prototype": false,
+
+          "m_name": "RidgidBodyPhysics",
+          "m_active": true,
+
+          "m_mass": 1.0,
+          "m_damping": 1.0,
+          "m_angularDamping": 10.0,
+          "m_gravityScale": 0.0
         }
       ],
-
       "m_forceStrength": 100,
       "m_maxVel": 1000,
-      "m_cam": [
+      "m_name": "PlayerShip",
+      "m_prototype": false,
+      "m_tags": [
+        "player"
+      ],
+      "m_transform": [
         0,
         0,
         0,
-        1,
-        1,
-        1,
+        20,
+        20,
+        20,
         0,
         0,
-        0,
-        90,
-        1920,
-        1080
-      ]
+        0
+      ],
+      "m_typeName": "Ship3D"
     },
     {
       "m_typeName": "Bullet",
@@ -178,11 +142,6 @@
         0,
         0,
         0
-      ],
-      "m_vel": [
-        0,
-        0,
-        0
       ]
     },
     {
@@ -207,12 +166,6 @@
         0,
         0
       ],
-      "m_vel": [
-        0,
-        0,
-        0
-      ],
-
       "m_components": [
         {
           "m_typeName": "MeshRenderer3DComponent",

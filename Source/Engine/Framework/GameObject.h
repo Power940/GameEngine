@@ -25,14 +25,13 @@ namespace STR_FALL
 	public:
 		std::unordered_set<std::string> m_tags;
 		Transform3D m_transform = Transform3D();
-		Vector3 m_vel = Vector3();
 		std::vector<std::unique_ptr<Component>> m_components;
 		Scene* m_scene = nullptr;
 		bool m_toBeFreed = false;
 
 
 		inline GameObject() = default;
-		inline GameObject(const GameObject& other): Object(other), m_tags(other.m_tags), m_transform(other.m_transform), m_vel(other.m_vel), m_scene(other.m_scene)
+		inline GameObject(const GameObject& other): Object(other), m_tags(other.m_tags), m_transform(other.m_transform), m_scene(other.m_scene)
 		{
 			for (const std::unique_ptr<Component>& component : other.m_components)
 			{
@@ -44,13 +43,8 @@ namespace STR_FALL
 
 		CLASS_PROTOTYPE(GameObject)
 
-		virtual void Update(float dt)
-		{
-			for (std::unique_ptr<Component>& component : m_components)
-			{
-				component->Update(dt);
-			}
-		}
+		virtual void Start();
+		virtual void Update(float dt);
 		virtual void Draw(Renderer& r)
 		{
 			for (std::unique_ptr<Component>& component : m_components)
@@ -63,6 +57,7 @@ namespace STR_FALL
 			}
 		}
 		virtual void OnCollision(GameObject* other) {}
+		virtual void OnDestroy();
 
 		inline Transform3D GetTransform() const { return m_transform; }
 		void SetTransform(const Transform3D& transform)
@@ -90,6 +85,10 @@ namespace STR_FALL
 		{
 			m_transform.m_rotMat = rot;
 		}
+		void IncrementTransformRotation(const Matrix3& rot)
+		{
+			m_transform.m_rotMat = m_transform.m_rotMat * rot;
+		}
 
 		template<std::derived_from<Component> T>
 		T* GetComponent()
@@ -115,7 +114,6 @@ namespace STR_FALL
 
 			JSON_READ(value, m_tags);
 			JSON_READ(value, m_transform);
-			JSON_READ(value, m_vel);
 
 			if (JSON_HAS(value, "m_components"))
 			{

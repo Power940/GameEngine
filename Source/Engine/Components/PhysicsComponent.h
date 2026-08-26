@@ -7,16 +7,18 @@ namespace STR_FALL
 	class PhysicsComponent : public Component
 	{
 	public:
-		virtual void ApplyForce(const Vector2& force) = 0;
-		virtual void SetVelocity(const Vector2& velocity) = 0;
-		virtual Vector2 GetVelocity() = 0;
+		virtual void ApplyForce(const Vector3& force) = 0;
+		virtual void SetVelocity(const Vector3& velocity) = 0;
+		virtual Vector3 GetVelocity() = 0;
 
-		virtual void ApplyTorque(float torque) = 0;
-		virtual void SetAngularVelocity(float angularVelocity) = 0;
-		virtual float GetAngularVelocity() const = 0;
+		virtual void ApplyTorque(Vector3 torque) = 0;
+		virtual void SetAngularVelocity(Vector3 angularVelocity) = 0;
+		virtual Vector3 GetAngularVelocity() const = 0;
 
-		virtual void SetPosition(const Vector2& position) = 0;
-		virtual Vector2 GetPosition() const = 0;
+		virtual void SetPosition(const Vector3& position) = 0;
+		virtual Vector3 GetPosition() const = 0;
+		virtual void SetRotation(const Matrix3& rotation) = 0;
+		virtual Matrix3 GetRotation() const = 0;
 
 		virtual void Read(const rapidjson::Value& value);
 

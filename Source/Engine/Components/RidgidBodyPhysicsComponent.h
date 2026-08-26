@@ -7,25 +7,27 @@ namespace STR_FALL
 	class RidgidBodyPhysicsComponent : public PhysicsComponent
 	{
 	public:
-		void ApplyForce(const Vector2& force) override;
-		void SetVelocity(const Vector2& velocity) override;
-		Vector2 GetVelocity() override;
+		void ApplyForce(const Vector3& force) override;
+		void SetVelocity(const Vector3& velocity) override;
+		Vector3 GetVelocity() override;
 
-		void ApplyTorque(float torque) override;
-		void SetAngularVelocity(float angularVelocity) override;
-		float GetAngularVelocity() const override;
+		void ApplyTorque(Vector3 torque) override;
+		void SetAngularVelocity(Vector3 angularVelocity) override;
+		Vector3 GetAngularVelocity() const override;
 
-		void SetPosition(const Vector2& position) override;
-		Vector2 GetPosition() const override;
+		void SetPosition(const Vector3& position) override;
+		Vector3 GetPosition() const override;
+		void SetRotation(const Matrix3& position) override;
+		Matrix3 GetRotation() const override;
 
 		virtual void Update(float dt);
 		virtual void Read(const rapidjson::Value& value);
 
 	private:
-		Vector2 m_acc = Vector2();
-		Vector2 m_vel = Vector2();
+		Vector3 m_acc = Vector3();
+		Vector3 m_vel = Vector3();
 
-		float m_angAcc = 0.0f;
-		float m_angVel = 0.0f;
+		Vector3 m_angAcc = Vector3();
+		Vector3 m_angVel = Vector3();
 	};
 }

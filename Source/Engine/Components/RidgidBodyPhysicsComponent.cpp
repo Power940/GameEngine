@@ -9,44 +9,54 @@ namespace STR_FALL
 {
 	FACTORY_REG(RidgidBodyPhysicsComponent)
 
-	void STR_FALL::RidgidBodyPhysicsComponent::ApplyForce(const Vector2& force)
+	void STR_FALL::RidgidBodyPhysicsComponent::ApplyForce(const Vector3& force)
 	{
 		m_acc = force / m_mass;
 	}
 
-	void RidgidBodyPhysicsComponent::SetVelocity(const Vector2& velocity)
+	void RidgidBodyPhysicsComponent::SetVelocity(const Vector3& velocity)
 	{
 		m_vel = velocity;
 	}
 
-	Vector2 RidgidBodyPhysicsComponent::GetVelocity()
+	Vector3 RidgidBodyPhysicsComponent::GetVelocity()
 	{
 		return m_vel;
 	}
 
-	void RidgidBodyPhysicsComponent::ApplyTorque(float torque)
+	void RidgidBodyPhysicsComponent::ApplyTorque(Vector3 torque)
 	{
 		m_angAcc += torque / m_mass;
 	}
 
-	void RidgidBodyPhysicsComponent::SetAngularVelocity(float angularVelocity)
+	void RidgidBodyPhysicsComponent::SetAngularVelocity(Vector3 angularVelocity)
 	{
 		m_angVel = angularVelocity;
 	}
 
-	float RidgidBodyPhysicsComponent::GetAngularVelocity() const
+	Vector3 RidgidBodyPhysicsComponent::GetAngularVelocity() const
 	{
 		return m_angVel;
 	}
 
-	void RidgidBodyPhysicsComponent::SetPosition(const Vector2& position)
+	void RidgidBodyPhysicsComponent::SetPosition(const Vector3& position)
 	{
 		m_owner->SetTransformPos(position);
 	}
 
-	Vector2 RidgidBodyPhysicsComponent::GetPosition() const
+	Vector3 RidgidBodyPhysicsComponent::GetPosition() const
 	{
 		return m_owner->GetTransform().m_pos;
+	}
+
+	void RidgidBodyPhysicsComponent::SetRotation(const Matrix3& rotation)
+	{
+		m_owner->SetTransformRotation(rotation);
+	}
+
+	Matrix3 RidgidBodyPhysicsComponent::GetRotation() const
+	{
+		return m_owner->GetTransform().m_rotMat;
 	}
 
 	void RidgidBodyPhysicsComponent::Update(float dt)
@@ -57,12 +67,11 @@ namespace STR_FALL
 		m_angVel += m_angAcc * dt;
 		m_angVel *= 1.0f / (1.0f + m_angularDamping * dt);
 
-		m_owner->SetTransformPos(m_owner->GetTransform().m_pos + m_vel * dt);
-		// TODO add this
-		//m_owner->SetTransformRotation();
+		m_owner->IncrementTransformPos(m_vel * dt);
+		m_owner->IncrementTransformRotation(Matrix3::RotationXYZ(m_angVel));
 
-		m_acc = Vector2();
-		m_angAcc = 0.0f;
+		m_acc = Vector3();
+		m_angAcc = Vector3();
 	}
 
 	void RidgidBodyPhysicsComponent::Read(const rapidjson::Value& value)
