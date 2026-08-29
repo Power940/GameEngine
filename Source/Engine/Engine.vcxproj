@@ -30,6 +30,7 @@
     <ClCompile Include="Components\TileMapRendererComponent.cpp" />
     <ClCompile Include="Core\file.cpp" />
     <ClCompile Include="Core\StarTime.cpp" />
+    <ClCompile Include="Framework\Game.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="Input\Input.cpp" />

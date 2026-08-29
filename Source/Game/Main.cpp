@@ -1,12 +1,13 @@
 #include "StarFallEngine.h"
-#include "SpaceGame3D.h"
+#include "PlatformerGame/PlatformerGame.h"
+#include <memory>
 
 using namespace STR_FALL;
 
 int const WINDOW_WIDTH = 1920;
 int const WINDOW_HEIGHT = 1080;
 
-SpaceGame3D game;
+std::unique_ptr<PlatformerGame> game = std::make_unique<PlatformerGame>();
 
 int main()
 {
@@ -15,7 +16,7 @@ int main()
     int initCode = STR_Engine::Get().Initialize("Space Game", WINDOW_WIDTH, WINDOW_HEIGHT);
     std::cout << "INIT_CODE: " << initCode << std::endl;
 
-    game.Initialize();
+    game->Initialize();
     SDL_Event SDLEvent;
     bool quit = false;
 
@@ -27,11 +28,13 @@ int main()
                 break;
             }
         }
-        game.Update();
-        game.Draw();
+        game->Update();
+        game->Draw();
     }
 
-    game.Shutdown();
+    game.reset();
 
+    STR_Engine::Get().Shutdown();
+    
     return 0;
 }

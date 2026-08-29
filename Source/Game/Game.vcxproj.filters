@@ -17,37 +17,24 @@
     <Filter Include="Resource Files\TileMaps">
       <UniqueIdentifier>{6b31293d-b457-41dc-b216-e764813f4f07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SpaceGame_OLD">
+      <UniqueIdentifier>{d90fdc94-4244-42df-a303-ad101975b3f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PlatformerGame">
+      <UniqueIdentifier>{93cc4b12-60b9-435a-b9f8-8b7c7766ee53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="SpaceGame_OLD\Bullet.cpp">
+      <Filter>SpaceGame_OLD</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="SpaceGame_OLD\Marker.cpp">
+      <Filter>SpaceGame_OLD</Filter>
     </ClCompile>
-    <ClCompile Include="Marker.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="SpaceGame_OLD\Ship3D.cpp">
+      <Filter>SpaceGame_OLD</Filter>
     </ClCompile>
-    <ClCompile Include="Ship3D.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Assets.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Marker.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Ship3D.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="SpaceGame3D.h">
-      <Filter>Source</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Build\Assets\Data\Scene.json">
@@ -59,5 +46,25 @@
     <None Include="..\..\Build\Assets\TileMaps\worldFileGame.tmj">
       <Filter>Resource Files\TileMaps</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SpaceGame_OLD\SpaceGame3D.h">
+      <Filter>SpaceGame_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame_OLD\Assets.h">
+      <Filter>SpaceGame_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame_OLD\Bullet.h">
+      <Filter>SpaceGame_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame_OLD\Marker.h">
+      <Filter>SpaceGame_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceGame_OLD\Ship3D.h">
+      <Filter>SpaceGame_OLD</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformerGame\PlatformerGame.h">
+      <Filter>PlatformerGame</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

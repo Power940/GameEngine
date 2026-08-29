@@ -1,6 +1,15 @@
 #include "pch.h"
 #include "Scene.h"
 #include <Components/ColliderComponent.h>
+#include <Core/Factory.h>
+#include "GameObject.h"
+#include <Renderer/Renderer.h>
+#include <Serialization/Json.h>
+#include <rapidjson/document.h>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 
 namespace STR_FALL

@@ -84,6 +84,9 @@
     <ClCompile Include="Components\TileMapRendererComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Game.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

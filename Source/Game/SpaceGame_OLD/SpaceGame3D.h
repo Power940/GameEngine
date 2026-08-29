@@ -20,7 +20,9 @@ public:
 
 	virtual bool Initialize()
 	{
-		m_scene = new Scene();
+		SetWorkingDirectory("SpaceGame_OLD");
+
+		m_scene = std::make_unique<Scene>();
 		m_scene->m_game = this;
 
 #pragma region GameObjectSetup

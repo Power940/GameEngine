@@ -1,24 +1,25 @@
 #pragma once
+#include <memory>
+#include "Scene.h"
 
 
 namespace STR_FALL
 {
-	class Scene;
-
 	class Game
 	{
 	protected:
-		Scene* m_scene = nullptr;
+		std::unique_ptr<Scene> m_scene = nullptr;
 
 	public:
-		Game() = default;
-		Game(Scene* scene) : m_scene(scene) {}
+		Game();
+		virtual ~Game();
+		Game(std::unique_ptr<Scene> scene) : m_scene(std::move(scene)) {}
 
 		virtual bool Initialize() { return true; }
 		virtual void Shutdown() {}
 		virtual void Update() = 0;
 		virtual void Draw() = 0;
 
-		void SetScene(Scene* scene) { m_scene = scene; }
+		void SetScene(std::unique_ptr<Scene> scene) { m_scene = std::move(scene); }
 	};
 }

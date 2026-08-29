@@ -13,8 +13,8 @@ namespace STR_FALL
 	class Scene
 	{
 	private:
-		std::vector<std::unique_ptr<GameObject>> m_objects;
-		std::vector<std::unique_ptr<GameObject>> m_pendingObjects;
+		std::vector<std::unique_ptr<GameObject>> m_objects = {};
+		std::vector<std::unique_ptr<GameObject>> m_pendingObjects = {};
 		bool m_safeToAddObject = true;
 
 	public:
