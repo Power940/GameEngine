@@ -6,7 +6,7 @@
 #include "PhysicsComponent.h"
 #include <Core/StringUtils.h>
 #include <Physics/PhysicsBody.h>
-#include <rapidjson/document.h>
+#include <Serialization/Json.h>
 #include <string>
 #include <StarFallEngine.h>
 
@@ -45,24 +45,24 @@ namespace STR_FALL
 		JSON_READ_NAME(value, "size", m_size);
 		JSON_READ_NAME(value, "scale", m_scale);
 
-		JSON_READ_NAME(value, "gravity_scale", bodyDef.gravityScale);
-		JSON_READ_NAME(value, "linear_damping", bodyDef.linearDamping);
-		JSON_READ_NAME(value, "angular_damping", bodyDef.angularDamping);
-		JSON_READ_NAME(value, "constrain_angle", bodyDef.constrainAngle);
-		JSON_READ_NAME(value, "is_dynamic", bodyDef.isDynamic);
-		JSON_READ_NAME(value, "friction", bodyDef.friction);
-		JSON_READ_NAME(value, "restitution", bodyDef.restitution);
-		JSON_READ_NAME(value, "density", bodyDef.density);
-		JSON_READ_NAME(value, "is_sensor", bodyDef.isSensor);
+		JSON_READ_NAME(value, "m_gravityScale", m_bodyDef.gravityScale);
+		JSON_READ_NAME(value, "m_linearDamping", m_bodyDef.linearDamping);
+		JSON_READ_NAME(value, "m_angularDamping", m_bodyDef.angularDamping);
+		JSON_READ_NAME(value, "m_constrainAngle", m_bodyDef.constrainAngle);
+		JSON_READ_NAME(value, "m_isDynamic", m_bodyDef.isDynamic);
+		JSON_READ_NAME(value, "m_friction", m_bodyDef.friction);
+		JSON_READ_NAME(value, "m_restitution", m_bodyDef.restitution);
+		JSON_READ_NAME(value, "m_density", m_bodyDef.density);
+		JSON_READ_NAME(value, "m_isSensor", m_bodyDef.isSensor);
 
 		std::string shapeName;
-		JSON_READ_NAME(value, "shape", shapeName);
+		JSON_READ_NAME(value, "m_shape", shapeName);
 
 		if (!shapeName.empty())
 		{
-			if (EqualsIgnoreCase(shapeName, "box")) bodyDef.shape = PhysicsBody::Shape::Box;
-			else if (EqualsIgnoreCase(shapeName, "capsule")) bodyDef.shape = PhysicsBody::Shape::Capsule;
-			else if (EqualsIgnoreCase(shapeName, "circle")) bodyDef.shape = PhysicsBody::Shape::Circle;
+			if (EqualsIgnoreCase(shapeName, "box")) m_bodyDef.shape = PhysicsBody::Shape::Box;
+			else if (EqualsIgnoreCase(shapeName, "capsule")) m_bodyDef.shape = PhysicsBody::Shape::Capsule;
+			else if (EqualsIgnoreCase(shapeName, "circle")) m_bodyDef.shape = PhysicsBody::Shape::Circle;
 		}
 	}
 
@@ -83,12 +83,12 @@ namespace STR_FALL
 
 	void Box2DPhysicsComponent::ApplyTorque(Vector3 torque)
 	{
-		m_physicsBody->ApplyTorque(torque);
+		m_physicsBody->ApplyTorque(torque.m_x);
 	}
 
 	void Box2DPhysicsComponent::SetAngularVelocity(Vector3 angularVelocity)
 	{
-		m_physicsBody->SetAngularVelocity(angularVelocity);
+		m_physicsBody->SetAngularVelocity(angularVelocity.m_x);
 	}
 
 	Vector3 Box2DPhysicsComponent::GetAngularVelocity() const
@@ -108,7 +108,7 @@ namespace STR_FALL
 
 	void Box2DPhysicsComponent::SetRotation(const Matrix3& rotation)
 	{
-		m_physicsBody->SetRotation(rotation);
+		m_physicsBody->SetRotation(rotation[0][0]);
 	}
 
 	Matrix3 Box2DPhysicsComponent::GetRotation() const

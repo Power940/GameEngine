@@ -59,6 +59,22 @@ namespace STR_FALL::Json
 
         return true;
     }
+    bool Read(const rapidjson::Value& value, const std::string& name, std::vector<int>& data)
+    {
+        if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsArray())
+        {
+            std::cerr << "Could not read JSON value (int vector): " << name << std::endl;
+            return false;
+        }
+
+        auto& array = value[name.c_str()];
+        for (int index = 0; index < value[name.c_str()].Size(); index++)
+        {
+            data.push_back(array[index].GetInt());
+        }
+
+        return true;
+    }
     bool Read(const rapidjson::Value& value, const std::string& name, unsigned int& data)
     {
         if (!value.HasMember(name.c_str()) || !value[name.c_str()].IsUint())

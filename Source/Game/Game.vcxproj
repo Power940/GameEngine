@@ -191,6 +191,7 @@
   <ItemGroup>
     <None Include="..\..\Build\Assets\Animations\Coin.json" />
     <None Include="..\..\Build\Assets\Data\Scene.json" />
+    <None Include="..\..\Build\Assets\TileMaps\worldFileGame.tmj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

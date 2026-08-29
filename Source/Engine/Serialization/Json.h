@@ -7,6 +7,7 @@
 #include <Renderer/Mesh.h>
 
 
+#define JSON_READ_NAME(value, string, data) STR_FALL::Json::Read(value, string, data)
 #define JSON_READ(value, data) STR_FALL::Json::Read(value, #data, data)
 #define JSON_HAS(value, name) value.HasMember(name)
 #define JSON_GET(value, name) value[name]
@@ -16,6 +17,7 @@ namespace STR_FALL::Json
 	bool Load(const std::string& filename, rapidjson::Document& document);
 	bool Read(const rapidjson::Value& value, const std::string& name, bool& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, int& data);
+	bool Read(const rapidjson::Value& value, const std::string& name, std::vector<int>& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, unsigned int& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, float& data);
 	bool Read(const rapidjson::Value& value, const std::string& name, std::string& data);

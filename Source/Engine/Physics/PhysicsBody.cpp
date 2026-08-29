@@ -2,6 +2,7 @@
 #include "PhysicsBody.h"
 #include "StarFallEngine.h"
 #include "Math/Structs.h"
+#include "Math/Constants.h"
 
 namespace STR_FALL
 {
@@ -12,7 +13,7 @@ namespace STR_FALL
 		// set body definition
 		bodyDef.type = (def.isDynamic) ? b2_dynamicBody : b2_staticBody;
 		bodyDef.position = Physics::ToB2(Physics::PixelToWorld(transform.m_pos));
-		bodyDef.rotation = b2MakeRot(transform.rotation * DegToRad);
+		bodyDef.rotation = b2MakeRot(transform.m_rotMat[0][0] * F_DEG_RAD);
 		bodyDef.motionLocks.angularZ = def.constrainAngle;
 		bodyDef.gravityScale = def.gravityScale;
 		bodyDef.linearDamping = def.linearDamping;

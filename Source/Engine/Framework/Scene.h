@@ -24,7 +24,7 @@ namespace STR_FALL
 		{
 			if (object->m_scene == nullptr) { object->m_scene = this; }
 
-			if (m_safeToAddObject) { m_objects.push_back(std::move(object)); }
+			if (m_safeToAddObject) { m_objects.push_back(std::move(object)); m_objects.back()->Start(); }
 			else { m_pendingObjects.push_back(std::move(object)); }
 		}
 		inline Object* GetObjectIndex(const int element) const { return m_objects[element].get(); }
@@ -45,6 +45,18 @@ namespace STR_FALL
 
 		void UpdateCollisions();
 
-		void RemoveAllObjects() { m_objects.clear(); m_pendingObjects.clear(); }
+		void RemoveAllObjects(bool ignorePersistant = false)
+		{
+			if (ignorePersistant)
+			{
+				m_objects.clear();
+				m_pendingObjects.clear();
+			}
+			else
+			{
+				std::erase_if(m_objects, [](auto& object) { return object->m_persistent; });
+				std::erase_if(m_pendingObjects, [](auto& object) { return object->m_persistent; });
+			}
+		}
 	};
 }

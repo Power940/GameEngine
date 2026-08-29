@@ -28,6 +28,7 @@ namespace STR_FALL
 		std::vector<std::unique_ptr<Component>> m_components;
 		Scene* m_scene = nullptr;
 		bool m_toBeFreed = false;
+		bool m_persistent = false;
 
 
 		inline GameObject() = default;
@@ -114,6 +115,7 @@ namespace STR_FALL
 
 			JSON_READ(value, m_tags);
 			JSON_READ(value, m_transform);
+			JSON_READ(value, m_persistent);
 
 			if (JSON_HAS(value, "m_components"))
 			{

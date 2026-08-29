@@ -49,7 +49,7 @@ namespace STR_FALL
 
 	void SpriteAnimationRenderer2DComponent::Read(const rapidjson::Value& value)
 	{
-		RendererComponent::Read(value);
+ 		RendererComponent::Read(value);
 
 		JSON_READ(value, m_framesPerSecond);
 		JSON_READ(value, m_loop);

@@ -27,6 +27,7 @@
     <ClCompile Include="Components\RidgidBodyPhysicsComponent.cpp" />
     <ClCompile Include="Components\SpriteAnimationRenderer2DComponent.cpp" />
     <ClCompile Include="Components\SpriteRenderer2DComponent.cpp" />
+    <ClCompile Include="Components\TileMapRendererComponent.cpp" />
     <ClCompile Include="Core\file.cpp" />
     <ClCompile Include="Core\StarTime.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="Renderer\Text.cpp" />
     <ClCompile Include="Renderer\Texture.cpp" />
     <ClCompile Include="Renderer\TextureFrames.cpp" />
+    <ClCompile Include="Renderer\TileMap.cpp" />
     <ClCompile Include="Resources\Resource.cpp" />
     <ClCompile Include="Resources\ResourceManager.cpp" />
     <ClCompile Include="Serialization\Json.cpp" />
@@ -71,6 +73,7 @@
     <ClInclude Include="Components\RidgidBodyPhysicsComponent.h" />
     <ClInclude Include="Components\SpriteAnimationRenderer2DComponent.h" />
     <ClInclude Include="Components\SpriteRenderer2DComponent.h" />
+    <ClInclude Include="Components\TileMapRendererComponent.h" />
     <ClInclude Include="Core\Factory.h" />
     <ClInclude Include="Core\file.h" />
     <ClInclude Include="Core\Random.h" />
@@ -94,6 +97,7 @@
     <ClInclude Include="Renderer\Text.h" />
     <ClInclude Include="Renderer\Texture.h" />
     <ClInclude Include="Renderer\TextureFrames.h" />
+    <ClInclude Include="Renderer\TileMap.h" />
     <ClInclude Include="Resources\Resource.h" />
     <ClInclude Include="Resources\ResourceManager.h" />
     <ClInclude Include="Serialization\Json.h" />

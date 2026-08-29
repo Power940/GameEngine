@@ -78,6 +78,12 @@
     <ClCompile Include="Components\Box2DPhysicsComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer\TileMap.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\TileMapRendererComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -188,6 +194,12 @@
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="Components\Box2DPhysicsComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\TileMap.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\TileMapRendererComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

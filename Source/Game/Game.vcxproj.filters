@@ -14,6 +14,9 @@
     <Filter Include="Resource Files\Scenes">
       <UniqueIdentifier>{909d1515-893a-442d-bc26-d2add59078c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\TileMaps">
+      <UniqueIdentifier>{6b31293d-b457-41dc-b216-e764813f4f07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -52,6 +55,9 @@
     </None>
     <None Include="..\..\Build\Assets\Animations\Coin.json">
       <Filter>Resource Files\Animations</Filter>
+    </None>
+    <None Include="..\..\Build\Assets\TileMaps\worldFileGame.tmj">
+      <Filter>Resource Files\TileMaps</Filter>
     </None>
   </ItemGroup>
 </Project>
