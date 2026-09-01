@@ -182,11 +182,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Build\Assets\Animations\Coin.json" />
-    <None Include="..\..\Build\Assets\Data\Scene.json" />
-    <None Include="..\..\Build\Assets\TileMaps\worldFileGame.tmj" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="PlatformerGame\PlatformerGame.h" />
     <ClInclude Include="SpaceGame_OLD\Assets.h" />
     <ClInclude Include="SpaceGame_OLD\Bullet.h" />
@@ -194,12 +189,16 @@
     <ClInclude Include="SpaceGame_OLD\Ship3D.h" />
     <ClInclude Include="SpaceGame_OLD\SpaceGame3D.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Build\Assets\PlatformerGame\Animations\Coin.json" />
+    <None Include="..\..\Build\Assets\PlatformerGame\Scenes\Scene.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties _1_1_4_1_1_4Build_4Assets_4Data_4Scene_1json__JsonSchema="json" />
+      <UserProperties />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

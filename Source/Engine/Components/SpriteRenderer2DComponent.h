@@ -18,29 +18,49 @@ namespace STR_FALL
 	class SpriteRenderer2DComponent : public RendererComponent
 	{
 	public:
+		std::string m_textureName;
 		res_t<Texture> m_texture;
-		float m_rot = 0.0f;
+
+		Rect2D m_sourceRect;
+		Vector2 m_size = Vector2();
 		Vector2 m_scale = Vector2(1.0f, 1.0f);
-		bool flipH = false;
+		float m_rot = 0.0f;
+		bool m_flipH = false;
 
 
 		CLASS_PROTOTYPE(SpriteRenderer2DComponent)
 
+		void Start() override
+		{
+			if (!m_textureName.empty())
+			{
+				m_texture = ResourceManager::ResManager().GetWithID<Texture>(m_textureName.c_str(), m_textureName.c_str(), STR_Engine::m_renderer);
+
+				if (m_texture)
+				{
+					m_size = m_texture->m_size;
+				}
+			}
+		}
+
 		virtual void Draw(class Renderer& r) override
 		{
-			r.RenderTexture(m_texture.get(), m_owner->m_transform.m_pos.m_x, m_owner->m_transform.m_pos.m_y, m_rot, m_scale.m_x, m_scale.m_y, flipH);
+			if (m_sourceRect.m_w > 0 && m_sourceRect.m_h > 0)
+			{
+				r.RenderTexture(m_texture.get(), m_sourceRect, m_owner->m_transform.m_pos.m_x, m_owner->m_transform.m_pos.m_y, m_rot, m_scale.m_x, m_scale.m_y, m_flipH);
+			}
+			else
+			{
+				r.RenderTexture(m_texture.get(), m_owner->m_transform.m_pos.m_x, m_owner->m_transform.m_pos.m_y, m_rot, m_scale.m_x, m_scale.m_y, m_flipH);
+			}
 		}
 
 		virtual void Read(const rapidjson::Value& value) override
 		{
 			RendererComponent::Read(value);
 
-			std::string m_textureFilePath;
-			JSON_READ(value, m_textureFilePath);
-			if (!m_textureFilePath.empty())
-			{
-				m_texture = ResourceManager::ResManager().GetWithID<Texture>(m_textureFilePath.c_str(), m_textureFilePath.c_str(), STR_Engine::m_renderer);
-			}
+			JSON_READ(value, m_textureName);
+			JSON_READ(value, m_flipH);
 		}
 	};
 

@@ -1,11 +1,17 @@
 #pragma once
-#include "RendererComponent.h"
+#include "SpriteRenderer2DComponent.h"
 #include <Resources/Resource.h>
+#include <Framework/Object.h>
+#include <Math/Structs.h>
+#include <Renderer/Renderer.h>
+#include <Renderer/TextureFrames.h>
+#include <rapidjson/document.h>
+#include <string>
 
 
 namespace STR_FALL
 {
-	class SpriteAnimationRenderer2DComponent : public RendererComponent
+	class SpriteAnimationRenderer2DComponent : public SpriteRenderer2DComponent
 	{
 	public:
 		float m_rot = 0.0f;
@@ -14,7 +20,7 @@ namespace STR_FALL
 
 		CLASS_PROTOTYPE(SpriteAnimationRenderer2DComponent)
 
-		virtual void Draw(Renderer& r) override;
+		void Start() override;
 		virtual void Update(float dt) override;
 		virtual void Read(const rapidjson::Value& value) override;
 
@@ -26,5 +32,6 @@ namespace STR_FALL
 		float m_frameTimer = 0.0f;
 
 		res_t<class TextureFrames> m_textureFrames;
+		std::string m_textureFrameName;
 	};
 }

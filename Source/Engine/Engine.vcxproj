@@ -26,6 +26,7 @@
     <ClCompile Include="Components\PhysicsComponent.cpp" />
     <ClCompile Include="Components\RidgidBodyPhysicsComponent.cpp" />
     <ClCompile Include="Components\SpriteAnimationRenderer2DComponent.cpp" />
+    <ClCompile Include="Components\SpriteAnimator2DRendererComponent.cpp" />
     <ClCompile Include="Components\SpriteRenderer2DComponent.cpp" />
     <ClCompile Include="Components\TileMapRendererComponent.cpp" />
     <ClCompile Include="Core\file.cpp" />
@@ -73,6 +74,7 @@
     <ClInclude Include="Components\RendererComponent.h" />
     <ClInclude Include="Components\RidgidBodyPhysicsComponent.h" />
     <ClInclude Include="Components\SpriteAnimationRenderer2DComponent.h" />
+    <ClInclude Include="Components\SpriteAnimator2DRendererComponent.h" />
     <ClInclude Include="Components\SpriteRenderer2DComponent.h" />
     <ClInclude Include="Components\TileMapRendererComponent.h" />
     <ClInclude Include="Core\Factory.h" />

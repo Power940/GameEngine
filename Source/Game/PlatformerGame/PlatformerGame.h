@@ -28,10 +28,10 @@ public:
 
 #pragma region GameObjectSetup
 
-		m_scene->Load("Data/Scene.json");
+		m_scene->Load("Scenes/Scene.json");
 
 		SeedRandom();
-		for (int index = 0; index < 500; index++)
+		for (int index = 0; index < 1000; index++)
 		{
 			std::unique_ptr<Marker> marker = Factory::Instance().Create<Marker>("MarkerPrototype");
 			marker->m_transform.m_pos = Vector3(static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000)));

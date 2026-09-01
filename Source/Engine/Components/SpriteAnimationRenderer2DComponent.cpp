@@ -11,20 +11,22 @@ namespace STR_FALL
 {
 	FACTORY_REG(SpriteAnimationRenderer2DComponent)
 
-	void SpriteAnimationRenderer2DComponent::Draw(Renderer& r)
+	void SpriteAnimationRenderer2DComponent::Start()
 	{
-		if (!m_textureFrames) { return; }
-
-		Transform3D transform = m_owner->m_transform;
-		r.RenderTexture(
-			m_textureFrames->GetTexture().get(),
-			m_textureFrames->GetFrameRect(m_frame),
-			transform.m_pos.m_x,
-			transform.m_pos.m_y,
-			m_rot,
-			transform.m_scale.m_x,
-			transform.m_scale.m_y
-		);
+		if (!m_textureFrameName.empty())
+		{
+			m_textureFrames = ResourceManager::ResManager().GetWithID<TextureFrames>(m_textureFrameName.c_str(), m_textureFrameName.c_str(), STR_Engine::m_renderer);
+			if (m_textureFrames)
+			{
+				m_sourceRect = m_textureFrames->GetFrameRect(0);
+				m_size = Vector2(m_sourceRect.m_w, m_sourceRect.m_h);
+				m_texture = m_textureFrames->GetTexture();
+			}
+			if (!m_textureFrames)
+			{
+				std::cerr << "Could not load texture frames: " << m_textureFrameName << std::endl;
+			}
+		}
 	}
 
 	void SpriteAnimationRenderer2DComponent::Update(float dt)
@@ -45,25 +47,17 @@ namespace STR_FALL
 
 			m_frameTimer -= frameTime;
 		}
+
+		m_sourceRect = m_textureFrames->GetFrameRect(m_frame);
 	}
 
 	void SpriteAnimationRenderer2DComponent::Read(const rapidjson::Value& value)
 	{
- 		RendererComponent::Read(value);
+ 		SpriteRenderer2DComponent::Read(value);
 
 		JSON_READ(value, m_framesPerSecond);
 		JSON_READ(value, m_loop);
 
-		std::string m_textureFrameName;
 		JSON_READ(value, m_textureFrameName);
-
-		if (!m_textureFrameName.empty())
-		{
-			m_textureFrames = ResourceManager::ResManager().GetWithID<TextureFrames>(m_textureFrameName.c_str(), m_textureFrameName.c_str(), STR_Engine::m_renderer);
-			if (!m_textureFrames)
-			{
-				std::cerr << "Could not load texture frames: " << m_textureFrameName << std::endl;
-			}
-		}
 	}
 }

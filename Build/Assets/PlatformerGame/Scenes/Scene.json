@@ -51,10 +51,16 @@
       ],
       "m_components": [
         {
-          "m_typeName": "SpriteAnimationRenderer2DComponent",
-          "m_textureFrameName": "Animations/Coin.json",
-          "m_framesPerSecond": 20,
-          "m_loop": true
+          "m_typeName": "SpriteAnimator2DRendererComponent",
+          "m_defaultAnimation": "spin",
+          "m_animations": [
+            {
+              "m_name": "spin",
+              "m_textureFrames": "Animations/Coin.json",
+              "m_framesPerSecond": 20,
+              "m_loop": true
+            }
+          ]
         }
       ]
     },
