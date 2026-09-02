@@ -50,6 +50,10 @@ namespace STR_FALL
 		{
 			for (std::unique_ptr<Component>& component : m_components)
 			{
+				if (!component->m_active)
+				{
+					continue;
+				}
 				RendererComponent* rend = dynamic_cast<RendererComponent*>(component.get());
 				if (rend)
 				{

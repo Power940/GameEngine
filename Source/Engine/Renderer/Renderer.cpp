@@ -28,6 +28,7 @@ namespace STR_FALL
             return false;
         }
 
+        //SDL_SetDefaultTextureScaleMode(m_renderer, SDL_SCALEMODE_PIXELART);
         SDL_SetRenderVSync(m_renderer, 1);
 
         m_lastSetColor = new Color(1.0f, 1.0f, 1.0f);
@@ -103,22 +104,29 @@ namespace STR_FALL
         SDL_SetRenderDrawColorFloat(m_renderer, 1.0f, 1.0f, 1.0f, 1.0f);
         SDL_RenderDebugText(m_renderer, point.m_x, point.m_y, text.c_str());
     }
-    void Renderer::RenderTexture(const Texture* texture, float x, float y, float angleDeg, float xScale, float yScale, bool flipH)
+
+    void Renderer::RenderTexture(const Texture* texture, float x, float y, float angleDeg, float xScale, float yScale, bool flipH, const Vector2& origin)
     {
         Vector2 size = texture->m_size;
+
+        float cameraX = (m_useCamera2D) ? m_cam->m_transform.m_pos.m_x - (m_WINDOW_WIDTH * 0.5f) : 0.0f;
+        float cameraY = (m_useCamera2D) ? m_cam->m_transform.m_pos.m_y - (m_WINDOW_HEIGHT * 0.5f) : 0.0f;
 
         SDL_FRect destRect;
         destRect.w = size.m_x * xScale;
         destRect.h = size.m_y * yScale;
-        destRect.x = x - (destRect.w * 0.5f);
-        destRect.y = y - (destRect.h * 0.5f);
+        destRect.x = (x - cameraX) - (destRect.w * origin.m_x);
+        destRect.y = (y - cameraY) - (destRect.h * origin.m_y);
 
         SDL_RenderTextureRotated(m_renderer, texture->m_texture, NULL, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 
-    void Renderer::RenderTexture(const Texture* texture, const Rect2D& source, float x, float y, float angleDeg, float xScale, float yScale, bool flipH)
+    void Renderer::RenderTexture(const Texture* texture, const Rect2D& source, float x, float y, float angleDeg, float xScale, float yScale, bool flipH, const Vector2& origin)
     {
         Vector2 size = texture->m_size;
+
+        float cameraX = (m_useCamera2D) ? m_cam->m_transform.m_pos.m_x - (m_WINDOW_WIDTH * 0.5f) : 0.0f;
+        float cameraY = (m_useCamera2D) ? m_cam->m_transform.m_pos.m_y - (m_WINDOW_HEIGHT * 0.5f) : 0.0f;
 
         SDL_FRect srcRect;
         srcRect.x = source.m_x;
@@ -129,8 +137,8 @@ namespace STR_FALL
         SDL_FRect destRect;
         destRect.w = source.m_w * xScale;
         destRect.h = source.m_h * yScale;
-        destRect.x = x - (destRect.w * 0.5f);
-        destRect.y = y - (destRect.h * 0.5f);
+        destRect.x = (x - cameraX) - (destRect.w * origin.m_x);
+        destRect.y = (y - cameraY) - (destRect.h * origin.m_y);
         SDL_RenderTextureRotated(m_renderer, texture->m_texture, &srcRect, &destRect, angleDeg, NULL, flipH ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE);
     }
 

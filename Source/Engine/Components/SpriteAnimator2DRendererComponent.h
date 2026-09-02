@@ -30,6 +30,9 @@ namespace STR_FALL
 		void Update(float dt) override;
 		void Play(const std::string& name);
 		void Pause();
+		unsigned int GetFrame() const { return m_frame; }
+		bool IsAnimationDone() const;
+		const std::string& GetAnimationName() const { return m_spriteAnimation.m_name; }
 		void Read(const rapidjson::Value& value) override;
 
 	private:

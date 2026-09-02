@@ -19,7 +19,10 @@ namespace STR_FALL
 	{
 		for (std::unique_ptr<Component>& component : m_components)
 		{
-			component->Update(dt);
+			if (component->m_active)
+			{
+				component->Update(dt);
+			}
 		}
 	}
 

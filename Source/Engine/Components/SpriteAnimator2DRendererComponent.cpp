@@ -54,6 +54,8 @@ namespace STR_FALL
 
 	void SpriteAnimator2DRendererComponent::Play(const std::string& name)
 	{
+		if (EqualsIgnoreCase(name, m_spriteAnimation.m_name)) { return; }
+
 		auto iter = m_spriteAnimations.find(ToLower(name));
 		if (iter == m_spriteAnimations.end())
 		{
@@ -67,6 +69,11 @@ namespace STR_FALL
 
 		m_texture = m_spriteAnimation.m_textureFrames->GetTexture();
 		m_sourceRect = m_spriteAnimation.m_textureFrames->GetFrameRect(m_frame);
+	}
+
+	bool SpriteAnimator2DRendererComponent::IsAnimationDone() const
+	{
+		return (m_frame == m_spriteAnimation.m_textureFrames->GetTotalFrames() - 1);
 	}
 
 	void SpriteAnimator2DRendererComponent::Read(const rapidjson::Value& value)

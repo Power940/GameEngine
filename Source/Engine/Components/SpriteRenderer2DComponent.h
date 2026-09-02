@@ -24,6 +24,7 @@ namespace STR_FALL
 		Rect2D m_sourceRect;
 		Vector2 m_size = Vector2();
 		Vector2 m_scale = Vector2(1.0f, 1.0f);
+		Vector2 m_origin = Vector2(0.5f, 0.5f);
 		float m_rot = 0.0f;
 		bool m_flipH = false;
 
@@ -42,16 +43,16 @@ namespace STR_FALL
 				}
 			}
 		}
-
+		
 		virtual void Draw(class Renderer& r) override
 		{
 			if (m_sourceRect.m_w > 0 && m_sourceRect.m_h > 0)
 			{
-				r.RenderTexture(m_texture.get(), m_sourceRect, m_owner->m_transform.m_pos.m_x, m_owner->m_transform.m_pos.m_y, m_rot, m_scale.m_x, m_scale.m_y, m_flipH);
+				r.RenderTexture(m_texture.get(), m_sourceRect, m_owner->m_transform.m_pos.m_x, m_owner->m_transform.m_pos.m_y, m_rot, m_scale.m_x, m_scale.m_y, m_flipH, m_origin);
 			}
 			else
 			{
-				r.RenderTexture(m_texture.get(), m_owner->m_transform.m_pos.m_x, m_owner->m_transform.m_pos.m_y, m_rot, m_scale.m_x, m_scale.m_y, m_flipH);
+				r.RenderTexture(m_texture.get(), m_owner->m_transform.m_pos.m_x, m_owner->m_transform.m_pos.m_y, m_rot, m_scale.m_x, m_scale.m_y, m_flipH, m_origin);
 			}
 		}
 
@@ -61,6 +62,7 @@ namespace STR_FALL
 
 			JSON_READ(value, m_textureName);
 			JSON_READ(value, m_flipH);
+			JSON_READ(value, m_origin);
 		}
 	};
 

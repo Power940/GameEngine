@@ -34,6 +34,9 @@
     <ClCompile Include="SpaceGame_OLD\Ship3D.cpp">
       <Filter>SpaceGame_OLD</Filter>
     </ClCompile>
+    <ClCompile Include="PlatformerGame\PlayerController.cpp">
+      <Filter>PlatformerGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SpaceGame_OLD\SpaceGame3D.h">
@@ -52,6 +55,9 @@
       <Filter>SpaceGame_OLD</Filter>
     </ClInclude>
     <ClInclude Include="PlatformerGame\PlatformerGame.h">
+      <Filter>PlatformerGame</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformerGame\PlayerController.h">
       <Filter>PlatformerGame</Filter>
     </ClInclude>
   </ItemGroup>

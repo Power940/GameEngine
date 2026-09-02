@@ -21,6 +21,8 @@ namespace STR_FALL
 		int m_WINDOW_HEIGHT = -1;
 
 	public:
+		bool m_useCamera2D = true;
+
         bool Initialize(const char* name, int WINDOW_WIDTH, int WINDOW_HEIGHT, Camera3D* cam = &(Camera3D::Empty));
 		void SetColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255);
 		void SetColor(Color c);
@@ -38,8 +40,8 @@ namespace STR_FALL
 		inline int GetSreenHeight() const { return m_WINDOW_HEIGHT; }
 
 		void RenderDebugText(const std::string& text, const Vector2& point) const;
-		void RenderTexture(const class Texture* texture, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false);
-		void RenderTexture(const class Texture* texture, const struct Rect2D& source, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false);
+		void RenderTexture(const class Texture* texture, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false, const Vector2& origin = Vector2(0.5f, 0.5f));
+		void RenderTexture(const class Texture* texture, const struct Rect2D& source, float x, float y, float angleDeg = 0.0f, float xScale = 1.0f, float yScale = 1.0f, bool flipH = false, const Vector2& origin = Vector2(0.5f, 0.5f));
 
 		void RenderPoint(const Vector2& point) const;
 		void RenderPoints(const std::vector<Vector2>& points) const;
