@@ -30,37 +30,15 @@ public:
 
 		m_scene->Load("Scenes/Scene.json");
 
-		SeedRandom();
-		for (int index = 0; index < 1000; index++)
-		{
-			std::unique_ptr<Marker> marker = Factory::Instance().Create<Marker>("MarkerPrototype");
-			marker->m_transform.m_pos = Vector3(static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000)), static_cast<float>(RandomInt(2000, -2000)));
-			marker->m_transform.m_rotMat = Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)));
-			marker->GetComponent<MeshRenderer3DComponent>()->UpdateMesh(marker->m_transform);
-
-			m_scene->AddObject(std::move(marker));
-		}
-
-		for (int index = 0; index < 100; index++)
-		{
-			std::unique_ptr<Marker> marker = Factory::Instance().Create<Marker>("MarkerPrototype");
-			marker->m_transform.m_pos = Vector3(static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)), static_cast<float>(RandomInt(20000, -20000)));
-			marker->m_transform.m_rotMat = Matrix3::RotationXYZ(Vector3(RandomFloat(F_PI2), RandomFloat(F_PI2), RandomFloat(F_PI2)));
-			marker->GetComponent<MeshRenderer3DComponent>()->UpdateMesh(marker->m_transform);
-			marker->m_canBeHit = false;
-
-			m_scene->AddObject(std::move(marker));
-		}
-
 #pragma endregion
 
 		Camera3D* cam = &(m_scene->GetObjectName<Ship3D>("PlayerShip")->m_cam);
 		STR_Engine::Get().m_renderer.SetCamera(cam);
 
-		STR_Engine::m_audio.AddSound("shoot", "Shoot.mp3");
+		//STR_Engine::m_audio.AddSound("shoot", "Shoot.mp3");
 
 		menuText = new Text(ResourceManager::ResManager().GetWithID<Font>("title_font", "Fonts/VCR_OSD_MONO.ttf", 64.0f));
-		menuText->Create(STR_Engine::m_renderer, "3D Ship Sim - Press Space to Start", Color());
+		menuText->Create(STR_Engine::m_renderer, "3D Platformer - Press Space to Start", Color());
 
 		return true;
 	}

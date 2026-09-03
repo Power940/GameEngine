@@ -13,14 +13,8 @@
     <Filter Include="Assets\PlatformerGame">
       <UniqueIdentifier>{6d62ca1b-ede0-4eab-a1b8-dec102da55c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\PlatformerGame\Animation">
-      <UniqueIdentifier>{de724f64-a549-482a-84d9-86f24755fd0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Assets\PlatformerGame\Scene">
       <UniqueIdentifier>{bdb95d8b-35a0-4295-90dd-fac2f82d8fff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Assets\PlatformerGame\TileMaps">
-      <UniqueIdentifier>{ecf78726-b7b1-4b3e-9a58-476502557e02}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,9 +27,6 @@
     </ClCompile>
     <ClCompile Include="SpaceGame_OLD\Ship3D.cpp">
       <Filter>SpaceGame_OLD</Filter>
-    </ClCompile>
-    <ClCompile Include="PlatformerGame\PlayerController.cpp">
-      <Filter>PlatformerGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,15 +48,9 @@
     <ClInclude Include="PlatformerGame\PlatformerGame.h">
       <Filter>PlatformerGame</Filter>
     </ClInclude>
-    <ClInclude Include="PlatformerGame\PlayerController.h">
-      <Filter>PlatformerGame</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Build\Assets\PlatformerGame\Animations\Coin.json">
-      <Filter>Assets\PlatformerGame\Animation</Filter>
-    </None>
-    <None Include="..\..\Build\Assets\PlatformerGame\Scenes\Scene.json">
+    <None Include="..\..\Build\Assets\PlatformerGame\Scenes\Level1.json">
       <Filter>Assets\PlatformerGame\Scene</Filter>
     </None>
   </ItemGroup>
