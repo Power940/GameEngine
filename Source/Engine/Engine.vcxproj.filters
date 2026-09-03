@@ -90,6 +90,9 @@
     <ClCompile Include="Components\SpriteAnimator2DRendererComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Components\MeshColliderComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -209,6 +212,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\SpriteAnimator2DRendererComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\MeshColliderComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

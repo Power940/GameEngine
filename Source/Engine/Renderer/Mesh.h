@@ -96,7 +96,7 @@ namespace STR_FALL
 			}
 			return dist;
 		}
-		std::vector<Vector3> GetPoints()
+		std::vector<Vector3> GetPoints() 
 		{
 			std::vector<Vector3> temp;
 			for (VertexUV3D& point : m_points) { temp.push_back(point.m_pos); }

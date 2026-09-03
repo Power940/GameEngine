@@ -1,8 +1,5 @@
 #pragma once
 #include "StarFallEngine.h"
-#include "../SpaceGame_OLD/Ship3D.h"
-#include "../SpaceGame_OLD/Marker.h"
-#include "../SpaceGame_OLD/Assets.h"
 #include <Core/File.h>
 
 using namespace STR_FALL;
@@ -28,12 +25,12 @@ public:
 
 #pragma region GameObjectSetup
 
-		m_scene->Load("Scenes/Scene.json");
+		m_scene->Load("Scenes/Level1.json");
 
 #pragma endregion
 
-		Camera3D* cam = &(m_scene->GetObjectName<Ship3D>("PlayerShip")->m_cam);
-		STR_Engine::Get().m_renderer.SetCamera(cam);
+		//Camera3D* cam = &(m_scene->GetObjectName<Ship3D>("PlayerShip")->m_cam);
+		//STR_Engine::Get().m_renderer.SetCamera(cam);
 
 		//STR_Engine::m_audio.AddSound("shoot", "Shoot.mp3");
 
