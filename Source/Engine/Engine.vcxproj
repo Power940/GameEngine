@@ -108,6 +108,9 @@
     <ClInclude Include="Serialization\Json.h" />
     <ClInclude Include="StarFallEngine.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\README.md" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
