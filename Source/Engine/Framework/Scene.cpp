@@ -103,30 +103,6 @@ namespace STR_FALL
 				{
 					ObjectB->OnCollision(ObjectA);
 				}
-
-				//if (ObjectA->m_collisionMask.AnyMatch(ObjectB->m_collisionLayer))
-				//{
-				//	dist = (ObjectA->m_transform.m_pos - ObjectB->m_transform.m_pos).Magnitude();
-
-				//	if (dist <= ObjectA->m_radius + ObjectB->m_radius)
-				//	{
-				//		ObjectA->OnCollision(ObjectB);
-				//	}
-
-				//	// add SAT later if you feel like it (in an else case)
-				//}
-
-				//if (ObjectB->m_collisionMask.AnyMatch(ObjectA->m_collisionLayer))
-				//{
-				//	dist = (ObjectA->m_transform.m_pos - ObjectB->m_transform.m_pos).Magnitude();
-
-				//	if (dist <= ObjectA->m_radius + ObjectB->m_radius)
-				//	{
-				//		ObjectB->OnCollision(ObjectA);
-				//	}
-
-				//	// add SAT later if you feel like it (in an else case)
-				//}
 			}
 		}
 	}

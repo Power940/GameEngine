@@ -1,64 +1,6 @@
 {
   "GameObjects": [
     {
-      "m_typeName": "GameObject",
-      "m_prototype": false,
-
-      "m_name": "TileMapTest",
-      "m_active": true,
-
-      "m_tags": [
-        "TileMap"
-      ],
-      "m_transform": [
-        0,
-        0,
-        0,
-        3,
-        3,
-        3,
-        0,
-        0,
-        0
-      ],
-      "m_components": [
-        {
-          "m_typeName": "TileMapRendererComponent",
-          "m_tileMapName": "TileMaps/worldFileGame.tmj"
-        }
-      ]
-    },
-    {
-      "m_typeName": "GameObject",
-      "m_prototype": false,
-
-      "m_name": "coin",
-      "m_active": true,
-
-      "m_tags": [
-        "coin"
-      ],
-      "m_transform": [
-        500,
-        500,
-        0,
-        5,
-        5,
-        5,
-        0,
-        0,
-        0
-      ],
-      "m_components": [
-        {
-          "m_typeName": "SpriteAnimationRenderer2DComponent",
-          "m_textureFrameName": "Animations/Coin.json",
-          "m_framesPerSecond": 20,
-          "m_loop": true
-        }
-      ]
-    },
-    {
       "m_active": true,
       "m_cam": [
         0,

@@ -1,6 +1,8 @@
 #pragma once
 #include "StarFallEngine.h"
 #include <Core/File.h>
+#include "PlayerController.h"
+#include "Platform.h"
 
 using namespace STR_FALL;
 
@@ -27,12 +29,18 @@ public:
 
 		m_scene->Load("Scenes/Level1.json");
 
+		SeedRandom();
+		for (int index = 0; index < 50; index++)
+		{
+			std::unique_ptr<Platform> platform = Factory::Instance().Create<Platform>("PlatformPrototype");
+			platform->m_transform.m_pos = Vector3(static_cast<float>(RandomInt(500, -500)), static_cast<float>(RandomInt(500, -500)), static_cast<float>(RandomInt(500, -500)));
+			m_scene->AddObject(std::move(platform));
+		}
+
 #pragma endregion
 
-		//Camera3D* cam = &(m_scene->GetObjectName<Ship3D>("PlayerShip")->m_cam);
-		//STR_Engine::Get().m_renderer.SetCamera(cam);
-
-		//STR_Engine::m_audio.AddSound("shoot", "Shoot.mp3");
+		Camera3D* cam = &(m_scene->GetObjectName<PlayerController>("player")->m_cam);
+		STR_Engine::Get().m_renderer.SetCamera(cam);
 
 		menuText = new Text(ResourceManager::ResManager().GetWithID<Font>("title_font", "Fonts/VCR_OSD_MONO.ttf", 64.0f));
 		menuText->Create(STR_Engine::m_renderer, "3D Platformer - Press Space to Start", Color());

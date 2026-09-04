@@ -2,7 +2,6 @@
 #include "StarFallEngine.h"
 #include "Ship3D.h"
 #include "Marker.h"
-#include "Assets.h"
 
 using namespace STR_FALL;
 

@@ -13,7 +13,7 @@ int main()
 {
     SetWorkingDirectory("Assets");
 
-    int initCode = STR_Engine::Get().Initialize("Space Game", WINDOW_WIDTH, WINDOW_HEIGHT);
+    int initCode = STR_Engine::Get().Initialize("Platformer Game", WINDOW_WIDTH, WINDOW_HEIGHT);
     std::cout << "INIT_CODE: " << initCode << std::endl;
 
     game->Initialize();
