@@ -250,7 +250,4 @@
       <UniqueIdentifier>{fa941673-0004-4eae-a070-7b3be62bdf9d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\README.md" />
-  </ItemGroup>
 </Project>
